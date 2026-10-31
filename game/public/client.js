@@ -670,6 +670,12 @@ function buildChoices(v, setTab) {
     else if (type === 'hook') add(s.target ? `🪝 Hook is set on ${(v.roster.find((x) => x.id === s.target) || {}).name}` : '🪝 Choose who to rob (in camp)', () => setTab('loadout'), { disabled: v.sec >= CHOICE_CLOSE && 'resolves automatically when choices close', sub: tag });
     else if (type === 'kit') add('🛡 Protection kit ready to sell', () => setTab('guard'), { sub: tag });
   }
+  // Hints for things in this room that need a tool you don't have ready in an action slot.
+  const ready = (t) => y.slots.some((s) => !s.used && s.item && (y.inv.find((i) => i.id === s.item) || {}).type === t);
+  const need = (t) => `needs a ${ITEMS[t].name} in an action slot — ${y.inv.some((i) => i.type === t) ? 'put the one in your bag into a slot' : 'take a free one'} at camp before ${CHOICE_CLOSE}s`;
+  if (r && r.chest > 0 && !ready('crowbar')) add(`💰 Loot the chest (${r.chest} coins)`, null, { disabled: need('crowbar') });
+  if (r && r.pickup && !ready('crowbar')) add(`🎒 Pick up the ${ITEMS[r.pickup].name}`, null, { disabled: need('crowbar') });
+  if (r && r.cat === 'mine' && r.reserve > 0 && !ready('pickaxe')) add('⛏ Mine a coin here', null, { disabled: need('pickaxe') });
   if (y.inCamp && v.sec < CHOICE_CLOSE) {
     add('📋 Prepare my action slots', () => setTab('loadout'), { sub: `before ${CHOICE_CLOSE}s` });
     add('🛒 Shop at the machine (tools & weapons)', () => setTab('machine'), { disabled: v.sec < 10 && 'opens at 10s', sub: `closes at ${SHOP_CLOSE}s` });

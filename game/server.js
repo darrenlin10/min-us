@@ -924,6 +924,11 @@ class Match {
     if (m.round) { this.round = +m.round - 1; this.t = ROUND_T - 1; }
     if (m.sec != null) this.t = T(+m.sec);
     if (m.career) { tgt.career = m.career; tgt.appearance = m.career; }
+    if (m.room) { // { gx, gy, cat, chest, reserve }: add a room east of camp, joined by a door
+      const r = this.makeRoom(m.room.gx, m.room.gy, 0, m.room.cat); r.dist = 1; r.chest = m.room.chest || 0; r.reserve = m.room.reserve || 0;
+      this.rooms['0,0,0'].doors.e = true; r.doors.w = true;
+    }
+    if (m.tp) { tgt.x = m.tp.x; tgt.y = m.tp.y; tgt.d = 0; if (tgt.ws) tgt.ws.send(JSON.stringify({ t: 'pos', x: tgt.x, y: tgt.y, d: 0 })); }
   }
 
   // ---------- contribution proposals (non-binding pledges; no coins move)
