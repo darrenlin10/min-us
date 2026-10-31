@@ -694,3 +694,5 @@ function App() {
 }
 render(html`<${App} />`, document.getElementById('app'));
 connect();
+// Keep free-tier hosts awake during a match (some count only HTTP requests as activity).
+setInterval(() => { if (S.view && S.view.state === 'game') fetch('/healthz', { cache: 'no-store' }).catch(() => {}); }, 4 * 60 * 1000);

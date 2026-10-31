@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test/sim.mjs"
+    "test": "node test/sim.mjs && node test/features.mjs"
   },
   "license": "ISC",
   "dependencies": {

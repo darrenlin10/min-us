@@ -45,6 +45,7 @@ const server = http.createServer((req, res) => {
 });
 
 // ---------------------------------------------------------------- matches
+process.on('uncaughtException', (err) => console.error('uncaught', err));
 const timers = [];
 const matches = new Map(); // code -> Match
 const sessions = new Map(); // token -> { code, pid }
@@ -84,7 +85,7 @@ class Match {
   phase() { return phaseAt(this.sec).id; }
   pub(msg) { this.log.push({ round: this.round, msg }); if (this.log.length > 40) this.log.shift(); }
   tell(p, msg, kind = 'info') { p.events.push({ msg, kind }); }
-  bright(r) { return r.safe || (r.lightUntil && r.lightUntil >= this.round); }
+  bright(r) { return !!(r.safe || (r.lightUntil && r.lightUntil >= this.round)); }
   priority() { // rotating original-seat order
     const n = this.players.length, s = (this.round - 1) % n;
     return this.players.map((_, i) => this.players[(s + i) % n]);
@@ -916,10 +917,8 @@ class Match {
 
   // ---------- per-player view
   view(p, sendRooms) {
-    const base = {
-      t: 'state', code: this.code, state: this.state, me: p.id,
-      players: this.players.map((o) => ({ id: o.id, name: o.name, color: o.color, connected: o.connected, ready: o.ready })),
-    };
+    const base = { t: 'state', code: this.code, state: this.state, me: p.id };
+    if (this.state !== 'game') base.players = this.players.map((o) => ({ id: o.id, name: o.name, color: o.color, connected: o.connected, ready: o.ready }));
     if (this.state === 'lobby') return { ...base, settings: this.settings };
     if (this.state === 'over') return { ...base, result: this.result, log: this.log.slice(-12) };
     const living = this.living();
@@ -991,7 +990,8 @@ wss.on('connection', (ws) => {
   ws.on('pong', () => (ws.alive = true));
   let me = null, match = null;
   const send = (o) => ws.readyState === 1 && ws.send(JSON.stringify(o));
-  ws.on('message', (buf) => {
+  ws.on('message', (buf) => { try { onMessage(buf); } catch (err) { console.error('message error', err); } });
+  const onMessage = (buf) => {
     if ((ws._rate = (ws._rate || 0) + 1) > 80) return; // simple flood guard (reset every second)
     let m; try { m = JSON.parse(buf); } catch { return; }
     if (!m || typeof m.t !== 'string') return;
@@ -1033,7 +1033,7 @@ wss.on('connection', (ws) => {
       match.players = match.players.filter((p) => p.connected);
       for (const p of match.players) { delete p.career; p.sentMap = 0; }
     } else if (m.t === 'leave') { sessions.delete(me.token); }
-  });
+  };
   ws.on('close', () => {
     if (!me || me.ws !== ws) return;
     me.connected = false; me.ws = null;
@@ -1049,7 +1049,7 @@ function clearIntervalsForTests() { timers.forEach(clearInterval); }
 timers.push(setInterval(() => {
   tickN++;
   for (const [code, m] of matches) {
-    for (let i = 0; i < SPEEDUP; i++) m.step();
+    try { for (let i = 0; i < SPEEDUP; i++) m.step(); } catch (err) { console.error('step error', code, err); }
     if (m.state === 'lobby') {
       for (const p of [...m.players]) if (!p.connected && p.lobbyLeftAt && Date.now() - p.lobbyLeftAt > 60000) m.removeFromLobby(p);
       if (m.players.length === 0 && Date.now() - m.createdAt > 15 * 60000) matches.delete(code);
@@ -1060,9 +1060,11 @@ timers.push(setInterval(() => {
     for (const p of m.players) {
       if (!p.ws || p.ws.readyState !== 1) continue;
       const sendRooms = m.state === 'game' && p.sentMap !== m.mapVersion;
-      const v = m.view(p, sendRooms);
-      if (sendRooms) p.sentMap = m.mapVersion;
-      p.ws.send(JSON.stringify(v));
+      try {
+        const v = m.view(p, sendRooms);
+        if (sendRooms) p.sentMap = m.mapVersion;
+        p.ws.send(JSON.stringify(v));
+      } catch (err) { console.error('view error', code, err); }
     }
   }
 }, 1000 / TICK_HZ));
