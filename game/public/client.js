@@ -23,6 +23,7 @@ function connect() {
   ws.onmessage = (e) => onMsg(JSON.parse(e.data));
 }
 const send = (o) => ws && ws.readyState === 1 && ws.send(JSON.stringify(o));
+window.__send = send; // used by automated browser tests
 
 function goMenu() {
   S.screen = 'menu'; S.view = null; S.rooms = {}; joinMsg = null;
@@ -44,6 +45,8 @@ function toast(msg, kind = 'info') {
 }
 
 let lastLogLen = 0, lastLogKey = '';
+const floaters = [];
+function floater(text, color) { floaters.push({ text, color, t0: performance.now(), dx: (Math.random() - 0.5) * 30 }); }
 function onMsg(m) {
   if (m.t === 'joined') {
     store.token = m.token; S.error = '';
@@ -62,6 +65,11 @@ function onMsg(m) {
     if (m.rooms) { S.rooms = {}; for (const r of m.rooms) S.rooms[r.key] = r; }
     if (m.you) {
       const y = m.you;
+      if (prev && prev.you && prev.state === 'game' && y.status === 'alive') {
+        const dc = y.coins - prev.you.coins, dh = y.hp - prev.you.hp;
+        if (dc) floater((dc > 0 ? '+' : '') + dc + ' 🪙', dc > 0 ? '#ffd25a' : '#ff9b9b');
+        if (dh) floater((dh > 0 ? '+' : '') + dh + ' ❤', dh > 0 ? '#8ef0a0' : '#ff6b81');
+      }
       if (!prev || !prev.you || prev.you.status !== y.status || Math.hypot(S.me.x - y.x, S.me.y - y.y) > 2.5 || S.me.d !== y.d) Object.assign(S.me, { x: y.x, y: y.y, d: y.d });
       for (const ev of m.events || []) toast(ev.msg, ev.kind);
     }
@@ -93,6 +101,10 @@ const roomSrc = (r) => {
   if (r.cat === 'gallery' && (r.up || r.down)) t = 'ladder_chamber';
   return `/assets/rooms/${t}.jpg`;
 };
+let rockPattern = null;
+{ const src = img('/assets/rooms/empty_junction.jpg');
+  src.onload = () => { const c = document.createElement('canvas'); c.width = c.height = 120; const g = c.getContext('2d');
+    g.drawImage(src, 0, 0, 120, 120, 0, 0, 120, 120); g.fillStyle = '#0b0710a0'; g.fillRect(0, 0, 120, 120); rockPattern = c; }; }
 ['worker', 'worker-02', 'explorer', 'explorer-02', 'merchant', 'guard', 'thief', 'scavenger'].forEach((a) => img(charSrc(a)));
 
 // ------------------------------------------------------------ input & movement
@@ -142,8 +154,14 @@ function moveStep(dt) {
   const ok = (x, yy) => (ghost ? !!roomAt(S.rooms, x, yy, S.me.d) : walkable(S.rooms, x, yy, S.me.d));
   const nx = S.me.x + dx * sp, ny = S.me.y + dy * sp;
   if (ok(nx, ny)) { S.me.x = nx; S.me.y = ny; }
-  else if (ok(nx, S.me.y)) S.me.x = nx;
-  else if (ok(S.me.x, ny)) S.me.y = ny;
+  else if (dx && ok(nx, S.me.y)) S.me.x = nx;
+  else if (dy && ok(S.me.x, ny)) S.me.y = ny;
+  else if (!ghost) {
+    // doorway assist: pushing into a wall near a door slides you toward the opening
+    const cxr = Math.floor(S.me.x / ROOM) * ROOM + 2, cyr = Math.floor(S.me.y / ROOM) * ROOM + 2;
+    if (Math.abs(dx) >= Math.abs(dy) && Math.abs(S.me.y - cyr) < 1.4) { const ty = S.me.y + Math.sign(cyr - S.me.y) * Math.min(sp, Math.abs(cyr - S.me.y)); if (ok(S.me.x, ty)) S.me.y = ty; }
+    else if (Math.abs(dy) > Math.abs(dx) && Math.abs(S.me.x - cxr) < 1.4) { const tx = S.me.x + Math.sign(cxr - S.me.x) * Math.min(sp, Math.abs(cxr - S.me.x)); if (ok(tx, S.me.y)) S.me.x = tx; }
+  }
   if (dx) facing.me = dx < 0;
 }
 function netTick() {
@@ -188,27 +206,36 @@ function drawChar(e, x, y, opts = {}) {
   ctx.restore();
   if (opts.corpse) return;
   // label
-  ctx.font = `600 ${Math.round(TS * 0.2)}px system-ui`; ctx.textAlign = 'center';
-  const label = e.name;
-  const tw = ctx.measureText(label).width + 18;
-  ctx.fillStyle = '#000a'; ctx.fillRect(x - tw / 2, y - h - TS * 0.33, tw, TS * 0.28);
-  ctx.fillStyle = e.color; ctx.beginPath(); ctx.arc(x - tw / 2 + 8, y - h - TS * 0.19, 4, 0, 7); ctx.fill();
-  ctx.fillStyle = '#fff'; ctx.fillText(label, x + 5, y - h - TS * 0.12);
-  if (e.hp !== undefined) for (let i = 0; i < 3; i++) { ctx.fillStyle = i < e.hp ? '#ff5d6c' : '#555'; ctx.fillRect(x - 15 + i * 11, y - h - TS * 0.44, 9, 5); }
+  const fs = Math.round(TS * 0.21);
+  ctx.font = `${fs}px 'Lilita One', system-ui`; ctx.textAlign = 'center';
+  const label = e.name, tw = ctx.measureText(label).width + 24, ph = fs + 8, ly = y - h - TS * 0.12 - ph;
+  pill(x - tw / 2, ly, tw, ph, '#1a1222e6', '#120c18');
+  ctx.fillStyle = e.color; ctx.beginPath(); ctx.arc(x - tw / 2 + 10, ly + ph / 2, 4.5, 0, 7); ctx.fill(); ctx.strokeStyle = '#120c18'; ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.fillStyle = '#fff6e3'; ctx.fillText(label, x + 6, ly + ph / 2 + fs * 0.36);
+  if (e.hp !== undefined) for (let i = 0; i < 3; i++) { ctx.fillStyle = i < e.hp ? '#ff5d6c' : '#3a2f48'; ctx.strokeStyle = '#120c18'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x - 12 + i * 12, ly - 7, 4.5, 0, 7); ctx.fill(); ctx.stroke(); }
   if (e.trapped) { ctx.strokeStyle = '#bbb'; ctx.lineWidth = 2; for (let i = -2; i <= 2; i++) { ctx.beginPath(); ctx.moveTo(x + i * 8, y - h * 0.9); ctx.lineTo(x + i * 8, y); ctx.stroke(); } }
   if (e.busy) { ctx.fillStyle = '#f2c14e'; ctx.font = `${Math.round(TS * 0.3)}px system-ui`; ctx.fillText('⚒', x + w * 0.4, y - h * 0.7); }
 }
 
+function pill(x, y, w, h, fill, stroke) {
+  const r = h / 2; ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  ctx.fillStyle = fill; ctx.fill(); ctx.strokeStyle = stroke; ctx.lineWidth = 2.5; ctx.stroke();
+}
 function frame(now) {
   const dt = Math.min(0.05, (now - (frame.last || now)) / 1000); frame.last = now;
   moveStep(dt); netTick();
-  ctx.fillStyle = '#0d0a12'; ctx.fillRect(0, 0, W, H);
   const v = S.view;
+  ctx.fillStyle = '#0d0a12'; ctx.fillRect(0, 0, W, H);
+  if (rockPattern && v && v.state === 'game') {
+    const pat = ctx.createPattern(rockPattern, 'repeat');
+    const ox = ((W / 2 - S.me.x * TS) % 120 + 120) % 120, oy = (((W < 640 ? H * 0.36 : H / 2) - S.me.y * TS + TS * 0.3) % 120 + 120) % 120;
+    ctx.save(); ctx.translate(ox, oy); ctx.fillStyle = pat; ctx.fillRect(-ox, -oy, W, H); ctx.restore();
+  }
   if (v && v.state === 'game') drawWorld(v, now);
   requestAnimationFrame(frame);
 }
 function drawWorld(v, now) {
-  const me = S.me, cx = W / 2 - me.x * TS, cy = H / 2 - me.y * TS + TS * 0.3;
+  const me = S.me, cx = W / 2 - me.x * TS, cy = (W < 640 ? H * 0.36 : H / 2) - me.y * TS + TS * 0.3;
   const sx = (x) => cx + x * TS, sy = (y) => cy + y * TS;
   const myRoom = roomAt(S.rooms, me.x, me.y, me.d);
   const alive = v.you.status === 'alive';
@@ -219,14 +246,15 @@ function drawWorld(v, now) {
     const im = img(roomSrc(r));
     if (im.complete && im.width) ctx.drawImage(im, x0, y0, s, s); else { ctx.fillStyle = '#3b3048'; ctx.fillRect(x0, y0, s, s); }
     // sealed ports
-    ctx.fillStyle = '#3d3350';
     for (const k of ['n', 'e', 's', 'w']) {
       if (r.doors[k]) continue;
-      const a = 0.36 * TS, b = 0.62 * TS;
-      if (k === 'n') ctx.fillRect(x0 + s / 2 - b, y0, b * 2, a);
-      if (k === 's') ctx.fillRect(x0 + s / 2 - b, y0 + s - a, b * 2, a);
-      if (k === 'w') ctx.fillRect(x0, y0 + s / 2 - b, a, b * 2);
-      if (k === 'e') ctx.fillRect(x0 + s - a, y0 + s / 2 - b, a, b * 2);
+      const a = 0.42 * TS, b = 0.64 * TS;
+      const [rx, ry, rw, rh] = k === 'n' ? [x0 + s / 2 - b, y0, b * 2, a] : k === 's' ? [x0 + s / 2 - b, y0 + s - a, b * 2, a] : k === 'w' ? [x0, y0 + s / 2 - b, a, b * 2] : [x0 + s - a, y0 + s / 2 - b, a, b * 2];
+      ctx.fillStyle = rockPattern ? ctx.createPattern(rockPattern, 'repeat') : '#3d3350'; ctx.fillRect(rx, ry, rw, rh);
+      // rubble boulders
+      ctx.fillStyle = '#5a4a70'; ctx.strokeStyle = '#120c18'; ctx.lineWidth = 2;
+      for (let i = 0; i < 4; i++) { const t = (i + 0.5) / 4, bx = rw > rh ? rx + rw * t : rx + rw / 2, by = rw > rh ? ry + rh / 2 : ry + rh * t, br = Math.min(rw, rh) * (0.28 + 0.08 * ((i * 7 + r.gx * 3 + r.gy) % 3));
+        ctx.beginPath(); ctx.arc(bx, by, br, 0, 7); ctx.fill(); ctx.stroke(); }
     }
     const lad = img('/assets/rooms/ladder.png');
     if (r.down && lad.complete) ctx.drawImage(lad, x0 + (LADDER.x - 0.5) * TS, y0 + (LADDER.y - 0.5) * TS, TS, TS * 0.9);
@@ -271,11 +299,22 @@ function drawWorld(v, now) {
   // channel bar
   const ch = v.you.channel;
   if (ch) {
-    const p = 1 - ch.remaining / ch.total, x = W / 2 - 40, y = H / 2 - TS * 1.9;
+    const p = 1 - ch.remaining / ch.total, x = W / 2 - 40, y = (W < 640 ? H * 0.36 : H / 2) - TS * 1.75;
     ctx.fillStyle = '#000b'; ctx.fillRect(x, y, 80, 10); ctx.fillStyle = '#f2c14e'; ctx.fillRect(x + 1, y + 1, 78 * p, 8);
   }
   // joystick ring
   if (joy.id !== null) { ctx.strokeStyle = '#fff6'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(joy.ox, joy.oy, 50, 0, 7); ctx.stroke(); ctx.fillStyle = '#fff8'; ctx.beginPath(); ctx.arc(joy.ox + joy.dx * 50, joy.oy + joy.dy * 50, 18, 0, 7); ctx.fill(); }
+  // floating numbers above me
+  const tnow = performance.now();
+  for (let i = floaters.length - 1; i >= 0; i--) {
+    const f = floaters[i], age = (tnow - f.t0) / 1200;
+    if (age >= 1) { floaters.splice(i, 1); continue; }
+    ctx.globalAlpha = 1 - age * age; ctx.font = `${Math.round(TS * 0.34)}px 'Lilita One', system-ui`; ctx.textAlign = 'center';
+    ctx.lineWidth = 4; ctx.strokeStyle = '#120c18'; const fx = W / 2 + f.dx, fy = (W < 640 ? H * 0.36 : H / 2) - TS * 1.5 - age * TS;
+    ctx.strokeText(f.text, fx, fy); ctx.fillStyle = f.color; ctx.fillText(f.text, fx, fy); ctx.globalAlpha = 1;
+  }
+  const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75);
+  vg.addColorStop(0, '#0000'); vg.addColorStop(1, '#000a'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
   drawMinimap(v);
 }
 function drawMinimap(v) {
@@ -408,7 +447,7 @@ function Lobby({ v }) {
       <div class="muted" style="font-size:12px;word-break:break-all">${link}</div>
       <h3 style="margin-top:12px">Players (${n}/8)</h3>
       <ul class="plist">${v.players.map((p) => html`<li><span class="dot" style=${{ background: p.color }}></span><b>${p.id}</b> ${p.name} ${p.id === v.me ? html`<span class="muted">(you)</span>` : ''}
-        <span class="grow"></span>${!p.connected ? html`<span class="warn">offline</span>` : p.ready ? html`<span class="good">✔ Ready</span>` : html`<span class="muted">not ready</span>`}</li>`)}</ul>
+        <span class="grow"></span>${!p.connected ? html`<span class="badge off">offline</span>` : p.ready ? html`<span class="badge ok">✔ Ready</span>` : html`<span class="badge no">not ready</span>`}</li>`)}</ul>
       ${n >= 4 && n <= 7 && html`<label class="row">Specialist career${n === 7 ? 's' : ''}:
         <select value=${v.settings.specialist} onChange=${(e) => send({ t: 'setting', specialist: e.target.value })}>
           <option value="random">Random</option><option value="guard">Guard</option><option value="thief">Thief</option><option value="scavenger">Scavenger</option></select></label>`}
@@ -456,7 +495,6 @@ function RulesModal({ close }) {
 // ------------------------------------------------------------ game HUD
 function Game({ v }) {
   const [tab, setTab] = useState(null);
-  const [picker, setPicker] = useState(null);
   const idKey = 'me_idseen_' + v.code;
   const [showId, setShowId] = useState(() => { try { return v.round === 1 && !sessionStorage.getItem(idKey); } catch { return v.round === 1 && v.sec < 8; } });
   const closeId = () => { setShowId(false); try { sessionStorage.setItem(idKey, '1'); } catch {} };
@@ -474,10 +512,10 @@ function Game({ v }) {
     if (y.channel) hint = `Working… stand still (${(y.channel.remaining / 20).toFixed(1)}s)`;
     else if (y.trapped && ph.id === 'field') hint = '🪤 You are trapped this field phase.';
     else if (ph.id === 'arrival' && !y.inCamp) hint = 'Walk to a camp (crystal Safe Zone) to prepare.';
-    else if (ph.id === 'choices' && y.inCamp) hint = 'Open 🏕 Camp to fill your action slots and shop.';
+    else if (ph.id === 'choices' && y.inCamp) hint = 'In camp — prepare for the field';
     else if (ph.id === 'choices' && !y.inCamp) hint = 'Get to a camp before choices close!';
     else if (ph.id === 'departure') hint = 'Head out to where you will use your actions.';
-    else if (ph.id === 'field') hint = 'Tap an action slot to use it here.';
+    else if (ph.id === 'field') hint = 'Field time — what do you do?';
     else if (ph.id === 'return' && !y.inCamp) hint = 'Walk back to a camp!';
   } else if (y.status === 'dead') hint = '👻 You are a ghost: drift anywhere and watch everyone.';
   else if (y.status === 'escaped') hint = '🎉 You escaped! Watching…';
@@ -488,7 +526,7 @@ function Game({ v }) {
       <span class="chip">R <b>${v.round}</b>/${ROUNDS}</span>
       <span class="chip phase">${v.meeting ? (v.meeting.type === 'trial' ? '⚖ Trial' : '🗳 Election') : ph.label.split(' — ')[0]} <span class="timer">${v.meeting ? fmt(v.meeting.remaining) : fmt(left)}</span></span>
       <span class="chip" title="Escape fund / fare">🏦 <b>${v.fund}</b>/${v.fare}</span>
-      ${alive && html`<span class="chip"><${Icon} k="coin" sm /> <b>${y.coins}</b></span><span class="chip">${'❤'.repeat(Math.max(0, y.hp))}${'♡'.repeat(Math.max(0, 3 - y.hp))}</span>`}
+      ${alive && html`<span class="chip"><${Icon} k="coin" sm /> <b>${y.coins}</b></span><span class="chip hp">${'❤'.repeat(Math.max(0, y.hp))}${'♡'.repeat(Math.max(0, 3 - y.hp))}</span>`}
       ${y.lock && html`<span class="chip"><${Icon} k="lock" sm />lock</span>`}${y.shield && html`<span class="chip"><${Icon} k="shield" sm />shield</span>`}
       <span class="grow"></span>
       ${S.conn !== 'open' && html`<span class="chip bad">reconnecting…</span>`}
@@ -496,21 +534,18 @@ function Game({ v }) {
       <button class="small" onClick=${() => setRules(true)}>📖</button>
       <button class="small" onClick=${() => setMenu(true)}>☰</button>
     </div>
+    ${!v.meeting && html`<div class="timeline">${PHASES.map((p) => html`<div style=${{ flex: p.end - p.start, background: { arrival: '#6b5a80', choices: '#3fae6a', departure: '#6b5a80', field: '#d9822b', return: '#4a8fd9', settlement: '#8a4ad9' }[p.id], opacity: v.sec >= p.end ? 0.45 : 1 }}>${v.sec >= p.start && v.sec < p.end && html`<span class="now" style=${{ left: `calc(${((v.sec - p.start) / (p.end - p.start)) * 100}% - 2px)` }}></span>`}</div>`)}</div>`}
     <div class="feed">${S.toasts.map((t) => html`<div class="toast ${t.kind}" key=${t.id}>${t.msg}</div>`)}</div>
-    ${hint && !picker && html`<div class="hint">${hint}</div>`}
     ${v.meeting && html`<${Meeting} v=${v} />`}
     <div class="bottom">
       <div class="side">
-        ${lad && html`<button class="big" onClick=${tryClimb}>${lad === 'down' ? '⬇ Climb down' : '⬆ Climb up'}</button>`}
-        ${y.status === 'dead' && y.murderer && html`<button class="big" disabled=${!y.canHaunt} onClick=${() => send({ t: 'haunt' })}>👻 Haunt</button>`}
-        ${y.channel && html`<button onClick=${() => send({ t: 'cancel' })}>✋ Cancel</button>`}
       </div>
-      ${alive ? html`<div class="slots">${y.slots.map((s, i) => html`<${SlotBtn} s=${s} i=${i} v=${v} onPick=${setPicker} />`)}</div>` : html`<div></div>`}
+      ${alive ? html`<div class="slots">${y.slots.map((s, i) => html`<${SlotBtn} s=${s} i=${i} v=${v} />`)}</div>` : html`<div></div>`}
       <div class="side">
         <button class="big" onClick=${() => setTab(tab ? null : alive ? 'loadout' : 'people')}>${y.inCamp ? '🏕 Camp' : '🎒 Info'}${(v.proposals || []).length ? ` · 📜${v.proposals.length}` : ''}</button>
       </div>
     </div>
-    ${picker && html`<${Picker} p=${picker} v=${v} close=${() => setPicker(null)} />`}
+    ${!v.meeting && y.status !== 'forfeit' && html`<${ChoiceBox} v=${v} setTab=${setTab} title=${hint || 'What do you do?'} />`}
     ${tab && html`<${Sheet} v=${v} tab=${tab} setTab=${setTab} />`}
     ${showId && html`<${IdCard} v=${v} close=${closeId} />`}
     ${rules && html`<${RulesModal} close=${() => setRules(false)} />`}
@@ -542,57 +577,123 @@ function slotIconKey(s, y) {
   const it = s.item && y.inv.find((i) => i.id === s.item);
   return it ? it.type : null;
 }
-function SlotBtn({ s, i, v, onPick }) {
+function SlotBtn({ s, i, v }) {
   const y = v.you, k = slotIconKey(s, y);
   const it = s.item && y.inv.find((x) => x.id === s.item);
   const label = s.marker ? (s.marker === 'deposit' ? 'Deposit' : 'Trial') : it ? ITEMS[it.type].name.split(' ')[0] : 'empty';
   const usable = !s.used && k && !['hook', 'kit'].includes(k);
   const tgt = s.target && v.roster.find((r) => r.id === s.target);
-  return html`<button class=${'slot' + (s.used ? ' used' : usable ? ' ready' : '')} onClick=${() => usable && onPick({ slot: s, type: k })} title=${label}>
+  return html`<div class=${'slot' + (s.used ? ' used' : usable ? ' ready' : '')} title=${label}>
     <span class="k">${i + 1}${s.kind === 'extra' ? '+' : ''}</span>
     ${k ? html`<img src=${itemSrc(k)} />` : html`<span class="muted">—</span>`}
     <span>${s.used ? 'used' : tgt ? '→' + tgt.name.slice(0, 6) : s.service ? s.service : label}</span>
-  </button>`;
+  </div>`;
 }
 
-function Picker({ p, v, close }) {
-  const y = v.you, type = p.type;
+// Build the "What do you do?" list: every action available where you stand, in plain words.
+function buildChoices(v, setTab) {
+  const y = v.you, out = [];
+  const add = (label, pick, opts = {}) => out.push({ label, pick, ...opts });
   const r = roomAt(S.rooms, S.me.x, S.me.y, S.me.d);
-  const [amt, setAmt] = useState(Math.max(1, y.coins));
-  const act = (target) => { send({ t: 'act', slot: p.slot.id, target }); close(); };
-  const others = (v.ents || []).filter((e) => !e.ghost && e.inMyRoom);
-  let body;
-  if (type === 'deposit') {
-    body = html`<div>Contribute to the escape fund (fund ${v.fund}/${v.fare}):</div>
-      <div class="row" style="margin:8px 0"><button onClick=${() => setAmt(Math.max(1, amt - 1))}>−</button><b style="font-size:22px;min-width:40px;text-align:center">${amt}</b><button onClick=${() => setAmt(Math.min(y.coins, amt + 1))}>+</button><button class="small" onClick=${() => setAmt(y.coins)}>All (${y.coins})</button></div>
-      <button class="primary" disabled=${y.coins < 1} onClick=${() => act({ amount: Math.min(amt, y.coins) })}>Deposit ${Math.min(amt, y.coins)}</button>`;
-  } else if (type === 'drill') {
-    const opts = [];
-    if (r) {
-      for (const k of ['n', 'e', 's', 'w']) if (!r.doors[k] && !S.rooms[cellKey(r.gx + DIRS[k][0], r.gy + DIRS[k][1], r.d)]) opts.push(k);
-      if (!r.down && r.d < 3) opts.push('down');
-    }
-    const nm = { n: '⬆ North', e: '➡ East', s: '⬇ South', w: '⬅ West', down: '⤓ Downward' };
-    body = opts.length ? html`<div>Drill which way? (3s, stand still)</div><div class="row" style="margin-top:8px">${opts.map((o) => html`<button onClick=${() => act({ dir: o })}>${nm[o]}</button>`)}</div><p class="muted" style="font-size:12px">Downward: more mines, less treasure, never leads to an exit.</p>` : html`<div>No sealed walls to drill in this room.</div>`;
-  } else if (type === 'crowbar') {
-    const opts = [];
-    if (r && r.chest > 0) opts.push([{ kind: 'chest' }, `Chest (${r.chest} coins)`]);
-    if (r && r.pickup) opts.push([{ kind: 'pickup' }, `Pick up ${ITEMS[r.pickup].name}`]);
-    for (const c of v.corpses || []) if (c.d === S.me.d && !c.empty && Math.hypot(c.x - S.me.x, c.y - S.me.y) < 1.6) opts.push([{ kind: 'corpse', id: c.id }, `${c.name}'s body`]);
-    body = opts.length ? html`<div>Loot what?</div><div class="col" style="margin-top:8px">${opts.map(([t, l]) => html`<button onClick=${() => act(t)}>${l}</button>`)}</div>` : html`<div>Nothing to loot here. Stand next to a body, or in a room with a chest / dropped item.</div>`;
-  } else if (ITEMS[type] && ITEMS[type].weapon) {
-    body = others.length ? html`<div>Attack with ${ITEMS[type].name} (reach ${ITEMS[type].reach} tiles):</div><div class="col" style="margin-top:8px">${others.map((e) => html`<button class="danger" onClick=${() => act({ id: e.id })}>${e.name} · ${Math.hypot(e.x - S.me.x, e.y - S.me.y).toFixed(1)} tiles</button>`)}</div>` : html`<div>Nobody visible nearby.</div>`;
-  } else if (type === 'trial') {
-    body = html`<div>Accuse someone in this camp (fee <b>${trialFee(v.round)}</b> coins). Majority of all living players must vote guilty.</div><div class="col" style="margin-top:8px">${others.map((e) => html`<button class="danger" onClick=${() => act({ id: e.id })}>Put ${e.name} on trial</button>`)}</div>`;
-  } else if (type === 'rescue') {
-    const opts = []; if (y.trapped) opts.push([y.trapped && { id: v.me }, 'Free yourself']);
-    for (const e of others) if (e.trapped) opts.push([{ id: e.id }, `Free ${e.name}`]);
-    body = opts.length ? html`<div class="col">${opts.map(([t, l]) => html`<button onClick=${() => act(t)}>${l}</button>`)}</div>` : html`<div>Nobody trapped nearby.</div>`;
-  } else {
-    const what = { pickaxe: 'Mine here (3s, stand still)', potion: 'Drink potion (+1 HP, 3s)', lantern: 'Place lantern in this room (3s)', rlantern: 'Place reinforced lantern (3s)', compass: 'Survey with compass (3s)' }[type] || 'Use';
-    body = html`<button class="primary" onClick=${() => act({})}>${what}</button>`;
+  const ph = phaseAt(v.sec).id;
+  const lad = nearLadder();
+  if (y.status === 'dead') {
+    const k = v.roster.find((x) => x.id === y.murderer);
+    if (k) add(`👻 Haunt ${k.name} (once per round)`, () => send({ t: 'haunt' }), { disabled: !y.canHaunt && 'already used this round' });
+    if (lad) add(lad === 'down' ? '⬇ Drift down the ladder' : '⬆ Drift up the ladder', tryClimb);
+    add('👥 See who is still alive', () => setTab('people'));
+    return out;
   }
-  return html`<div class="picker"><div class="row" style="margin-bottom:6px"><b class="grow">${ITEMS[type] ? ITEMS[type].name : type === 'deposit' ? 'Deposit' : 'Trial'}</b><button class="small" onClick=${close}>✕</button></div>${body}</div>`;
+  if (y.status !== 'alive') return out;
+  if (v.meeting) return out;
+  if (y.channel) { add('✋ Stop what I am doing', () => send({ t: 'cancel' }), { sub: 'The tool is already spent' }); return out; }
+  if (lad) add(lad === 'down' ? '⬇ Climb down the ladder' : '⬆ Climb up the ladder', tryClimb);
+  const others = (v.ents || []).filter((e) => !e.ghost && e.inMyRoom);
+  const near = (e, d) => Math.hypot(e.x - S.me.x, e.y - S.me.y) <= d;
+  const canAct = ph === 'field';
+  const trapped = y.trapped && ph === 'field';
+  const depositOK = ['field', 'return', 'settlement'].includes(ph);
+  for (const [i, s] of y.slots.entries()) {
+    if (s.used) continue;
+    const act = (target) => () => send({ t: 'act', slot: s.id, target });
+    const it = s.item && y.inv.find((x) => x.id === s.item);
+    const tag = `slot ${i + 1}`;
+    const notYet = !canAct && 'wait for field time';
+    if (s.marker === 'deposit') {
+      if (y.coins < 1) { add('🏦 Deposit coins into the escape fund', null, { disabled: 'you have no coins', sub: tag }); continue; }
+      const amts = [...new Set([1, Math.ceil(y.coins / 2), y.coins])];
+      for (const a of amts) add(`🏦 Deposit ${a === y.coins ? 'all ' : ''}${a} coin${a > 1 ? 's' : ''} into the escape fund`, act({ amount: a }), { disabled: !depositOK && 'deposits open at field time', sub: `${tag} · fund ${v.fund}/${v.fare}` });
+      continue;
+    }
+    if (s.marker === 'trial') {
+      if (!(r && r.safe)) { add('⚖ Put someone on trial', null, { disabled: 'stand in a camp', sub: tag }); continue; }
+      if (!others.length) add('⚖ Put someone on trial', null, { disabled: 'nobody else is in this camp', sub: tag });
+      for (const e of others) add(`⚖ Put ${e.name} on trial (${trialFee(v.round)} coins)`, act({ id: e.id }), { disabled: notYet || (v.trialUsed && 'one trial per round'), sub: `${tag} · majority of all living players must vote guilty`, danger: true });
+      continue;
+    }
+    if (!it) continue;
+    const type = it.type, name = ITEMS[type].name;
+    const blocked = trapped && type !== 'rescue' ? "you're trapped" : notYet;
+    if (type === 'pickaxe') add('⛏ Mine a coin here', act({}), { disabled: blocked || (!(r && r.cat === 'mine') && 'stand in a coin mine') || (r.reserve <= 0 && 'this mine is empty'), sub: `${tag} · 3s, stand still` });
+    else if (type === 'drill') {
+      const nm = { n: 'north', e: 'east', s: 'south', w: 'west' };
+      let any = false;
+      if (r) for (const k of ['n', 'e', 's', 'w']) if (!r.doors[k] && !S.rooms[cellKey(r.gx + DIRS[k][0], r.gy + DIRS[k][1], r.d)]) { any = true; add(`🔨 Drill a tunnel ${nm[k]}`, act({ dir: k }), { disabled: blocked, sub: `${tag} · 3s · discovers a new room` }); }
+      if (r && !r.down && r.d < 3) { any = true; add('🔨 Drill downward', act({ dir: 'down' }), { disabled: blocked, sub: `${tag} · more mines, less treasure, never an exit` }); }
+      if (!any) add('🔨 Drill a tunnel', null, { disabled: 'no sealed walls in this room', sub: tag });
+    } else if (type === 'crowbar') {
+      let any = false;
+      if (r && r.chest > 0) { any = true; add(`💰 Loot the chest (${r.chest} coins)`, act({ kind: 'chest' }), { disabled: blocked, sub: tag }); }
+      if (r && r.pickup) { any = true; add(`🎒 Pick up the ${ITEMS[r.pickup].name}`, act({ kind: 'pickup' }), { disabled: blocked, sub: tag }); }
+      for (const c of v.corpses || []) if (c.d === S.me.d && !c.empty && near(c, 1.6)) { any = true; add(`💀 Search ${c.name}'s body for coins`, act({ kind: 'corpse', id: c.id }), { disabled: blocked, sub: `${tag} · ${y.career === 'scavenger' ? 'you take everything' : 'you take half'}` }); }
+      if (!any) add('💰 Loot something', null, { disabled: 'stand by a chest, dropped item or body', sub: tag });
+    } else if (ITEMS[type].weapon) {
+      const unsafe = r && !r.safe;
+      if (!others.length || !unsafe) add(`⚔ Attack with your ${name}`, null, { disabled: !unsafe ? 'no fighting inside camps' : 'nobody visible nearby', sub: tag });
+      else for (const e of others) { const d = Math.hypot(e.x - S.me.x, e.y - S.me.y); add(`⚔ Attack ${e.name} with your ${name}`, act({ id: e.id }), { disabled: blocked || (y.attacked && 'one attack per round') || (d > ITEMS[type].reach && `too far (${d.toFixed(1)} tiles)`), sub: `${tag} · ${ITEMS[type].dmg} damage`, danger: true }); }
+    } else if (type === 'potion') add('🧪 Drink a healing potion (+1 HP)', act({}), { disabled: blocked || (y.hp >= 3 && 'already at full health'), sub: tag });
+    else if (type === 'rescue') {
+      if (y.trapped) add('🪢 Free yourself from the trap', act({ id: v.me }), { disabled: notYet, sub: tag });
+      const tr = others.filter((e) => e.trapped);
+      for (const e of tr) add(`🪢 Free ${e.name} from the trap`, act({ id: e.id }), { disabled: blocked || (!near(e, 1.6) && 'stand next to them'), sub: tag });
+      if (!y.trapped && !tr.length) add('🪢 Rescue a trapped player', null, { disabled: 'nobody trapped nearby', sub: tag });
+    } else if (type === 'lantern' || type === 'rlantern') add(`🏮 Hang the ${name} to light this room`, act({}), { disabled: blocked || (r && r.safe && 'camps are already bright'), sub: tag });
+    else if (type === 'compass') add('🧭 Survey with the compass', act({}), { disabled: blocked || (S.me.d !== 0 && 'only works at depth 0'), sub: `${tag} · private rough direction to the nearest exit` });
+    else if (type === 'hook') add(s.target ? `🪝 Hook is set on ${(v.roster.find((x) => x.id === s.target) || {}).name}` : '🪝 Choose who to rob (in camp)', () => setTab('loadout'), { disabled: v.sec >= CHOICE_CLOSE && 'resolves automatically when choices close', sub: tag });
+    else if (type === 'kit') add('🛡 Protection kit ready to sell', () => setTab('guard'), { sub: tag });
+  }
+  if (y.inCamp && v.sec < CHOICE_CLOSE) {
+    add('📋 Prepare my action slots', () => setTab('loadout'), { sub: `before ${CHOICE_CLOSE}s` });
+    add('🛒 Shop at the machine', () => setTab('machine'), { disabled: v.sec < 10 && 'opens at 10s', sub: `closes at ${SHOP_CLOSE}s` });
+    if (v.roster.some((x) => x.career === 'merchant' && x.status === 'alive')) add('🤝 Visit the Merchant (extra actions & goods)', () => setTab('merchant'), { disabled: v.sec < 10 && 'opens at 10s' });
+    if (v.roster.some((x) => x.career === 'guard' && x.status === 'alive')) add('🛡 Hire the Guard (lock / shield)', () => setTab('guard'), { disabled: v.sec < 10 && 'opens at 10s' });
+  }
+  if (y.inCamp) add(`📜 Pledges${(v.proposals || []).length ? ` (${v.proposals.length} posted)` : ''}`, () => setTab('pledges'));
+  return out;
+}
+
+function ChoiceBox({ v, setTab, title }) {
+  const [min, setMin] = useState(false);
+  const list = buildChoices(v, setTab);
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+      const n = +e.key; if (!(n >= 1 && n <= 9)) return;
+      const c = buildChoices(S.view, setTab).filter((x) => x.pick && !x.disabled)[n - 1];
+      if (c) c.pick();
+    };
+    addEventListener('keydown', onKey); return () => removeEventListener('keydown', onKey);
+  }, []);
+  let n = 0;
+  return html`<div class="choices">
+    <div class="ch-hd" onClick=${() => setMin(!min)}><span class="grow">${title}</span><span class="ch-toggle">${min ? '▲' : '▼'}</span></div>
+    ${!min && html`<div class="ch-list">
+      ${list.length === 0 && html`<div class="ch-empty">Nothing to do right here. Walk somewhere else, or wait for the next phase.</div>`}
+      ${list.map((c) => { const live = c.pick && !c.disabled; const num = live ? ++n : null;
+        return html`<button class=${'choice' + (c.danger ? ' danger' : '')} disabled=${!live} onClick=${() => live && c.pick()}>
+          <span class="ch-n">${num && num <= 9 ? num : '·'}</span><span class="grow"><span class="ch-l">${c.label}</span>${(c.disabled || c.sub) && html`<small>${c.disabled ? '✖ ' + c.disabled : c.sub}</small>`}</span></button>`; })}
+    </div>`}
+  </div>`;
 }
 
 function Meeting({ v }) {
@@ -784,15 +885,16 @@ function Results({ v }) {
   const outcome = (p) => p.status === 'escaped' ? html`<span class="good">WON (${p.winType === 'private' ? 'private escape' : p.winType === 'natural' ? 'natural exit' : 'group fare'})</span>` : p.status === 'dead' ? html`<span class="bad">died</span>` : p.status === 'forfeit' ? html`<span class="bad">forfeited</span>` : html`<span class="bad">trapped below</span>`;
   const ranked = r.players.slice().sort((a, b) => b.contrib - a.contrib);
   return html`<div class="screen"><div class="card" style="max-width:640px">
-    <h2>${headline}</h2>
+    <div class="results-banner">${headline}</div>
     <p class="muted">Ended in round ${r.round}. Secret identities revealed:</p>
     <table><tr><th>Player</th><th>Career</th><th>Secret</th><th>Gave</th><th>Result</th></tr>
-      ${ranked.map((p) => html`<tr><td><span class="dot" style=${{ background: p.color }}></span>${p.name}</td><td>${careerName(p.career)}</td><td>${p.smuggler ? html`<span class="smug">Smuggler</span>` : 'ordinary'}</td><td class="gold">${p.contrib}</td><td>${outcome(p)}</td></tr>`)}</table>
+      ${ranked.map((p) => html`<tr class=${p.status === 'escaped' ? 'win-row' : ''}><td><span class="dot" style=${{ background: p.color }}></span>${p.name}</td><td>${careerName(p.career)}</td><td>${p.smuggler ? html`<span class="smug">Smuggler</span>` : 'ordinary'}</td><td class="gold">${p.contrib}</td><td>${outcome(p)}</td></tr>`)}</table>
     <h3 style="margin-top:12px">Highlights</h3>
     <ul>${ranked.map((p) => { const s = p.stats, bits = [];
       if (s.rooms) bits.push(`opened ${s.rooms} room${s.rooms > 1 ? 's' : ''}`); if (s.mined) bits.push(`mined ${s.mined} coin${s.mined > 1 ? 's' : ''}`);
       if (s.looted) bits.push(`looted ${s.looted}`); if (s.kills) bits.push(`eliminated ${s.kills}`); if (s.traps) bits.push(`hit ${s.traps} trap${s.traps > 1 ? 's' : ''}`); if (s.rescues) bits.push(`rescued ${s.rescues}`);
-      return bits.length ? html`<li><b>${p.name}</b> ${bits.join(', ')}.</li>` : ''; })}</ul>
+      return bits.length ? html`<li><b>${p.name}</b> ${bits.join(', ')}.</li>` : ''; })}
+      ${ranked.every((p) => !Object.values(p.stats).some((x) => x)) && html`<li class="muted">A quiet expedition — nobody mined, explored or looted.</li>`}</ul>
     <div class="row"><button class="primary" onClick=${() => send({ t: 'rematch' })}>Play again (back to lobby)</button>
       <button onClick=${() => { store.token = null; goMenu(); }}>Main menu</button></div>
   </div></div>`;

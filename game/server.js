@@ -543,6 +543,7 @@ class Match {
   // ---------- commands during a game
   cmd(p, m) {
     if (this.state !== 'game') return;
+    if (m.t === 'debug' && process.env.TEST_HOOKS === '1') return this.debug(p, m);
     const fn = this['c_' + m.t];
     if (typeof fn !== 'function') return;
     const err = fn.call(this, p, m);
@@ -904,6 +905,19 @@ class Match {
     if (!this.inCamp(p)) return 'Volunteer from a camp.';
     if (mt.remaining <= T(10)) return 'Volunteering has closed.';
     if (!mt.volunteers.includes(p.id)) mt.volunteers.push(p.id);
+  }
+
+  // test-only state shortcuts (enabled solely with TEST_HOOKS=1)
+  debug(p, m) {
+    const tgt = m.who ? this.P(m.who) : p;
+    if (m.coins != null) tgt.coins = +m.coins;
+    if (m.fund != null) this.fund = +m.fund;
+    if (m.smuggler != null) tgt.smuggler = !!m.smuggler;
+    if (m.kill) this.kill(tgt, m.killer ? this.P(m.killer) : null);
+    if (m.exit) { const o = this.openings[0]; const r = this.makeRoom(o.gx, o.gy, 0, 'gallery'); r.opening = true; }
+    if (m.round) { this.round = +m.round - 1; this.t = ROUND_T - 1; }
+    if (m.sec != null) this.t = T(+m.sec);
+    if (m.career) { tgt.career = m.career; tgt.appearance = m.career; }
   }
 
   // ---------- contribution proposals (non-binding pledges; no coins move)

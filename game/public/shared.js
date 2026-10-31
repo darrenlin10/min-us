@@ -91,7 +91,7 @@ export function walkableLocal(lx, ly, doors) {
     // cut the rocky corners
     return Math.abs(cx) + Math.abs(cy) <= 2.75 || Math.abs(cx) < 1.1 || Math.abs(cy) < 1.1;
   }
-  const inLaneX = Math.abs(cx) <= 0.42, inLaneY = Math.abs(cy) <= 0.42;
+  const inLaneX = Math.abs(cx) <= 0.5, inLaneY = Math.abs(cy) <= 0.5;
   if (inLaneX && ly < m) return !!doors.n;
   if (inLaneX && ly > ROOM - m) return !!doors.s;
   if (inLaneY && lx < m) return !!doors.w;

@@ -42,7 +42,9 @@ Anyone still underground after round 10 loses. Wallets are private; contribution
 Nobody teleports: you physically walk back to a camp every round. New Safe Zones found deeper in the mine become forward camps.
 
 ### Actions
-You get **2 free action slots** per round; the Merchant sells up to 2 more (max 4). In camp, put into each slot a free basic tool, an item you own, or a **Deposit** / **Trial** marker. In the field, tap a slot to use it. Physical actions take **3 seconds standing still**. Moving cancels them, and so does being hit by an attack: the only way another player can interrupt you. Once started, the tool and action are spent either way. Items you don't use stay in your **7-slot bag** until they expire (2–5 rounds); unused actions don't carry over. If slot 1 is left empty, your career tool is equipped for you.
+You get **2 free action slots** per round; the Merchant sells up to 2 more (max 4). In camp, put into each slot a free basic tool, an item you own, or a **Deposit** / **Trial** marker.
+
+Everything you can do is offered in the **"What do you do?" box** at the bottom of the screen: a numbered list of plain-language choices for exactly where you're standing ("⛏ Mine a coin here", "🔨 Drill a tunnel east", "⚔ Attack Ben with your Club", "🏦 Deposit all 5 coins", "⬇ Climb down the ladder", "📋 Prepare my action slots"…). Tap a choice or press its number key. Choices you can't use right now stay listed, greyed out with the reason ("stand in a coin mine"), so the rules teach themselves. Physical actions take **3 seconds standing still**. Moving cancels them, and so does being hit by an attack: the only way another player can interrupt you. Once started, the tool and action are spent either way. Items you don't use stay in your **7-slot bag** until they expire (2–5 rounds); unused actions don't carry over. If slot 1 is left empty, your career tool is equipped for you.
 
 | Slot contents | Effect |
 |---|---|
@@ -79,7 +81,7 @@ There is no free-text chat. In camp, open **🏕 Camp → Pledges** to post a pl
 - **Disconnects:** your seat is held for one round of game time (130 s). Reopen the same browser to resume.
 
 ### Controls
-WASD / arrow keys, or drag anywhere on a phone screen, to walk · tap action slots to act · **E** or **Climb** for ladders · 🏕 Camp opens the planning panel · 🪪 identity · 📖 rules · ☰ menu.
+WASD / arrow keys, or drag anywhere on a phone screen, to walk (walking into a wall beside a doorway slides you through it) · tap a choice in the "What do you do?" box or press **1–9** · **E** climbs ladders · 🏕 Camp opens the planning panel · 🪪 identity · 📖 rules · ☰ menu. The colored bar under the top chips shows where you are in the round.
 
 ---
 
@@ -101,6 +103,7 @@ The detailed rules come from the design handoff in `mine-escape-handoff/`. These
 - **Room-based sight**: you see players in your own room (everyone in bright rooms, within ~2.6 tiles in dim ones) instead of facing-direction vision cones.
 - **Simplified**: undeliverable fallback tools or Merchant potions are lost rather than waiting at a camp terminal; Merchant goods are made on demand; attacks resolve one at a time (no simultaneous mutual kills); static character art (no animation or audio).
 - **Rooms are joined by code or invite link only.** There's no public room list, so strangers can't walk into a friends' game.
+- **Text-choice interaction**: actions are chosen from a context-aware "What do you do?" list instead of tapping item slots, so first-time players can see every option and why some aren't available.
 - **"Quit game"** leaves the room and shows a goodbye screen; browsers don't allow a page to close its own tab.
 
 ---
@@ -115,7 +118,7 @@ npm start          # http://localhost:3000
 
 Open the page in two browser windows (or on two devices on the same network) to test multiplayer. `SPEEDUP=4 npm start` runs the game clock 4× faster for quick playtests.
 
-Run the rules tests: 22 feature scenarios plus 30 randomized full games:
+Run the rules tests: 22 feature scenarios plus 30 randomized full games (browser end-to-end scenarios for every ending were also run during development with `TEST_HOOKS=1`, a test-only switch that must never be set in production):
 
 ```bash
 cd game && npm test
