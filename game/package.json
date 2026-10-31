@@ -1,0 +1,19 @@
+{
+  "name": "mine-escape",
+  "version": "1.0.0",
+  "description": "Mine Escape — a multiplayer social strategy game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/sim.mjs"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "htm": "^3.1.1",
+    "ws": "^8.22.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}
