@@ -42,7 +42,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   assert.equal(w.coins, 3);
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[1].id }), null);
   w.x += 0.5; m.step(); // moving cancels
-  assert.equal(w.channel, null); assert.equal(w.coins, 3); assert(w.slots[1].used);
+  assert.equal(w.channel, null); assert.equal(w.coins, 3); assert(!w.slots[1].used, 'interruption refunds the action'); assert.equal(w.inv.filter((i) => i.type === 'pickaxe').length, 1, 'and keeps the pickaxe');
   assert.equal(cmd(m, e, { t: 'act', slot: e.slots[1].id, target: { amount: 2 } }), null);
   assert.equal(m.fund, 2); assert.equal(e.contrib, 2);
   runUntilRound(m, 2);

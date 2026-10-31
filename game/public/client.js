@@ -8,8 +8,14 @@ import {
 const S = { screen: 'menu', conn: 'connecting', view: null, rooms: {}, mapVersion: 0, me: { x: 0, y: 0, d: 0 }, toasts: [], disp: {}, error: '' };
 let ws, joinMsg = null, rerender = () => {};
 const store = {
-  get token() { try { return localStorage.getItem('me_token'); } catch { return null; } },
-  set token(v) { try { v ? localStorage.setItem('me_token', v) : localStorage.removeItem('me_token'); } catch {} },
+  // Each tab keeps its own seat (sessionStorage), so several tabs in one browser can play side by side.
+  // The last seat is also remembered browser-wide so "Resume your game" works after closing the tab.
+  get token() { try { return sessionStorage.getItem('me_token'); } catch { return null; } },
+  set token(v) {
+    try { v ? sessionStorage.setItem('me_token', v) : sessionStorage.removeItem('me_token'); } catch {}
+    try { v ? localStorage.setItem('me_last_token', v) : localStorage.removeItem('me_last_token'); } catch {}
+  },
+  get lastToken() { try { return localStorage.getItem('me_last_token'); } catch { return null; } },
   get name() { try { return localStorage.getItem('me_name') || ''; } catch { return ''; } },
   set name(v) { try { localStorage.setItem('me_name', v); } catch {} },
 };
@@ -30,7 +36,7 @@ function goMenu() {
   if (ws) ws.close(); // the server keeps our seat for one round of game time
   history.replaceState(null, '', '/'); rerender();
 }
-function resume() { S.screen = 'play'; S.error = ''; if (ws && ws.readyState === 1) send({ t: 'join', token: store.token, rejoin: true }); rerender(); }
+function resume() { if (!store.token && store.lastToken) store.token = store.lastToken; S.screen = 'play'; S.error = ''; if (ws && ws.readyState === 1) send({ t: 'join', token: store.token, rejoin: true }); rerender(); }
 function quit() {
   if (store.token) send({ t: 'leave' });
   store.token = null; S.screen = 'quit'; S.view = null; joinMsg = null;
@@ -380,11 +386,12 @@ function MainMenu() {
   return html`<div class="screen"><div style="width:100%;max-width:560px">
     <div class="card">
       <div class="title">⛏ MINE ESCAPE</div>
-      <div class="muted">A multiplayer game of cooperation and secret greed · 3–8 players · each on their own device</div>
+      <div class="subtitle">A multiplayer game of cooperation and secret greed</div>
+      <div class="note" style="text-align:center">👥 <b>Needs at least 3 players</b> (up to 8), each on their own phone, computer or browser tab. One person creates a room and shares the 4-letter code.</div>
       <div class="cast">${CAREER_ORDER.map((a) => html`<img src=${charSrc(a)} alt=${a} />`)}</div>
       <div class="col">
-        ${store.token && html`<button class="primary big" onClick=${resume}>▶ Resume your game</button>`}
-        <button class=${store.token ? 'big' : 'primary big'} onClick=${() => { S.screen = 'play'; S.error = ''; rerender(); }}>${urlCode ? `▶ Start game (join room ${urlCode.toUpperCase()})` : '▶ Start game'}</button>
+        ${(store.token || store.lastToken) && html`<button class="primary big" onClick=${resume}>▶ Resume your game</button>`}
+        <button class=${store.token || store.lastToken ? 'big' : 'primary big'} onClick=${() => { S.screen = 'play'; S.error = ''; rerender(); }}>${urlCode ? `▶ Start game (join room ${urlCode.toUpperCase()})` : '▶ Start game'}</button>
         <button onClick=${quit}>✕ Quit game</button>
       </div>
     </div>
@@ -448,10 +455,9 @@ function Lobby({ v }) {
       <h3 style="margin-top:12px">Players (${n}/8)</h3>
       <ul class="plist">${v.players.map((p) => html`<li><span class="dot" style=${{ background: p.color }}></span><b>${p.id}</b> ${p.name} ${p.id === v.me ? html`<span class="muted">(you)</span>` : ''}
         <span class="grow"></span>${!p.connected ? html`<span class="badge off">offline</span>` : p.ready ? html`<span class="badge ok">✔ Ready</span>` : html`<span class="badge no">not ready</span>`}</li>`)}</ul>
-      ${n >= 4 && n <= 7 && html`<label class="row">Specialist career${n === 7 ? 's' : ''}:
-        <select value=${v.settings.specialist} onChange=${(e) => send({ t: 'setting', specialist: e.target.value })}>
-          <option value="random">Random</option><option value="guard">Guard</option><option value="thief">Thief</option><option value="scavenger">Scavenger</option></select></label>`}
-      <p class="muted" style="font-size:13px">The game starts when <b>everyone</b> is Ready (3–8 players). Any change un-readies everyone.</p>
+      ${n >= 4 && n <= 7 && html`<div style="margin:6px 0"><div class="muted" style="font-size:13px">Specialist career${n === 7 ? 's' : ''} for this team:</div>
+        <div class="row tabs" style="margin-top:4px">${[['random', '🎲 Random'], ['guard', '🛡 Guard'], ['thief', '🪝 Thief'], ['scavenger', '🎒 Scavenger']].map(([k, l]) => html`<button class=${v.settings.specialist === k ? 'on' : ''} onClick=${() => send({ t: 'setting', specialist: k })}>${l}</button>`)}</div></div>`}
+      <p class="muted" style="font-size:13px">${n < 3 ? html`<b class="warn">At least 3 players are needed — share the code or invite link.</b> ` : ''}The game starts when <b>everyone</b> is Ready (3–8 players). Any change un-readies everyone.</p>
       <div class="row">
         <button class=${me && me.ready ? '' : 'primary'} style="flex:1" onClick=${() => send({ t: 'ready', v: !(me && me.ready) })} disabled=${n < 3}>${me && me.ready ? 'Cancel ready' : n < 3 ? `Waiting for players (${n}/3 minimum)…` : "I'm ready"}</button>
         <button onClick=${() => setRules(true)}>📖 Rules</button>
@@ -473,7 +479,7 @@ function RulesModal({ close }) {
     <ul>${PHASES.map((p) => html`<li><b>${p.start}–${p.end}s</b> ${p.label}</li>`)}</ul>
     <p>Walk back to a <b>camp</b> (bright crystal Safe Zone) each round — shopping, loadouts, votes and theft targets only work there. Nobody teleports home!</p>
     <h3>Actions</h3>
-    <p>You get <b>2 free action slots</b> per round (buy up to 2 more from the Merchant). In camp, fill each slot: a free basic tool (pickaxe, hook, crowbar…), an item you own, or a <b>Deposit</b>/<b>Trial</b> marker. In the field, tap a slot to use it. Physical actions take 3 seconds standing still — moving or getting hit cancels them and the tool is spent. Unused items stay in your 7-slot bag until they expire; unused actions do not carry over.</p>
+    <p>You get <b>2 free action slots</b> per round (buy up to 2 more from the Merchant). In camp, fill each slot: a free basic tool (pickaxe, hook, crowbar…), an item you own, or a <b>Deposit</b>/<b>Trial</b> marker. In the field, tap a slot to use it. Physical actions take 3 seconds standing still — moving or getting hit interrupts them, but you keep the tool and the action and can try again. Tools are only used up when the work finishes. Unused items stay in your 7-slot bag until they expire; unused actions do not carry over.</p>
     <ul>
       <li><b>Pickaxe</b> — mine 1 coin in a coin mine (Workers up to 2/round, others 1). First come, first served: one person mines at a time; a mine gives at most 2 coins per round and 8 in total.</li>
       <li><b>Drill</b> (Explorer only) — open a new room through a sealed wall, or downward. Finds mines, treasure, caches, new camps, traps or empty galleries.</li>
@@ -607,7 +613,7 @@ function buildChoices(v, setTab) {
   }
   if (y.status !== 'alive') return out;
   if (v.meeting) return out;
-  if (y.channel) { add('✋ Stop what I am doing', () => send({ t: 'cancel' }), { sub: 'The tool is already spent' }); return out; }
+  if (y.channel) { add('✋ Stop what I am doing', () => send({ t: 'cancel' }), { sub: 'You keep the tool and can try again' }); return out; }
   if (lad) add(lad === 'down' ? '⬇ Climb down the ladder' : '⬆ Climb up the ladder', tryClimb);
   const others = (v.ents || []).filter((e) => !e.ghost && e.inMyRoom);
   const near = (e, d) => Math.hypot(e.x - S.me.x, e.y - S.me.y) <= d;
@@ -739,35 +745,52 @@ function Sheet({ v, tab, setTab }) {
     <div class="bd">${body}</div></div>`;
 }
 
+const EMOJI = { pickaxe: '⛏', drill: '🔨', hook: '🪝', crowbar: '🪛', kit: '🛡', club: '🏏', blade: '🗡', gun: '🔫', lantern: '🏮', rlantern: '🏮', potion: '🧪', rescue: '🪢', compass: '🧭', deposit: '🏦', trial: '⚖' };
+// Slot editor built from buttons (not native <select>): the HUD re-renders 10x/second, which
+// resets an open native dropdown in Chrome and swallows the player's pick.
 function Loadout({ v, open }) {
   const y = v.you;
   const bound = new Set(y.slots.filter((s) => !s.used && s.item).map((s) => s.item));
   const freeTools = ['pickaxe', 'hook', 'crowbar', 'drill', 'kit'].filter((t) => !ITEMS[t].career || ITEMS[t].career === y.career);
   const sameRoom = (v.ents || []).filter((e) => !e.ghost && e.inMyRoom);
+  const [editing, setEditing] = useState(null);
+  const [pending, setPending] = useState({});
+  const current = (s) => (s.marker ? s.marker : s.item ? 'item:' + s.item : 'none');
+  const pick = (s, what) => { setPending({ ...pending, [s.id]: { before: current(s), at: Date.now() } }); setEditing(null); send({ t: 'setSlot', slot: s.id, what }); };
+  const describe = (s) => {
+    const it = s.item && y.inv.find((x) => x.id === s.item);
+    if (s.marker === 'deposit') return '🏦 Deposit marker';
+    if (s.marker === 'trial') return `⚖ Trial marker (fee ${trialFee(v.round)}c)`;
+    if (it) return `${EMOJI[it.type] || ''} ${itemLabel(it)}`;
+    return '— empty —';
+  };
   return html`
-    ${!y.inCamp ? html`<div class="note warn">Not in a camp: slots can only be changed in a camp before ${CHOICE_CLOSE}s.</div>` : !open ? html`<div class="note">Action slots are locked for this round.</div>` : html`<div class="note">Fill your slots before ${CHOICE_CLOSE}s. Each free slot can give you one free basic tool. Your career tool: <b>${ITEMS[CAREERS[y.career].preset].name}</b>.</div>`}
+    ${!y.inCamp ? html`<div class="note warn">Not in a camp: slots can only be changed in a camp before ${CHOICE_CLOSE}s.</div>` : !open ? html`<div class="note">Action slots are locked for this round.</div>` : html`<div class="note">Tap a slot to choose what goes in it (before ${CHOICE_CLOSE}s). Each free slot can give you one free basic tool. Your career tool: <b>${ITEMS[CAREERS[y.career].preset].name}</b>.</div>`}
     ${y.trappedNext && html`<div class="note warn">🪤 You are snared NEXT round (no field work).</div>`}
     ${y.slots.map((s, i) => {
       const it = s.item && y.inv.find((x) => x.id === s.item);
-      const val = s.marker ? s.marker : s.item ? 'item:' + s.item : 'none';
-      return html`<div class="item">
-        <span style="width:22px"><b>${i + 1}</b></span>
-        ${slotIconKey(s, y) ? html`<${Icon} k=${slotIconKey(s, y)} />` : html`<span style="width:28px"></span>`}
-        <div class="grow">
-          ${s.used ? html`<span class="muted">used</span>` : html`<select disabled=${!open || s.service} value=${val} onChange=${(e) => send({ t: 'setSlot', slot: s.id, what: e.target.value })} style="width:100%">
-            <option value="none">— empty —</option>
-            <option value="deposit">Deposit marker (give coins to fund)</option>
-            <option value="trial">Trial marker (fee ${trialFee(v.round)}c)</option>
-            ${y.inv.filter((x) => !bound.has(x.id) || x.id === s.item).map((x) => html`<option value=${'item:' + x.id}>${itemLabel(x)}</option>`)}
-            ${s.kind === 'free' && !s.freeIssued && freeTools.map((t) => html`<option value=${'free:' + t}>NEW free ${ITEMS[t].name}</option>`)}
-          </select>`}
-          <small class="muted">${s.kind === 'extra' ? 'extra slot (no free tool)' : s.freeIssued ? 'free tool already issued' : 'free slot'}${it ? ' · ' + ITEMS[it.type].use : ''}${s.service ? ' · committed to ' + s.service : ''}</small>
-          ${it && it.type === 'hook' && !s.used && html`<select disabled=${!open} value=${s.target || ''} onChange=${(e) => send({ t: 'setTheft', slot: s.id, target: e.target.value || null })} style="width:100%;margin-top:4px">
-            <option value="">— choose theft target in this camp —</option>
-            ${sameRoom.map((e) => html`<option value=${e.id}>${e.name}</option>`)}
-            ${s.target && !sameRoom.some((e) => e.id === s.target) && html`<option value=${s.target}>${(v.roster.find((r) => r.id === s.target) || {}).name}</option>`}
-          </select>`}
-        </div></div>`;
+      const pend = pending[s.id] && pending[s.id].before === current(s) && Date.now() - pending[s.id].at < 1500; // waiting for the server
+      const canEdit = open && !s.used && !s.service;
+      const isOpen = editing === s.id && canEdit;
+      const opts = [];
+      if (s.kind === 'free' && !s.freeIssued) for (const t of freeTools) opts.push([`free:${t}`, `${EMOJI[t]} Take a FREE ${ITEMS[t].name}`, ITEMS[t].use]);
+      for (const x of y.inv) if (!bound.has(x.id) || x.id === s.item) opts.push([`item:${x.id}`, `${EMOJI[x.type] || ''} Use my ${itemLabel(x)}`, ITEMS[x.type].use]);
+      opts.push(['deposit', '🏦 Deposit marker', 'Give any amount of coins to the escape fund (no tool needed)']);
+      opts.push(['trial', `⚖ Trial marker`, `Accuse someone in a camp during field time (fee ${trialFee(v.round)}c)`]);
+      opts.push(['none', '✖ Leave empty', i === 0 ? 'Slot 1 gets your career tool automatically if left empty' : 'This action is lost if left empty']);
+      return html`<div class="item" style="flex-direction:column;align-items:stretch">
+        <button class="choice" disabled=${!canEdit} onClick=${() => setEditing(isOpen ? null : s.id)}>
+          <span class="ch-n">${i + 1}</span>
+          <span class="grow"><span class="ch-l">${s.used ? 'used' : pend ? '⏳ saving…' : describe(s)}</span>
+            <small>${s.kind === 'extra' ? 'extra slot (no free tool)' : s.freeIssued ? 'free tool already taken' : 'free slot — can take a free tool'}${s.service ? ' · committed to ' + s.service : ''}${it && !s.service ? ' · ' + ITEMS[it.type].use : ''}</small></span>
+          ${canEdit && html`<span class="ch-toggle">${isOpen ? '▲' : 'Change ▼'}</span>`}
+        </button>
+        ${isOpen && html`<div class="col" style="gap:5px;margin-top:6px">${opts.map(([what, label, sub]) => html`<button class=${'choice' + (what === current(s) ? ' picked' : '')} onClick=${() => pick(s, what)}><span class="grow"><span class="ch-l">${label}${what === current(s) ? ' ✔' : ''}</span><small>${sub}</small></span></button>`)}</div>`}
+        ${it && it.type === 'hook' && !s.used && html`<div style="margin-top:6px"><div class="muted" style="font-size:13px">🪝 Rob who? (must be in this camp; resolves when choices close if you're still in the same room)</div>
+          <div class="row" style="margin-top:4px">${sameRoom.map((e) => html`<button class=${'small' + (s.target === e.id ? ' primary' : '')} disabled=${!open} onClick=${() => send({ t: 'setTheft', slot: s.id, target: s.target === e.id ? null : e.id })}>${e.name}${s.target === e.id ? ' ✔' : ''}</button>`)}
+          ${!sameRoom.length && html`<span class="muted" style="font-size:13px">Nobody else is in this camp.</span>`}
+          ${s.target && !sameRoom.some((e) => e.id === s.target) && html`<span class="warn" style="font-size:13px">Target: ${(v.roster.find((r) => r.id === s.target) || {}).name} (not here now)</span>`}</div></div>`}
+      </div>`;
     })}
     <p class="muted" style="font-size:12px">Need more actions? See the Merchant tab (max 4 per round).</p>`;
 }

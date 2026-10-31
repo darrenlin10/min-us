@@ -381,14 +381,14 @@ class Match {
 
   // ---------- channels
   startChannel(p, s, kind, target, ticks) {
+    // The tool and action are only used up when the work completes; an interruption costs nothing.
     p.channel = { slot: s.id, kind, target, remaining: ticks, total: ticks, x: p.x, y: p.y, d: p.d };
-    this.useSlot(p, s); // accepted start commits the tool and action
   }
   cancelChannel(p, why) {
     const c = p.channel; if (!c) return;
     p.channel = null;
     this.releaseClaims(p, c);
-    if (why) this.tell(p, `Action interrupted: ${why} (the action and tool are spent).`, 'warn');
+    if (why) this.tell(p, `Action interrupted: ${why}. Your tool and action were not used — you can try again.`, 'warn');
   }
   releaseClaims(p, c) {
     if (c.kind === 'loot') {
@@ -411,6 +411,8 @@ class Match {
   }
 
   complete(p, c) {
+    const s = p.slots.find((x) => x.id === c.slot);
+    if (s && !s.used) this.useSlot(p, s); // consume first, so a freed bag slot can take a reward
     const r = this.room(p);
     switch (c.kind) {
       case 'mine': {
@@ -654,6 +656,7 @@ class Match {
     const it = p.inv.find((x) => x.id === m.item); if (!it) return;
     const s = p.slots.find((x) => x.item === it.id && !x.used);
     if (s && s.service) return 'That kit is committed to a paid service.';
+    if (s && p.channel && p.channel.slot === s.id) return 'You are using that item right now.';
     if (s) { s.item = null; s.target = null; }
     p.inv = p.inv.filter((x) => x !== it);
   }

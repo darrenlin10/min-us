@@ -178,3 +178,6 @@ button.choice:disabled .ch-n { background: #d8c9a6; }
   .ch-list { max-height: 24vh; }
   button.choice { font-size: 14px; padding: 6px 8px; }
 }
+.sheet button.choice { min-height: 44px; }
+button.choice.picked { border-color: var(--gold-dark); background: #fff3c9; }
+.item > button.choice:disabled { background: #e8dcc0; color: #6b5636; }

@@ -2,6 +2,8 @@
 
 A real-time multiplayer social strategy game for **3–8 players**, each on their own phone or computer. No login, no install: open the link, pick a nickname, create or join a room with a 4-letter code.
 
+> **👥 You need at least 3 players to start a game.** Each player uses their own device, or for a quick solo test, three separate browser tabs or windows (each tab gets its own seat).
+
 > The mine has collapsed behind your crew. Over 10 rounds you walk the tunnels, drill new rooms, mine coins and pool them into a shared **escape fund**. But some of you may secretly be **Smugglers**, hoarding coins for a private way out.
 
 - **Game code:** [`game/`](game/): Node.js + WebSocket server, canvas + Preact/htm browser client, no build step.
@@ -44,7 +46,7 @@ Nobody teleports: you physically walk back to a camp every round. New Safe Zones
 ### Actions
 You get **2 free action slots** per round; the Merchant sells up to 2 more (max 4). In camp, put into each slot a free basic tool, an item you own, or a **Deposit** / **Trial** marker.
 
-Everything you can do is offered in the **"What do you do?" box** at the bottom of the screen: a numbered list of plain-language choices for exactly where you're standing ("⛏ Mine a coin here", "🔨 Drill a tunnel east", "⚔ Attack Ben with your Club", "🏦 Deposit all 5 coins", "⬇ Climb down the ladder", "📋 Prepare my action slots"…). Tap a choice or press its number key. Choices you can't use right now stay listed, greyed out with the reason ("stand in a coin mine"), so the rules teach themselves. Physical actions take **3 seconds standing still**. Moving cancels them, and so does being hit by an attack: the only way another player can interrupt you. Once started, the tool and action are spent either way. Items you don't use stay in your **7-slot bag** until they expire (2–5 rounds); unused actions don't carry over. If slot 1 is left empty, your career tool is equipped for you.
+Everything you can do is offered in the **"What do you do?" box** at the bottom of the screen: a numbered list of plain-language choices for exactly where you're standing ("⛏ Mine a coin here", "🔨 Drill a tunnel east", "⚔ Attack Ben with your Club", "🏦 Deposit all 5 coins", "⬇ Climb down the ladder", "📋 Prepare my action slots"…). Tap a choice or press its number key. Choices you can't use right now stay listed, greyed out with the reason ("stand in a coin mine"), so the rules teach themselves. Physical actions take **3 seconds standing still**. Moving cancels them, and so does being hit by an attack: the only way another player can interrupt you. An interrupted action costs nothing: you keep the tool and the action and can try again. Tools are only used up when the work completes. Items you don't use stay in your **7-slot bag** until they expire (2–5 rounds); unused actions don't carry over. If slot 1 is left empty, your career tool is equipped for you.
 
 | Slot contents | Effect |
 |---|---|
@@ -92,6 +94,7 @@ The detailed rules come from the design handoff in `mine-escape-handoff/`. These
 **Decided by the project owner**
 - **3–8 players.** Every team always has at least a Worker, an Explorer and a Merchant (a 2-player mode was tried and removed).
 - **Camp choices last 40 s instead of 20 s**, so shopping and planning are comfortable on a phone; rounds are therefore 130 s instead of 110 s.
+- **Interruptions are free.** If you move, get hit, cancel, or field time ends before an action finishes, you keep the tool and the action (the original design spent them).
 - **No mine reservations.** Mines are first come, first served, and another player's action can only be interrupted by attacking them.
 - **Two shops.** The private tool machine in every camp sells basic career tools (1 coin), lanterns and weapons, so nobody learns who is armed. The Merchant sells extra action slots and advanced goods unlocked by upgrading the shop. (Moving weapons to the Merchant was tried and reverted.)
 - **Contribution proposals (Pledges) are included** as the only structured communication; still no free chat.

@@ -405,5 +405,31 @@ test('roster: needs 3+ players; 3 = worker, explorer, merchant; machine sells to
   assert.match(cmd(m, ex, { t: 'merchantBuy', good: 'potion' }), /not unlocked/);
 });
 
+test('interrupted actions keep the tool and action; completed ones use them up', () => {
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
+  const [w, ex, me] = m.players;
+  runTo(m, FIELD_START + 1);
+  const mine = room(m, 1, 0, 'mine'); mine.reserve = 8; at(w, mine);
+  const pick = give(m, w, 'pickaxe', 0);
+  assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null);
+  assert(w.inv.includes(pick) && !w.slots[0].used, 'not consumed while working');
+  assert.match(cmd(m, w, { t: 'discard', item: pick.id }) || 'blocked', /blocked|camp|using/);
+  w.x += 0.3; m.step();
+  assert.equal(w.channel, null); assert(w.inv.includes(pick), 'pickaxe kept after moving'); assert(!w.slots[0].used, 'action kept');
+  assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null, 'can retry');
+  // hit by an attack interrupts but refunds too
+  const gal = mine; at(me, gal, 2.3, 2); give(m, me, 'club', 0); me.inv[0].paidS = 0;
+  cmd(m, me, { t: 'act', slot: me.slots[0].id, target: { id: w.id } });
+  assert.equal(w.channel, null); assert(w.inv.includes(pick) && !w.slots[0].used, 'kept after being hit');
+  assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null); finish(m, w);
+  assert(!w.inv.includes(pick) && w.slots[0].used && w.coins === 21, 'completion consumes');
+  // manual cancel and field cutoff also refund
+  const d = give(m, ex, 'drill', 0); at(ex, m.camp);
+  cmd(m, ex, { t: 'act', slot: ex.slots[0].id, target: { dir: 'n' } }); cmd(m, ex, { t: 'cancel' });
+  assert(ex.inv.includes(d) && !ex.slots[0].used);
+  runTo(m, FIELD_END - 1); cmd(m, ex, { t: 'act', slot: ex.slots[0].id, target: { dir: 'n' } }); runTo(m, FIELD_END + 1);
+  assert(ex.inv.includes(d) && !ex.slots[0].used && !m.rooms['0,-1,0'], 'field cutoff refunds, no room opened');
+});
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);
