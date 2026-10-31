@@ -91,7 +91,8 @@ function onMsg(m) {
     Object.assign(S.me, { x: m.x, y: m.y, d: m.d });
   } else if (m.t === 'haunt') {
     const side = Math.random() < 0.5 ? 'left' : 'right';
-    S.haunt = { ...m, side, key: Date.now() }; whoosh(side === 'left' ? -0.7 : 0.7);
+    S.haunt = { ...m, side, key: Date.now() };
+    if (S.view && m.from !== S.view.me) whoosh(side === 'left' ? -0.7 : 0.7); // only the haunted killer hears it
     clearTimeout(S.hauntTimer); S.hauntTimer = setTimeout(() => { S.haunt = null; rerender(); }, HAUNT_MS + 50);
   } else if (m.t === 'state') {
     const prev = S.view;

@@ -79,7 +79,7 @@ There is no free-text chat. In camp, open **🏕 Camp → Pledges** to post a pl
 - **Traps** snare the discovering Explorer for next round's field time (no movement or work); a rescue kit frees them.
 - **Dark rooms** limit how far you can see; lanterns light them. Camps are always bright and no attacks happen there.
 - **No Explorer left?** Survivors hold a 20-second election in camp: volunteer, then vote (majority of all living players).
-- **Ghosts:** eliminated players drift through walls and see everyone, including other ghosts. **Among the living, only their killer can see a ghost** (wherever it drifts), and the ghost can **haunt that killer** once per round: their character swoops in at the edge of the killer's screen for 1.5 s with a whoosh sound (sound can be muted in ☰).
+- **Ghosts:** eliminated players drift through walls and see everyone, including other ghosts. **Among the living, only their killer can see a ghost** (wherever it drifts), and the ghost can **haunt that killer** once per round: their character swoops in at the edge of the killer's screen for 1.5 s with a whoosh sound that only the killer hears (sound can be muted in ☰).
 - **Disconnects:** your seat is held for one round of game time (130 s). Reopen the same browser to resume.
 
 ### Controls
