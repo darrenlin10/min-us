@@ -51,6 +51,31 @@ function toast(msg, kind = 'info') {
 }
 
 let lastLogLen = 0, lastLogKey = '';
+// ---- sound: a synthesized "whoosh" (filtered noise sweep), no audio files needed
+const HAUNT_MS = 1500;
+let actx = null;
+const soundOn = () => { try { return localStorage.getItem('me_sound') !== 'off'; } catch { return true; } };
+function audio() {
+  if (!actx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; actx = new AC(); }
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+['pointerdown', 'keydown'].forEach((ev) => addEventListener(ev, () => { if (soundOn()) audio(); }, { once: true })); // browsers need a user gesture first
+function whoosh(pan = 0) {
+  if (!soundOn()) return;
+  const ac = audio(); if (!ac) return;
+  const t = ac.currentTime, dur = 1.3;
+  const buf = ac.createBuffer(1, Math.floor(ac.sampleRate * dur), ac.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const src = ac.createBufferSource(); src.buffer = buf;
+  const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.2;
+  bp.frequency.setValueAtTime(250, t); bp.frequency.exponentialRampToValueAtTime(1800, t + 0.45); bp.frequency.exponentialRampToValueAtTime(300, t + dur);
+  const g = ac.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.45, t + 0.35); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  const p = ac.createStereoPanner ? ac.createStereoPanner() : null;
+  if (p) { p.pan.setValueAtTime(pan, t); p.pan.linearRampToValueAtTime(-pan * 0.3, t + dur); }
+  src.connect(bp).connect(g); (p ? g.connect(p) : g).connect(ac.destination);
+  src.start(t); src.stop(t + dur);
+}
 const floaters = [];
 function floater(text, color) { floaters.push({ text, color, t0: performance.now(), dx: (Math.random() - 0.5) * 30 }); }
 function onMsg(m) {
@@ -65,7 +90,9 @@ function onMsg(m) {
   } else if (m.t === 'pos') {
     Object.assign(S.me, { x: m.x, y: m.y, d: m.d });
   } else if (m.t === 'haunt') {
-    S.haunt = { ...m, until: Date.now() + 450 }; setTimeout(() => { S.haunt = null; rerender(); }, 460);
+    const side = Math.random() < 0.5 ? 'left' : 'right';
+    S.haunt = { ...m, side, key: Date.now() }; whoosh(side === 'left' ? -0.7 : 0.7);
+    clearTimeout(S.hauntTimer); S.hauntTimer = setTimeout(() => { S.haunt = null; rerender(); }, HAUNT_MS + 50);
   } else if (m.t === 'state') {
     const prev = S.view;
     if (m.rooms) { S.rooms = {}; for (const r of m.rooms) S.rooms[r.key] = r; }
@@ -558,11 +585,12 @@ function Game({ v }) {
     ${showId && html`<${IdCard} v=${v} close=${closeId} />`}
     ${rules && html`<${RulesModal} close=${() => setRules(false)} />`}
     ${menu && html`<div class="modal" onClick=${() => setMenu(false)}><div class="card" onClick=${(e) => e.stopPropagation()}>
+      <div class="row" style="margin-bottom:10px"><b class="grow">🔊 Sound effects</b><button class="small" onClick=${() => { try { localStorage.setItem('me_sound', soundOn() ? 'off' : 'on'); } catch {} if (soundOn()) whoosh(0); setMenu(false); setMenu(true); }}>${soundOn() ? 'On' : 'Off'}</button></div>
       <h2>Return to main menu?</h2>
       <p class="muted">Your character stays in the mine and can be robbed or attacked. Resume from the main menu within one round of game time (${ROUND_SECONDS}s) or you forfeit: your coins drop as a body and you can't come back.</p>
       <div class="row"><button class="danger" onClick=${goMenu}>Return to main menu</button><button onClick=${() => setMenu(false)}>Keep playing</button></div>
     </div></div>`}
-    ${S.haunt && html`<img class="haunt" style=${{ [Math.random() < 0.5 ? 'left' : 'right']: '6px' }} src=${charSrc(S.haunt.appearance)} />`}
+    ${S.haunt && html`<img key=${S.haunt.key} class=${'haunt ' + S.haunt.side} style=${{ [S.haunt.side]: '6px' }} src=${charSrc(S.haunt.appearance)} />`}
   `;
 }
 
