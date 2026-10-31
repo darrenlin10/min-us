@@ -309,7 +309,9 @@ test('ghost sees everyone and can haunt murderer once per round', () => {
   const sent = []; me.ws = { send: (x) => sent.push(x) }; w.ws = { send: () => {} };
   at(ex, room(m, 0, 2, 'gallery'));
   const gv = m.view(w, false); assert(gv.ents.some((e) => e.id === ex.id), 'ghost sees far player');
-  const lv = m.view(ex, false); assert(!lv.ents.some((e) => e.id === w.id), 'living do not see ghosts');
+  const lv = m.view(ex, false); assert(!lv.ents.some((e) => e.id === w.id), 'other living players do not see the ghost');
+  at(me, room(m, 3, 3, 'gallery')); const kv = m.view(me, false); assert(kv.ents.some((e) => e.id === w.id && e.ghost), 'the killer sees the ghost, even from another room');
+  ex.status = 'dead'; ex.murderer = null; const ov = m.view(ex, false); assert(!ov.ents.some((e) => e.id === w.id), 'other ghosts do not see it');
   assert.equal(cmd(m, w, { t: 'haunt' }), null); assert.equal(sent.length, 1);
   assert.match(cmd(m, w, { t: 'haunt' }), /already/);
   w.lastMove = Date.now() - 300; const gx = w.x; m.c_mv(w, { x: w.x - 0.3, y: w.y }); assert.notEqual(w.x, gx, 'ghost moves');

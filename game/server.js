@@ -312,7 +312,7 @@ class Match {
     p.status = 'dead'; p.murderer = killer ? killer.id : null; p.hp = 0;
     if (killer) killer.stats.kills++;
     this.pub(`${p.name} was eliminated.`);
-    this.tell(p, killer ? `You were eliminated by ${killer.name}. You are now a ghost: you can drift through walls, see everyone, and haunt ${killer.name} once per round.` : 'You were eliminated.', 'bad');
+    this.tell(p, killer ? `You were eliminated by ${killer.name}. You are now a ghost: you can drift through walls and see everyone. Only ${killer.name} can see you, and you can haunt them once per round.` : 'You were eliminated.', 'bad');
     if (this.living().length === 0) this.finish('none');
   }
 
@@ -987,7 +987,7 @@ class Match {
         if (p.status === 'dead') vis = true;
         else if (p.status === 'alive') vis = this.canSee(p, o);
         else vis = o.d === p.d && roomAt(this.rooms, p.x, p.y, p.d) === roomAt(this.rooms, o.x, o.y, o.d);
-      } else if (o.status === 'dead') vis = p.status === 'dead';
+      } else if (o.status === 'dead') vis = o.murderer === p.id; // a ghost is seen only by its killer, anywhere
       if (!vis) continue;
       ents.push({
         id: o.id, x: o.x, y: o.y, d: o.d, appearance: o.appearance, name: o.name, color: o.color, ghost: o.status === 'dead',
