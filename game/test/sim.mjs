@@ -20,9 +20,9 @@ const by = (m, c) => m.players.find((p) => p.career === c);
 
 // --- 2-player game: explorer drills a guaranteed mine, worker mines it, deposits.
 {
-  const m = setup(2);
+  const m = setup(3);
   const w = by(m, 'worker'), e = by(m, 'explorer');
-  assert(w && e, '2p roster');
+  assert(w && e && by(m, 'merchant'), '3p roster');
   const camp = m.rooms['0,0,0'];
   runTo(m, 12);
   assert.equal(cmd(m, e, { t: 'setSlot', slot: e.slots[0].id, what: 'free:drill' }), null);
@@ -42,12 +42,12 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   assert.equal(w.coins, 3);
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[1].id }), null);
   w.x += 0.5; m.step(); // moving cancels
-  assert.equal(w.channel, null); assert.equal(w.coins, 3); assert(w.slots[1].used);
+  assert.equal(w.channel, null); assert.equal(w.coins, 3); assert(!w.slots[1].used, 'interruption refunds the action'); assert.equal(w.inv.filter((i) => i.type === 'pickaxe').length, 1, 'and keeps the pickaxe');
   assert.equal(cmd(m, e, { t: 'act', slot: e.slots[1].id, target: { amount: 2 } }), null);
   assert.equal(m.fund, 2); assert.equal(e.contrib, 2);
   runUntilRound(m, 2);
-  assert.equal(m.round, 2); assert.equal(w.slots.length, 2);
-  console.log('ok 2p basic loop');
+  assert.equal(m.round, 2); assert.equal(w.slots.length, 3, 'interrupted pickaxe slot carried over'); assert.equal(w.slots[2].kind, 'saved');
+  console.log('ok 3p basic loop');
 }
 
 // --- theft, guard lock, merchant extra slot, weapons & loot, trial, natural exit, group win
@@ -64,11 +64,11 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   assert.equal(cmd(m, a, { t: 'buyExtra' }), null); assert.equal(a.coins, c0 - 1); assert.equal(a.slots.length, 3);
   assert.equal(cmd(m, b, { t: 'buyExtra' }), null); assert.equal(b.coins, 8);
   assert.equal(cmd(m, b, { t: 'buyExtra' }), null); assert.equal(b.coins, 5);
-  assert.equal(mer.coins, mc + 2, 'profit cap 2'); assert.match(cmd(m, b, { t: 'buyExtra' }), /At most 2/);
+  assert.equal(mer.coins, mc + 2, 'profit cap 2'); assert.match(cmd(m, b, { t: 'buyExtra' }), /At most 4/);
   // theft: a hooks b
   cmd(m, a, { t: 'setSlot', slot: a.slots[0].id, what: 'free:hook' });
-  assert.equal(cmd(m, a, { t: 'setTheft', slot: a.slots[0].id, target: b.id }), null);
-  const bBefore = b.coins, aBefore = a.coins + 10 - 10;
+  const bBefore = b.coins, aBefore = a.coins;
+  assert.equal(cmd(m, a, { t: 'act', slot: a.slots[0].id, target: { id: b.id } }), null);
   // weapons
   a.coins += 10;
   assert.equal(cmd(m, a, { t: 'buy', item: 'gun' }), null);
@@ -76,7 +76,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   cmd(m, a, { t: 'setSlot', slot: a.slots[1].id, what: 'item:' + gun.id });
   cmd(m, a, { t: 'setSlot', slot: a.slots[2].id, what: 'deposit' });
   runTo(m, CHOICE_CLOSE + 1);
-  const steal = a.career === 'thief' ? 2 : 1;
+  const steal = a.career === 'thief' ? 3 : 1;
   assert.equal(b.coins, bBefore - steal); assert.equal(a.coins, aBefore + steal);
   assert.match(cmd(m, b, { t: 'buy', item: 'club' }), /closed/);
   runTo(m, FIELD_START + 1);
@@ -153,7 +153,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
 // --- random full-game fuzz: bots wander and spam commands; check invariants
 {
   for (let g = 0; g < 30; g++) {
-    const n = 2 + (g % 7);
+    const n = 3 + (g % 6);
     const m = setup(n);
     let guard = 0;
     while (m.state === 'game' && guard++ < 200000) {
@@ -164,7 +164,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
           const r = Math.random();
           if (s && r < 0.3) m.cmd(p, { t: 'setSlot', slot: s.id, what: opts[Math.floor(Math.random() * opts.length)] });
           else if (s && r < 0.7) m.cmd(p, { t: 'act', slot: s.id, target: { dir: ['n', 'e', 's', 'w', 'down'][Math.floor(Math.random() * 5)], amount: 1, id: m.players[Math.floor(Math.random() * n)].id, kind: 'chest' } });
-          else if (r < 0.8) m.cmd(p, { t: 'buy', item: ['pickaxe', 'club', 'lantern', 'gun'][Math.floor(Math.random() * 4)] });
+          else if (r < 0.8) m.cmd(p, Math.random() < 0.7 ? { t: 'buy', item: ['pickaxe', 'club', 'lantern', 'gun'][Math.floor(Math.random() * 4)] } : { t: 'merchantBuy', good: 'potion' });
           else if (r < 0.85) m.cmd(p, { t: 'buyExtra' });
           else if (r < 0.9) m.cmd(p, { t: 'merchantBuy', good: 'potion' });
           else if (r < 0.95) m.cmd(p, { t: 'guardBuy', svc: 'lock' });
@@ -179,7 +179,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
         p.events = [];
       }
       m.step();
-      for (const p of m.players) { assert(p.coins >= 0, 'negative coins'); assert(!p.inv || p.inv.length <= 7, 'inventory > 7'); assert(p.hp <= 3); }
+      for (const p of m.players) { assert(p.coins >= 0, 'negative coins'); assert(!p.inv || p.inv.length <= 7, 'inventory > 7'); assert(p.hp <= 3); assert(!p.slots || p.slots.length <= 4, 'more than 4 slots'); }
       assert(m.fund >= 0);
       if (m.state === 'game') for (const p of m.players) m.view(p, true);
     }

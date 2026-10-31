@@ -1,6 +1,8 @@
 # Mine Escape (min-us)
 
-A real-time multiplayer social strategy game for **2–8 players**, each on their own phone or computer. No login, no install: open the link, pick a nickname, create or join a room with a 4-letter code.
+A real-time multiplayer social strategy game for **3–8 players**, each on their own phone or computer. No login, no install: open the link, pick a nickname, create or join a room with a 4-letter code.
+
+> **👥 You need at least 3 players to start a game.** Each player uses their own device, or for a quick solo test, three separate browser tabs or windows (each tab gets its own seat).
 
 > The mine has collapsed behind your crew. Over 10 rounds you walk the tunnels, drill new rooms, mine coins and pool them into a shared **escape fund**. But some of you may secretly be **Smugglers**, hoarding coins for a private way out.
 
@@ -15,7 +17,7 @@ A real-time multiplayer social strategy game for **2–8 players**, each on thei
 ### Getting into a game
 1. Open the game URL. The **main menu** explains the objective, careers, Smugglers and controls. **Start game** opens the game lobby; **Quit game** leaves.
 2. In the **game lobby**, enter a nickname, then either **Create a room** (you get a unique 4-letter room code) or **Join a room** by typing a friend's code. Invite links (`/room/CODE`) fill the code in for you.
-3. In the room, everyone taps **I'm ready**. The match starts when **all** players (2–8) are ready.
+3. In the room, everyone taps **I'm ready**. The match starts when **all** players (3–8) are ready.
 4. Read your **private identity card** (🪪): your career and whether you are secretly a Smuggler.
 
 During a match, **☰ → Return to main menu** steps away without leaving. Your character stays in the mine and you can **Resume your game** from the main menu. If you're gone for more than one round of game time (130 s), you forfeit.
@@ -33,7 +35,7 @@ Anyone still underground after round 10 loses. Wallets are private; contribution
 | Time | Phase | What to do |
 |---|---|---|
 | 0–10 s | Arrival | Walk to a **camp** (bright crystal Safe Zone). |
-| 10–50 s | Camp choices | Fill your action slots, shop (closes at 48 s), buy services, post/approve pledges, pick theft targets. |
+| 10–50 s | Camp choices | Fill your action slots, shop (closes at 48 s), buy services, post/approve pledges. |
 | 50–60 s | Departure | Walk out to where you'll act. |
 | 60–110 s | Field | Tap your action slots to mine, drill, loot, attack, heal, deposit… |
 | 110–125 s | Return | Walk back to a camp. Deposits still allowed. |
@@ -44,16 +46,16 @@ Nobody teleports: you physically walk back to a camp every round. New Safe Zones
 ### Actions
 You get **2 free action slots** per round; the Merchant sells up to 2 more (max 4). In camp, put into each slot a free basic tool, an item you own, or a **Deposit** / **Trial** marker.
 
-Everything you can do is offered in the **"What do you do?" box** at the bottom of the screen: a numbered list of plain-language choices for exactly where you're standing ("⛏ Mine a coin here", "🔨 Drill a tunnel east", "⚔ Attack Ben with your Club", "🏦 Deposit all 5 coins", "⬇ Climb down the ladder", "📋 Prepare my action slots"…). Tap a choice or press its number key. Choices you can't use right now stay listed, greyed out with the reason ("stand in a coin mine"), so the rules teach themselves. Physical actions take **3 seconds standing still**. Moving cancels them, and so does being hit by an attack: the only way another player can interrupt you. Once started, the tool and action are spent either way. Items you don't use stay in your **7-slot bag** until they expire (2–5 rounds); unused actions don't carry over. If slot 1 is left empty, your career tool is equipped for you.
+Everything you can do is offered in the **"What do you do?" box** at the bottom of the screen: a numbered list of plain-language choices for exactly where you're standing ("⛏ Mine a coin here", "🔨 Drill a tunnel east", "⚔ Attack Ben with your Club", "🏦 Deposit all 5 coins", "⬇ Climb down the ladder", "📋 Prepare my action slots"…). Tap a choice or press its number key. Choices you can't use right now stay listed, greyed out with the reason ("stand in a coin mine"), so the rules teach themselves. Physical actions take **3 seconds standing still**. Moving cancels them, and so does being hit by an attack: the only way another player can interrupt you. An interrupted action costs nothing: you keep the tool and the action and can try again. Tools are only used up when the work completes. Items stay in your **7-item bag** (shown as 🎒 in the top bar) until they expire (2–5 rounds). **A tool you put in a slot but didn't use keeps that slot next round** (marked ↺, locked to that tool, up to 2), on top of your 2 new free slots; the 4-actions-per-round maximum still applies. Markers and empty slots don't carry over. If slot 1 is left empty, your career tool is equipped for you.
 
 | Slot contents | Effect |
 |---|---|
 | Pickaxe | Mine 1 coin in a coin mine. Workers mine up to 2/round, others 1. |
 | Drill (Explorer only) | Open a sealed wall or dig downward. Finds coin mines, treasure, supply caches, new camps, traps or empty galleries. |
 | Crowbar | Loot a treasure chest, a dropped item, or a body (half its coins; Scavengers take all). |
-| Hook | Choose a victim in camp. When choices close, if you're still in the same room, you silently steal 1 coin (Thief: 2). |
+| Hook | At any time, silently steal 1 coin (Thief: up to 3) from someone in the same room. The victim isn't told; you can rob each person once per round. |
 | Deposit marker | Put any amount into the escape fund (field, return or settlement). |
-| Club / Blade / Gun | Attack a visible player in an unsafe room: 1 / 2 / 3 damage (gun reaches 4 tiles). Bodies keep their coins. |
+| Club / Blade / Gun (bought privately at the machine) | Attack a visible player in an unsafe room: 1 / 2 / 3 damage (gun reaches 4 tiles). Bodies keep their coins. |
 | Trial marker | In a camp during field time, pay 6+ coins to accuse someone there. Guilty needs a majority of **all** living players. |
 | Potion / Rescue kit / Lantern / Compass | Heal 1 HP / free a trapped player / light a room / private rough bearing to the nearest exit (Explorer, depth 0). |
 
@@ -62,12 +64,12 @@ Everything you can do is offered in the **"What do you do?" box** at the bottom 
 |---|---|
 | Worker | Mines up to 2 coins per round (others mine 1). |
 | Explorer | The only career that drills new rooms; gets a 1-coin finder's share of treasure. |
-| Merchant | Sells extra action slots (prices 1, 2, 3… per round) and unlockable goods (potions, compass, rescue kits, reinforced lanterns). At most 2 coins of profit per round; gets a free potion each round. |
-| Guard | Sells one wallet lock (1c, blocks theft) and one life shield (2c, blocks a hit) per round. |
-| Thief | Steals 2 coins per hook instead of 1. |
+| Merchant | Sells extra action slots (prices 1, 2, 3… per round) and advanced goods unlocked by upgrading the shop (potions, compass, rescue kits, reinforced lanterns). At most 2 coins of profit per round; gets a free potion each round. |
+| Guard | Sells one wallet lock (1c, blocks theft) and one life shield (2c, blocks a hit) per round; both work immediately until the round ends. |
+| Thief | Steals up to 3 coins per hook instead of 1. |
 | Scavenger | Loots in 1 s instead of 3 s and can take every coin from a body. |
 
-Rosters by player count: 2 = Worker, Explorer · 3 = + Merchant · 4 = + one specialist (Guard/Thief/Scavenger, chosen in the room) · 5 = + second Worker · 6 = + second Explorer · 7 = + second specialist · 8 = all careers.
+Rosters by player count: 3 = Worker, Explorer, Merchant · 4 = + one specialist (Guard/Thief/Scavenger, chosen in the room) · 5 = + second Worker · 6 = + second Explorer · 7 = + second specialist · 8 = all careers.
 
 ### Pledges (contribution proposals)
 There is no free-text chat. In camp, open **🏕 Camp → Pledges** to post a plan asking each player for an amount (the **Split what's needed** button divides the remaining fare evenly). Others tap 👍 / 👎. Pledges are **promises only**: no coins move, and each player still has to use their own Deposit action. The board shows **asked vs. gave this round** for everyone, so broken promises are visible. Editing a plan resets its approvals; plans reset every round.
@@ -77,7 +79,7 @@ There is no free-text chat. In camp, open **🏕 Camp → Pledges** to post a pl
 - **Traps** snare the discovering Explorer for next round's field time (no movement or work); a rescue kit frees them.
 - **Dark rooms** limit how far you can see; lanterns light them. Camps are always bright and no attacks happen there.
 - **No Explorer left?** Survivors hold a 20-second election in camp: volunteer, then vote (majority of all living players).
-- **Ghosts:** eliminated players drift through walls, see everyone, and can **haunt their killer** once per round (a harmless 0.45 s pop-up).
+- **Ghosts:** eliminated players drift through walls and see everyone, including other ghosts. **Among the living, only their killer can see a ghost** (wherever it drifts), and the ghost can **haunt that killer** once per round: their character swoops in at the edge of the killer's screen for 1.5 s with a whoosh sound that only the killer hears (sound can be muted in ☰).
 - **Disconnects:** your seat is held for one round of game time (130 s). Reopen the same browser to resume.
 
 ### Controls
@@ -90,9 +92,16 @@ WASD / arrow keys, or drag anywhere on a phone screen, to walk (walking into a w
 The detailed rules come from the design handoff in `mine-escape-handoff/`. These decisions shaped the playable version:
 
 **Decided by the project owner**
-- **2-player games are allowed** (2–8 instead of 3–8), so two people on separate devices can always play. A 2-player game is Worker + Explorer.
+- **3–8 players.** Every team always has at least a Worker, an Explorer and a Merchant (a 2-player mode was tried and removed).
 - **Camp choices last 40 s instead of 20 s**, so shopping and planning are comfortable on a phone; rounds are therefore 130 s instead of 110 s.
+- **Saved actions.** An unused tool that was placed in an action slot keeps its slot into next round, so using a saved tool doesn't cost a new action. Up to 2 carry over (locked to their tool), keeping the 4-actions-per-round maximum; the original design discarded unused actions.
+- **7-item bag limit** for everything a player carries.
+- **Among the living, only the killer can see a ghost**; ghosts still see each other. The **haunt lasts 1.5 s with a whoosh** (originally a silent 0.45 s pop).
+- **Thieves take up to 3 coins** per robbery (the original design said 2).
+- **Theft any time.** A hook can rob anyone in the same room at any moment (silently), instead of only resolving when camp choices close. Guard locks and shields therefore activate the moment they're bought.
+- **Interruptions are free.** If you move, get hit or cancel before an action finishes, you keep the tool and the action (the original design spent them). An action already in progress when field time ends still finishes.
 - **No mine reservations.** Mines are first come, first served, and another player's action can only be interrupted by attacking them.
+- **Two shops.** The private tool machine in every camp sells basic career tools (1 coin), lanterns and weapons, so nobody learns who is armed. The Merchant sells extra action slots and advanced goods unlocked by upgrading the shop. (Moving weapons to the Merchant was tried and reverted.)
 - **Contribution proposals (Pledges) are included** as the only structured communication; still no free chat.
 - **A main menu** with instruction panels plus Start / Quit, a **game lobby** to create or join a room by unique code, and **Return to main menu** during a match.
 

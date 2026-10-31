@@ -12,7 +12,7 @@ function setup(n, careers) {
   const m = new Match('TEST');
   for (let i = 0; i < n; i++) m.addPlayer('P' + i, 'tok' + i).ready = true;
   m.start();
-  if (careers) m.players.forEach((p, i) => { p.career = careers[i]; p.appearance = careers[i]; });
+  if (careers) m.players.forEach((p, i) => { p.career = careers[i]; p.appearance = careers[i]; p.inv = []; });
   m.players.forEach((p) => { p.events = []; p.smuggler = false; p.coins = 20; });
   m.camp = m.rooms['0,0,0'];
   return m;
@@ -26,7 +26,7 @@ const room = (m, gx, gy, cat, d = 0) => { const r = m.makeRoom(gx, gy, d, cat); 
 const finish = (m, p) => { for (let i = 0; i < 70 && p.channel; i++) m.step(); };
 
 test('guard wallet lock blocks theft; shield blocks one hit', () => {
-  const m = setup(4, ['guard', 'thief', 'worker', 'explorer']);
+  const m = setup(4, ['guard', 'thief', 'worker', 'merchant']);
   const [g, th, w] = m.players;
   runTo(m, 12);
   assert.equal(cmd(m, g, { t: 'setSlot', slot: g.slots[0].id, what: 'free:kit' }), null);
@@ -35,14 +35,13 @@ test('guard wallet lock blocks theft; shield blocks one hit', () => {
   assert.equal(cmd(m, w, { t: 'guardBuy', svc: 'shield' }), null);
   assert.equal(w.coins, 17); assert.equal(g.coins, 23);
   assert.match(cmd(m, th, { t: 'guardBuy', svc: 'lock' }), /already sold/);
-  assert.match(cmd(m, g, { t: 'setSlot', slot: g.slots[0].id, what: 'none' }), /committed/);
+  assert(g.slots[0].used && g.slots[1].used, 'guard kits used at the moment of sale');
+  assert.equal(w.lockRound, m.round); assert.equal(w.shieldRound, m.round);
   cmd(m, th, { t: 'setSlot', slot: th.slots[0].id, what: 'free:hook' });
-  assert.equal(cmd(m, th, { t: 'setTheft', slot: th.slots[0].id, target: w.id }), null);
-  th.coins += 10; cmd(m, th, { t: 'buy', item: 'blade' });
-  cmd(m, th, { t: 'setSlot', slot: th.slots[1].id, what: 'item:' + th.inv.find((i) => i.type === 'blade').id });
-  runTo(m, CHOICE_CLOSE + 1);
+  assert.equal(cmd(m, th, { t: 'act', slot: th.slots[0].id, target: { id: w.id } }), null, 'theft works in camp during choices');
   assert.equal(w.coins, 17, 'lock blocked theft'); assert(th.slots[0].used, 'hook still spent');
-  assert(g.slots[0].used && g.slots[1].used, 'guard kits spent');
+  th.coins += 10; assert.equal(cmd(m, th, { t: 'buy', item: 'blade' }), null);
+  cmd(m, th, { t: 'setSlot', slot: th.slots[1].id, what: 'item:' + th.inv.find((i) => i.type === 'blade').id });
   runTo(m, FIELD_START + 1);
   const gal = room(m, 1, 0, 'gallery'); at(w, gal, 2, 2); at(th, gal, 2.5, 2);
   assert.equal(cmd(m, th, { t: 'act', slot: th.slots[1].id, target: { id: w.id } }), null);
@@ -162,11 +161,12 @@ test('merchant: upgrades gated by round, goods & profit cap, personal potion', (
 });
 
 test('weapon surcharge top-up, one weapon, no purchase after cutoff', () => {
-  const m = setup(2, ['worker', 'explorer']);
-  const [w] = m.players;
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
+  const [w, , mer] = m.players;
   runTo(m, 12);
-  assert.equal(cmd(m, w, { t: 'buy', item: 'club' }), null); assert.equal(w.coins, 16);
+  assert.equal(cmd(m, w, { t: 'buy', item: 'club' }), null); assert.equal(w.coins, 16); assert.equal(mer.coins, 20, 'machine sale pays nobody');
   assert.match(cmd(m, w, { t: 'buy', item: 'gun' }), /one weapon/);
+  cmd(m, w, { t: 'merchantBuy', good: 'club' }); assert.equal(w.inv.filter((i) => i.type === 'club').length, 1, 'merchant does not sell weapons');
   nextRound(m); nextRound(m); runTo(m, 12); // round 3: surcharge 1
   const club = w.inv.find((i) => i.type === 'club');
   const c = w.coins;
@@ -180,7 +180,7 @@ test('weapon surcharge top-up, one weapon, no purchase after cutoff', () => {
 });
 
 test('item expiry and 7-slot inventory limit', () => {
-  const m = setup(2, ['worker', 'explorer']);
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
   const [w] = m.players;
   runTo(m, 12);
   for (let i = 0; i < 7; i++) assert.equal(cmd(m, w, { t: 'buy', item: 'pickaxe' }), null);
@@ -192,18 +192,18 @@ test('item expiry and 7-slot inventory limit', () => {
 });
 
 test('first-slot fallback gives career tool; blank second slot lost', () => {
-  const m = setup(2, ['worker', 'explorer']);
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
   const [w, ex] = m.players;
   runTo(m, CHOICE_CLOSE + 1);
   assert.equal(w.inv[0].type, 'pickaxe'); assert.equal(w.slots[0].item, w.inv[0].id);
   assert.equal(ex.inv[0].type, 'drill'); assert.equal(w.slots[1].item, null);
-  const away = setup(2, ['worker', 'explorer']);
+  const away = setup(3, ['worker', 'explorer', 'merchant']);
   at(away.players[0], room(away, 1, 0, 'gallery'));
   runTo(away, CHOICE_CLOSE + 1); assert.equal(away.players[0].inv.length, 0, 'no fallback outside camp');
 });
 
 test('ladders: drill down, climb both ways, depth-0-only exits', () => {
-  const m = setup(2, ['explorer', 'worker']);
+  const m = setup(3, ['explorer', 'worker', 'merchant']);
   const [ex] = m.players;
   runTo(m, FIELD_START + 1);
   give(m, ex, 'drill', 0); at(ex, m.camp);
@@ -217,7 +217,7 @@ test('ladders: drill down, climb both ways, depth-0-only exits', () => {
 });
 
 test('movement validation: walls, closed doors, speed', () => {
-  const m = setup(2, ['explorer', 'worker']);
+  const m = setup(3, ['explorer', 'worker', 'merchant']);
   const [ex] = m.players;
   at(ex, m.camp, 2, 2); ex.lastMove = Date.now() - 100;
   m.c_mv(ex, { x: ex.x + 0.25, y: ex.y }); assert.equal(ex.x, 2.25, 'normal step ok');
@@ -309,7 +309,9 @@ test('ghost sees everyone and can haunt murderer once per round', () => {
   const sent = []; me.ws = { send: (x) => sent.push(x) }; w.ws = { send: () => {} };
   at(ex, room(m, 0, 2, 'gallery'));
   const gv = m.view(w, false); assert(gv.ents.some((e) => e.id === ex.id), 'ghost sees far player');
-  const lv = m.view(ex, false); assert(!lv.ents.some((e) => e.id === w.id), 'living do not see ghosts');
+  const lv = m.view(ex, false); assert(!lv.ents.some((e) => e.id === w.id), 'other living players do not see the ghost');
+  at(me, room(m, 3, 3, 'gallery')); const kv = m.view(me, false); assert(kv.ents.some((e) => e.id === w.id && e.ghost), 'the killer sees the ghost, even from another room');
+  ex.status = 'dead'; ex.murderer = null; const ov = m.view(ex, false); assert(ov.ents.some((e) => e.id === w.id), 'other ghosts see it');
   assert.equal(cmd(m, w, { t: 'haunt' }), null); assert.equal(sent.length, 1);
   assert.match(cmd(m, w, { t: 'haunt' }), /already/);
   w.lastMove = Date.now() - 300; const gx = w.x; m.c_mv(w, { x: w.x - 0.3, y: w.y }); assert.notEqual(w.x, gx, 'ghost moves');
@@ -351,14 +353,16 @@ test('mining limits: 2/round per mine, cap per career, reserve 8', () => {
   assert.match(cmd(m, me, { t: 'act', slot: me.slots[1].id }), /exhausted|at most 1/);
 });
 
-test('field cutoff interrupts unfinished channels; deposits allowed after field', () => {
-  const m = setup(2, ['worker', 'explorer']);
+test('an action in progress when field time ends still finishes; deposits allowed after field', () => {
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
   const [w] = m.players;
   runTo(m, 12); cmd(m, w, { t: 'setSlot', slot: w.slots[1].id, what: 'deposit' });
   runTo(m, FIELD_END - 1);
   const mine = room(m, 1, 0, 'mine'); mine.reserve = 8; at(w, mine); give(m, w, 'pickaxe', 0);
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null);
-  runTo(m, FIELD_END + 1); assert.equal(w.channel, null); assert.equal(w.coins, 20);
+  runTo(m, FIELD_END + 1); assert(w.channel, 'still working after field end');
+  runTo(m, FIELD_END + 3); assert.equal(w.channel, null); assert.equal(w.coins, 21, 'mined after field ended'); assert(w.slots[0].used);
+  give(m, w, 'pickaxe', 0); w.slots[0].used = false; assert.match(cmd(m, w, { t: 'act', slot: w.slots[0].id }), /field time/, 'no new actions after field');
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[1].id, target: { amount: 5 } }), null); assert.equal(m.fund, 5);
 });
 
@@ -382,6 +386,98 @@ test('contribution proposals: camp-only, edits reset approvals, cleared each rou
   const v = m.view(b, false); assert.equal(v.proposals.length, 1);
   nextRound(m); assert.equal(Object.keys(m.proposals).length, 0, 'cleared at round end');
   assert.equal(cmd(m, b, { t: 'withdraw' }), null);
+});
+
+test('roster: needs 3+ players; 3 = worker, explorer, merchant; machine sells tools & weapons', () => {
+  const m2 = new Match('TWO'); for (let i = 0; i < 2; i++) m2.addPlayer('P' + i, 'x' + i); m2.players.forEach((p) => (p.ready = true));
+  m2.tryStart(); assert.equal(m2.state, 'lobby', '2 players cannot start');
+  for (let n = 3; n <= 8; n++) {
+    const m = new Match('R' + n); for (let i = 0; i < n; i++) m.addPlayer('P' + i, 'y' + i); m.players.forEach((p) => (p.ready = true));
+    m.tryStart(); assert.equal(m.state, 'game');
+    const c = m.players.map((p) => p.career);
+    for (const need of ['worker', 'explorer', 'merchant']) assert(c.includes(need), `${n}p has ${need}`);
+  }
+  const m = setup(3, ['worker', 'explorer', 'merchant']); const [w, ex, mer] = m.players;
+  runTo(m, 12);
+  assert.match(cmd(m, w, { t: 'buy', item: 'potion' }), /Not sold/);
+  assert.equal(cmd(m, w, { t: 'buy', item: 'hook' }), null);
+  assert.equal(cmd(m, w, { t: 'buy', item: 'lantern' }), null);
+  assert.equal(cmd(m, w, { t: 'buy', item: 'gun' }), null);
+  assert.match(cmd(m, w, { t: 'buy', item: 'drill' }), /Explorer/);
+  assert.equal(cmd(m, ex, { t: 'buy', item: 'drill' }), null);
+  assert.match(cmd(m, ex, { t: 'merchantBuy', good: 'potion' }), /not unlocked/);
+});
+
+test('interrupted actions keep the tool and action; completed ones use them up', () => {
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
+  const [w, ex, me] = m.players;
+  runTo(m, FIELD_START + 1);
+  const mine = room(m, 1, 0, 'mine'); mine.reserve = 8; at(w, mine);
+  const pick = give(m, w, 'pickaxe', 0);
+  assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null);
+  assert(w.inv.includes(pick) && !w.slots[0].used, 'not consumed while working');
+  assert.match(cmd(m, w, { t: 'discard', item: pick.id }) || 'blocked', /blocked|camp|using/);
+  w.x += 0.3; m.step();
+  assert.equal(w.channel, null); assert(w.inv.includes(pick), 'pickaxe kept after moving'); assert(!w.slots[0].used, 'action kept');
+  assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null, 'can retry');
+  // hit by an attack interrupts but refunds too
+  const gal = mine; at(me, gal, 2.3, 2); give(m, me, 'club', 0); me.inv[0].paidS = 0;
+  cmd(m, me, { t: 'act', slot: me.slots[0].id, target: { id: w.id } });
+  assert.equal(w.channel, null); assert(w.inv.includes(pick) && !w.slots[0].used, 'kept after being hit');
+  assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null); finish(m, w);
+  assert(!w.inv.includes(pick) && w.slots[0].used && w.coins === 21, 'completion consumes');
+  // manual cancel also refunds
+  const d = give(m, ex, 'drill', 0); at(ex, m.camp);
+  cmd(m, ex, { t: 'act', slot: ex.slots[0].id, target: { dir: 'n' } }); cmd(m, ex, { t: 'cancel' });
+  assert(ex.inv.includes(d) && !ex.slots[0].used);
+  runTo(m, FIELD_END - 1); cmd(m, ex, { t: 'act', slot: ex.slots[0].id, target: { dir: 'n' } }); runTo(m, FIELD_END + 3);
+  assert(!ex.inv.includes(d) && ex.slots[0].used && m.rooms['0,-1,0'], 'drilling started before field end completes');
+});
+
+test('unused tool slots carry over (max 2, locked), plus 2 new free slots; 4-action cap', () => {
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
+  const [w, ex, me] = m.players;
+  runTo(m, 12);
+  cmd(m, w, { t: 'setSlot', slot: w.slots[0].id, what: 'free:pickaxe' });
+  cmd(m, w, { t: 'setSlot', slot: w.slots[1].id, what: 'deposit' });
+  assert.equal(cmd(m, w, { t: 'buyExtra' }), null);
+  cmd(m, w, { t: 'buy', item: 'hook' }); cmd(m, w, { t: 'setSlot', slot: w.slots[2].id, what: 'item:' + w.inv.find((i) => i.type === 'hook').id });
+  const pick = w.slots[0].item;
+  nextRound(m);
+  assert.deepEqual(w.slots.map((s) => s.kind), ['free', 'free', 'saved', 'saved'], 'two saved + two new');
+  assert.equal(w.slots[2].item, pick, 'pickaxe still in its slot');
+  assert.match(cmd(m, w, { t: 'setSlot', slot: w.slots[2].id, what: 'deposit' }) || '', /locked/);
+  runTo(m, 12);
+  assert.match(cmd(m, w, { t: 'buyExtra' }), /4 actions/);
+  // using it in the field consumes only that saved slot
+  runTo(m, FIELD_START + 1);
+  const mine = room(m, 1, 0, 'mine'); mine.reserve = 8; at(w, mine);
+  assert.equal(cmd(m, w, { t: 'act', slot: w.slots[2].id }), null); finish(m, w);
+  assert(w.slots[2].used && w.coins === 20 - 1 - 1 + 1);
+  // markers/empties don't carry; nothing carries beyond expiry
+  nextRound(m); assert.equal(w.slots.filter((s) => s.kind === 'saved').length, 1, 'unused hook still carries');
+  nextRound(m); assert.equal(w.slots.filter((s) => s.kind === 'saved').length, 0, 'hook expired (TTL 2) so its slot is gone');
+});
+
+test('theft: any time in the same room, silent, once per victim per round, thief takes 3', () => {
+  const m = setup(4, ['thief', 'worker', 'explorer', 'merchant']);
+  const [th, w, ex, me] = m.players;
+  w.coins = 5; ex.coins = 1;
+  runTo(m, 12);
+  for (let i = 0; i < 2; i++) cmd(m, th, { t: 'setSlot', slot: th.slots[i].id, what: i === 0 ? 'free:hook' : 'free:pickaxe' });
+  th.inv.push(m.item('hook')); th.slots[1].item = th.inv.at(-1).id;
+  const gal = room(m, 1, 0, 'gallery'); at(w, gal);
+  assert.match(cmd(m, th, { t: 'act', slot: th.slots[0].id, target: { id: w.id } }), /same room/);
+  assert(!th.slots[0].used, 'failed attempt costs nothing');
+  at(th, gal, 2.5, 2);
+  w.events = [];
+  assert.equal(cmd(m, th, { t: 'act', slot: th.slots[0].id, target: { id: w.id } }), null);
+  assert.equal(w.coins, 2); assert.equal(th.coins, 23, 'thief took 3');
+  assert.equal(w.events.length, 0, 'victim is not told');
+  assert.match(cmd(m, th, { t: 'act', slot: th.slots[1].id, target: { id: w.id } }), /already robbed/);
+  at(ex, gal, 2.2, 2.2); assert.equal(cmd(m, th, { t: 'act', slot: th.slots[1].id, target: { id: ex.id } }), null);
+  assert.equal(ex.coins, 0, 'takes only what they have');
+  runTo(m, FIELD_START + 1); // also allowed later, outside camps
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);

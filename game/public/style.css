@@ -134,8 +134,15 @@ th { text-align: left; color: var(--gold); font: 400 13px var(--display); paddin
 td { padding: 6px; background: #0003; }
 td:first-child { border-radius: 10px 0 0 10px; } td:last-child { border-radius: 0 10px 10px 0; }
 .note td { background: #0000000d; }
-.haunt { position: fixed; bottom: 30%; width: 120px; z-index: 20; pointer-events: none; animation: pop .45s ease-out forwards; filter: drop-shadow(0 0 12px #9cf) saturate(.3) brightness(1.4); opacity: .85; }
-@keyframes pop { 0% { transform: translateY(40px) scale(.6); opacity: 0; } 30% { opacity: .9; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-10px) scale(1); } }
+.haunt { position: fixed; bottom: 28%; width: 130px; z-index: 20; pointer-events: none; animation: haunt 1.5s ease-in-out forwards; filter: drop-shadow(0 0 14px #9cf) saturate(.3) brightness(1.4); opacity: 0; }
+.haunt.right { --dx: 60px; } .haunt.left { --dx: -60px; }
+@keyframes haunt {
+  0% { transform: translate(var(--dx), 50px) scale(.6) rotate(0deg); opacity: 0; }
+  20% { transform: translate(0, 0) scale(1.05) rotate(-4deg); opacity: .9; }
+  45% { transform: translate(0, -8px) scale(1) rotate(4deg); opacity: .85; }
+  70% { transform: translate(0, -4px) scale(1) rotate(-3deg); opacity: .8; }
+  100% { transform: translate(var(--dx), -30px) scale(.9) rotate(0deg); opacity: 0; }
+}
 .hint { position: fixed; left: 50%; transform: translateX(-50%); bottom: 118px; background: var(--parch); color: var(--parch-ink); border: 3px solid var(--outline);
   border-radius: 14px; padding: 6px 14px; font-size: 14px; font-weight: 800; pointer-events: none; text-align: center; max-width: 90vw; box-shadow: 0 4px 0 #0009; }
 .picker { position: fixed; left: 50%; bottom: 118px; transform: translateX(-50%); padding: 12px; z-index: 8; width: min(380px, calc(100vw - 16px)); border-color: var(--gold); }
@@ -178,3 +185,6 @@ button.choice:disabled .ch-n { background: #d8c9a6; }
   .ch-list { max-height: 24vh; }
   button.choice { font-size: 14px; padding: 6px 8px; }
 }
+.sheet button.choice { min-height: 44px; }
+button.choice.picked { border-color: var(--gold-dark); background: #fff3c9; }
+.item > button.choice:disabled { background: #e8dcc0; color: #6b5636; }
