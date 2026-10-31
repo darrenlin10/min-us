@@ -352,14 +352,16 @@ test('mining limits: 2/round per mine, cap per career, reserve 8', () => {
   assert.match(cmd(m, me, { t: 'act', slot: me.slots[1].id }), /exhausted|at most 1/);
 });
 
-test('field cutoff interrupts unfinished channels; deposits allowed after field', () => {
+test('an action in progress when field time ends still finishes; deposits allowed after field', () => {
   const m = setup(3, ['worker', 'explorer', 'merchant']);
   const [w] = m.players;
   runTo(m, 12); cmd(m, w, { t: 'setSlot', slot: w.slots[1].id, what: 'deposit' });
   runTo(m, FIELD_END - 1);
   const mine = room(m, 1, 0, 'mine'); mine.reserve = 8; at(w, mine); give(m, w, 'pickaxe', 0);
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null);
-  runTo(m, FIELD_END + 1); assert.equal(w.channel, null); assert.equal(w.coins, 20);
+  runTo(m, FIELD_END + 1); assert(w.channel, 'still working after field end');
+  runTo(m, FIELD_END + 3); assert.equal(w.channel, null); assert.equal(w.coins, 21, 'mined after field ended'); assert(w.slots[0].used);
+  give(m, w, 'pickaxe', 0); w.slots[0].used = false; assert.match(cmd(m, w, { t: 'act', slot: w.slots[0].id }), /field time/, 'no new actions after field');
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[1].id, target: { amount: 5 } }), null); assert.equal(m.fund, 5);
 });
 
@@ -423,12 +425,12 @@ test('interrupted actions keep the tool and action; completed ones use them up',
   assert.equal(w.channel, null); assert(w.inv.includes(pick) && !w.slots[0].used, 'kept after being hit');
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null); finish(m, w);
   assert(!w.inv.includes(pick) && w.slots[0].used && w.coins === 21, 'completion consumes');
-  // manual cancel and field cutoff also refund
+  // manual cancel also refunds
   const d = give(m, ex, 'drill', 0); at(ex, m.camp);
   cmd(m, ex, { t: 'act', slot: ex.slots[0].id, target: { dir: 'n' } }); cmd(m, ex, { t: 'cancel' });
   assert(ex.inv.includes(d) && !ex.slots[0].used);
-  runTo(m, FIELD_END - 1); cmd(m, ex, { t: 'act', slot: ex.slots[0].id, target: { dir: 'n' } }); runTo(m, FIELD_END + 1);
-  assert(ex.inv.includes(d) && !ex.slots[0].used && !m.rooms['0,-1,0'], 'field cutoff refunds, no room opened');
+  runTo(m, FIELD_END - 1); cmd(m, ex, { t: 'act', slot: ex.slots[0].id, target: { dir: 'n' } }); runTo(m, FIELD_END + 3);
+  assert(!ex.inv.includes(d) && ex.slots[0].used && m.rooms['0,-1,0'], 'drilling started before field end completes');
 });
 
 test('unused tool slots carry over (max 2, locked), plus 2 new free slots; 4-action cap', () => {

@@ -96,7 +96,7 @@ The detailed rules come from the design handoff in `mine-escape-handoff/`. These
 - **Camp choices last 40 s instead of 20 s**, so shopping and planning are comfortable on a phone; rounds are therefore 130 s instead of 110 s.
 - **Saved actions.** An unused tool that was placed in an action slot keeps its slot into next round, so using a saved tool doesn't cost a new action. Up to 2 carry over (locked to their tool), keeping the 4-actions-per-round maximum; the original design discarded unused actions.
 - **7-item bag limit** for everything a player carries.
-- **Interruptions are free.** If you move, get hit, cancel, or field time ends before an action finishes, you keep the tool and the action (the original design spent them).
+- **Interruptions are free.** If you move, get hit or cancel before an action finishes, you keep the tool and the action (the original design spent them). An action already in progress when field time ends still finishes.
 - **No mine reservations.** Mines are first come, first served, and another player's action can only be interrupted by attacking them.
 - **Two shops.** The private tool machine in every camp sells basic career tools (1 coin), lanterns and weapons, so nobody learns who is armed. The Merchant sells extra action slots and advanced goods unlocked by upgrading the shop. (Moving weapons to the Merchant was tried and reverted.)
 - **Contribution proposals (Pledges) are included** as the only structured communication; still no free chat.

@@ -237,7 +237,7 @@ class Match {
     this.t++;
     const t = this.t;
     if (t === T(CHOICE_CLOSE)) this.closeChoices();
-    if (t === T(FIELD_END)) for (const p of this.players) if (p.channel) this.cancelChannel(p, 'Field time ended before your action finished.');
+    // An action already in progress when field time ends is allowed to finish (no new ones can start).
     this.stepChannels();
     if (t >= ROUND_T) this.endRound();
   }
