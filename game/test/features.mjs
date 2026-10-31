@@ -457,10 +457,10 @@ test('unused tool slots carry over (max 2, locked), plus 2 new free slots; 4-act
   nextRound(m); assert.equal(w.slots.filter((s) => s.kind === 'saved').length, 0, 'hook expired (TTL 2) so its slot is gone');
 });
 
-test('theft: any time in the same room, silent, once per victim per round, thief takes 2', () => {
+test('theft: any time in the same room, silent, once per victim per round, thief takes 3', () => {
   const m = setup(4, ['thief', 'worker', 'explorer', 'merchant']);
   const [th, w, ex, me] = m.players;
-  w.coins = 3; ex.coins = 1;
+  w.coins = 5; ex.coins = 1;
   runTo(m, 12);
   for (let i = 0; i < 2; i++) cmd(m, th, { t: 'setSlot', slot: th.slots[i].id, what: i === 0 ? 'free:hook' : 'free:pickaxe' });
   th.inv.push(m.item('hook')); th.slots[1].item = th.inv.at(-1).id;
@@ -470,7 +470,7 @@ test('theft: any time in the same room, silent, once per victim per round, thief
   at(th, gal, 2.5, 2);
   w.events = [];
   assert.equal(cmd(m, th, { t: 'act', slot: th.slots[0].id, target: { id: w.id } }), null);
-  assert.equal(w.coins, 1); assert.equal(th.coins, 22);
+  assert.equal(w.coins, 2); assert.equal(th.coins, 23, 'thief took 3');
   assert.equal(w.events.length, 0, 'victim is not told');
   assert.match(cmd(m, th, { t: 'act', slot: th.slots[1].id, target: { id: w.id } }), /already robbed/);
   at(ex, gal, 2.2, 2.2); assert.equal(cmd(m, th, { t: 'act', slot: th.slots[1].id, target: { id: ex.id } }), null);

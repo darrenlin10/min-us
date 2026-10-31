@@ -20,6 +20,7 @@ const CHANNEL_T = T(3);
 const SCAV_T = T(1);
 const MAX_GRID = 20;
 const MAX_DEPTH = 3;
+const THIEF_TAKE = 3; // coins a Thief takes per robbery (other careers take 1)
 
 const rnd = (n) => Math.floor(Math.random() * n);
 const pick = (arr) => arr[rnd(arr.length)];
@@ -824,7 +825,7 @@ class Match {
     this.useSlot(p, s);
     if (!p.robbed || p.robbed.round !== this.round) p.robbed = { round: this.round, ids: [] };
     p.robbed.ids.push(v.id);
-    const amt = v.lockRound === this.round ? 0 : Math.min(p.career === 'thief' ? 2 : 1, v.coins);
+    const amt = v.lockRound === this.round ? 0 : Math.min(p.career === 'thief' ? THIEF_TAKE : 1, v.coins);
     v.coins -= amt; p.coins += amt;
     this.tell(p, `Your hook took ${amt} coin${amt === 1 ? '' : 's'} from ${v.name}.`, amt ? 'good' : 'info');
   }

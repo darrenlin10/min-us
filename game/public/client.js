@@ -479,12 +479,12 @@ function RulesModal({ close }) {
     <ul>${PHASES.map((p) => html`<li><b>${p.start}–${p.end}s</b> ${p.label}</li>`)}</ul>
     <p>Walk back to a <b>camp</b> (bright crystal Safe Zone) each round — shopping, loadouts and votes only work there. Nobody teleports home!</p>
     <h3>Actions</h3>
-    <p>You get <b>2 free action slots</b> per round (buy up to 2 more from the Merchant). In camp, fill each slot: a free basic tool (pickaxe, hook, crowbar…), an item you own, or a <b>Deposit</b>/<b>Trial</b> marker. In the field, tap a slot to use it. Physical actions take 3 seconds standing still — moving or getting hit interrupts them, but you keep the tool and the action and can try again. Tools are only used up when the work finishes. Unused items stay in your 7-slot bag until they expire. A tool you put in a slot but didn't use keeps its slot next round (↺, up to 2), on top of your 2 new free slots — max 4 actions per round.</p>
+    <p>You get <b>2 free action slots</b> per round (buy up to 2 more from the Merchant). In camp, fill each slot: a free basic tool (pickaxe, hook, crowbar…), an item you own, or a <b>Deposit</b>/<b>Trial</b> marker. Then pick what to do from the "What do you do?" box at the bottom of the screen. Physical actions take 3 seconds standing still — moving or getting hit interrupts them, but you keep the tool and the action and can try again. Tools are only used up when the work finishes. Unused items stay in your 7-slot bag until they expire. A tool you put in a slot but didn't use keeps its slot next round (↺, up to 2), on top of your 2 new free slots — max 4 actions per round.</p>
     <ul>
       <li><b>Pickaxe</b> — mine 1 coin in a coin mine (Workers up to 2/round, others 1). First come, first served: one person mines at a time; a mine gives at most 2 coins per round and 8 in total.</li>
       <li><b>Drill</b> (Explorer only) — open a new room through a sealed wall, or downward. Finds mines, treasure, caches, new camps, traps or empty galleries.</li>
       <li><b>Crowbar</b> — loot a treasure chest, a dropped item, or half of a body's coins (Scavengers take all).</li>
-      <li><b>Hook</b> — at any time, silently steal 1 coin (Thief: up to 2) from someone in the same room as you. They aren't told; each person can be robbed by you once per round.</li>
+      <li><b>Hook</b> — at any time, silently steal 1 coin (Thief: up to 3) from someone in the same room as you. They aren't told; each person can be robbed by you once per round.</li>
       <li><b>Deposit</b> — put any amount into the fund (field, return or settlement time).</li>
       <li><b>Weapons</b> (bought privately at the machine: club 1 dmg, blade 2, gun 3 at range) — attack a visible player in an unsafe room during field time. Bodies keep their coins for looting.</li>
       <li><b>Trial</b> — in a camp during field time, pay ${trialFee(1)}+ coins to accuse someone there. Majority of ALL living players must vote guilty to execute.</li>
@@ -668,7 +668,7 @@ function buildChoices(v, setTab) {
     else if (type === 'compass') add('🧭 Survey with the compass', act({}), { disabled: blocked || (S.me.d !== 0 && 'only works at depth 0'), sub: `${tag} · private rough direction to the nearest exit` });
     else if (type === 'hook') {
       if (!others.length) add('🪝 Rob someone (silently)', null, { disabled: 'nobody in this room with you', sub: tag });
-      for (const e of others) add(`🪝 Rob ${e.name} (silently)`, act({ id: e.id }), { disabled: trapped && "you're trapped", sub: `${tag} · takes ${y.career === 'thief' ? 'up to 2 coins' : '1 coin'} · they won't be told`, danger: true });
+      for (const e of others) add(`🪝 Rob ${e.name} (silently)`, act({ id: e.id }), { disabled: trapped && "you're trapped", sub: `${tag} · takes ${y.career === 'thief' ? 'up to 3 coins' : '1 coin'} · they won't be told`, danger: true });
     }
     else if (type === 'kit') add('🛡 Protection kit ready to sell', () => setTab('guard'), { sub: tag });
   }

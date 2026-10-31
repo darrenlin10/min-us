@@ -35,7 +35,7 @@ export const CAREERS = {
   explorer: { name: 'Explorer', preset: 'drill', blurb: 'Only career that drills new rooms. Gets 1 finder coin from treasure.' },
   merchant: { name: 'Merchant', preset: 'crowbar', blurb: 'Sells extra actions and advanced goods; unlocks catalog tiers. Gets a free potion each round.' },
   guard: { name: 'Guard', preset: 'kit', blurb: 'Sells one wallet lock (1c, stops theft) and one life shield (2c, blocks a hit) per round; they work immediately.' },
-  thief: { name: 'Thief', preset: 'hook', blurb: 'Steals up to 2 coins per hook (others steal 1).' },
+  thief: { name: 'Thief', preset: 'hook', blurb: 'Steals up to 3 coins per hook (others steal 1).' },
   scavenger: { name: 'Scavenger', preset: 'crowbar', blurb: 'Loots in 1s instead of 3s and can take ALL coins from a body.' },
 };
 

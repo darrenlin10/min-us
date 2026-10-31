@@ -76,7 +76,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   cmd(m, a, { t: 'setSlot', slot: a.slots[1].id, what: 'item:' + gun.id });
   cmd(m, a, { t: 'setSlot', slot: a.slots[2].id, what: 'deposit' });
   runTo(m, CHOICE_CLOSE + 1);
-  const steal = a.career === 'thief' ? 2 : 1;
+  const steal = a.career === 'thief' ? 3 : 1;
   assert.equal(b.coins, bBefore - steal); assert.equal(a.coins, aBefore + steal);
   assert.match(cmd(m, b, { t: 'buy', item: 'club' }), /closed/);
   runTo(m, FIELD_START + 1);
