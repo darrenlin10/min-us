@@ -79,7 +79,7 @@ There is no free-text chat. In camp, open **🏕 Camp → Pledges** to post a pl
 - **Traps** snare the discovering Explorer for next round's field time (no movement or work); a rescue kit frees them.
 - **Dark rooms** limit how far you can see; lanterns light them. Camps are always bright and no attacks happen there.
 - **No Explorer left?** Survivors hold a 20-second election in camp: volunteer, then vote (majority of all living players).
-- **Ghosts:** eliminated players drift through walls and see every living player. **Only their killer can see a ghost** (wherever it drifts), and the ghost can **haunt that killer** once per round (a harmless 0.45 s pop-up).
+- **Ghosts:** eliminated players drift through walls and see everyone, including other ghosts. **Among the living, only their killer can see a ghost** (wherever it drifts), and the ghost can **haunt that killer** once per round (a harmless 0.45 s pop-up).
 - **Disconnects:** your seat is held for one round of game time (130 s). Reopen the same browser to resume.
 
 ### Controls
@@ -96,7 +96,7 @@ The detailed rules come from the design handoff in `mine-escape-handoff/`. These
 - **Camp choices last 40 s instead of 20 s**, so shopping and planning are comfortable on a phone; rounds are therefore 130 s instead of 110 s.
 - **Saved actions.** An unused tool that was placed in an action slot keeps its slot into next round, so using a saved tool doesn't cost a new action. Up to 2 carry over (locked to their tool), keeping the 4-actions-per-round maximum; the original design discarded unused actions.
 - **7-item bag limit** for everything a player carries.
-- **Ghosts are visible only to their killer** (the original design let ghosts see each other).
+- **Among the living, only the killer can see a ghost**; ghosts still see each other.
 - **Thieves take up to 3 coins** per robbery (the original design said 2).
 - **Theft any time.** A hook can rob anyone in the same room at any moment (silently), instead of only resolving when camp choices close. Guard locks and shields therefore activate the moment they're bought.
 - **Interruptions are free.** If you move, get hit or cancel before an action finishes, you keep the tool and the action (the original design spent them). An action already in progress when field time ends still finishes.

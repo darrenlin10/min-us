@@ -493,7 +493,7 @@ function RulesModal({ close }) {
     <ul>${Object.entries(CAREERS).map(([k, c]) => html`<li><b>${c.name}</b> — ${c.blurb}</li>`)}</ul>
     <h3>Other rules</h3>
     <p><b>Pledges</b> (Camp → Pledges): post a plan asking each player for coins; others approve or reject. Pledges are promises only — compare them with what people actually gave.</p>
-    <p>Traps snare the Explorer for the next round's field time (a Merchant rescue kit frees them). Dark rooms limit sight; lanterns light them. If no Explorer is left alive, survivors elect a new one. Dead players become ghosts who see every living player, can be seen only by their killer, and can haunt that killer once per round. Disconnected players have one round of game time to reconnect from the same browser.</p>
+    <p>Traps snare the Explorer for the next round's field time (a Merchant rescue kit frees them). Dark rooms limit sight; lanterns light them. If no Explorer is left alive, survivors elect a new one. Dead players become ghosts who see everyone; other ghosts can see them, but among the living only their killer can. A ghost can haunt its killer once per round. Disconnected players have one round of game time to reconnect from the same browser.</p>
     <p class="muted">Controls: WASD/arrow keys or drag anywhere on the screen to walk. E or the Climb button uses ladders. ☰ returns to the main menu (resume within one round or forfeit).</p>
   </div></div>`;
 }
