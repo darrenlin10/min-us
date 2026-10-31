@@ -130,7 +130,7 @@ test('potion heals, lantern lights room, compass gives stable bearing', () => {
   give(m, ex, 'compass', 0); at(ex, gal);
   assert.equal(cmd(m, ex, { t: 'act', slot: ex.slots[0].id }), null); finish(m, ex);
   const n1 = ex.notes[0]; assert(n1 && n1.label);
-  const o = m.openings.reduce((b, o) => (Math.hypot(o.gx, o.gy - 1) < Math.hypot(b.gx, b.gy - 1) ? o : b));
+  const o = m.openings.reduce((b, o) => (Math.hypot(o.gx, o.gy - 1) < Math.hypot(b.gx, b.gy - 1) - 1e-9 ? o : b)); // ties: lowest exit id
   const truth = Math.atan2(o.gy - 1, o.gx) * 180 / Math.PI;
   let diff = Math.abs(((n1.angle - truth) % 360 + 540) % 360 - 180); assert(diff <= 22.6, 'noise within ±22.5: ' + diff);
   assert.equal(m.survey(gal).angle, n1.angle, 'same room same reading');
