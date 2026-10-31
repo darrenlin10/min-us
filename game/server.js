@@ -144,6 +144,7 @@ class Match {
     this.merchant = { tier: 0, invested: 0, upgradedRound: 0, open: true, sales: 0, profit: 0, sold: {} };
     this.guard = { open: true, sold: {} };
     this.trialRound = 0;
+    this.proposals = {};
     this.corpses = []; this.log = [];
     this.rooms = {};
     const camp = this.makeRoom(0, 0, 0, 'camp');
@@ -157,7 +158,7 @@ class Match {
         smuggler: smugSeats.has(p.id), coins: 2, hp: 3, status: 'alive', winType: null,
         x: 2 + Math.cos(i * 0.785) * 0.9, y: 2.2 + Math.sin(i * 0.785) * 0.7, d: 0,
         inv: [], slots: [], extras: 0, freeIssued: 0, trappedRound: 0, lockRound: 0, shieldRound: 0,
-        attackedRound: 0, mined: { round: 0, count: 0, mine: null }, contrib: 0, luck: 0, murderer: null, hauntRound: 0,
+        attackedRound: 0, roundContrib: 0, lastPropose: 0, mined: { round: 0, count: 0, mine: null }, contrib: 0, luck: 0, murderer: null, hauntRound: 0,
         notes: [], channel: null, disco: 0, lastMove: Date.now(),
         stats: { mined: 0, rooms: 0, deposited: 0, looted: 0, traps: 0, kills: 0, rescues: 0 },
       });
@@ -188,7 +189,7 @@ class Match {
     const r = {
       key: cellKey(gx, gy, d), gx, gy, d, cat, theme, safe: cat === 'camp' || cat === 'safe',
       doors: { n: false, e: false, s: false, w: false }, up: null, down: null, lightUntil: 0, dist: 99,
-      opening: false, reserve: 0, mineRound: 0, mineCount: 0, miner: null, chest: 0, chestClaim: null, pickup: null, pickupClaim: null, triggered: false,
+      opening: false, reserve: 0, mineRound: 0, mineCount: 0, chest: 0, chestClaim: null, pickup: null, pickupClaim: null, triggered: false,
     };
     this.rooms[r.key] = r; this.mapVersion++;
     return r;
@@ -197,13 +198,14 @@ class Match {
   // ---------- round flow
   beginRound() {
     this.round++; this.t = 0;
+    this.proposals = {}; // pledges last one round
     this.merchant.sales = 0; this.merchant.profit = 0; this.merchant.sold = {};
     this.guard.sold = {};
     for (const p of this.players) {
       if (p.status !== 'alive') continue;
       p.inv = p.inv.filter((it) => this.round <= it.issued + ITEMS[it.type].ttl - 1);
       p.slots = [this.newSlot('free'), this.newSlot('free')];
-      p.extras = 0; p.freeIssued = 0; p.channel = null;
+      p.extras = 0; p.freeIssued = 0; p.channel = null; p.roundContrib = 0;
       if (p.career === 'merchant') {
         const own = p.inv.filter((it) => it.type === 'potion' && it.personal).length;
         if (own < 3 && p.inv.length < INVENTORY) { p.inv.push(this.item('potion', { personal: true })); this.tell(p, 'Merchant perk: you received a personal healing potion.'); }
@@ -395,7 +397,6 @@ class Match {
       if (c.target.kind === 'pickup') { const r = this.rooms[c.target.room]; if (r && r.pickupClaim === p.id) r.pickupClaim = null; }
       if (c.target.kind === 'corpse') { const k = this.corpses.find((x) => x.id === c.target.id); if (k && k.claim === p.id) k.claim = null; }
     }
-    if (c.kind === 'mine') { const r = this.rooms[c.target.room]; if (r && r.miner === p.id && p.mined.count === 0) r.miner = null; }
     if (c.kind === 'explore') { const r = this.rooms[c.target.room]; if (r && r.drilling) delete r.drilling[c.target.dir]; }
   }
   stepChannels() {
@@ -759,7 +760,7 @@ class Match {
       if (!['field', 'return', 'settlement'].includes(ph)) return 'Deposits work during field, return and settlement.';
       const amt = Math.floor(+tg.amount);
       if (!(amt >= 1) || amt > p.coins) return 'Choose an amount you can afford.';
-      s.used = true; p.coins -= amt; this.fund += amt; p.contrib += amt; p.stats.deposited += amt;
+      s.used = true; p.coins -= amt; this.fund += amt; p.contrib += amt; p.roundContrib += amt; p.stats.deposited += amt;
       this.pub(`${p.name} contributed ${amt} coin${amt === 1 ? '' : 's'} to the escape fund.`);
       return;
     }
@@ -776,14 +777,14 @@ class Match {
       case 'pickaxe': {
         if (!r || r.cat !== 'mine') return 'Stand in a coin mine to use a pickaxe.';
         if (r.reserve <= 0) return 'This mine is exhausted.';
-        if (r.mineRound !== this.round) { r.mineRound = this.round; r.mineCount = 0; r.miner = null; }
+        if (r.mineRound !== this.round) { r.mineRound = this.round; r.mineCount = 0; }
         if (p.mined.round !== this.round) p.mined = { round: this.round, count: 0, mine: null };
         const cap = p.career === 'worker' ? 2 : 1;
         if (p.mined.count >= cap) return `You can mine at most ${cap} coin${cap > 1 ? 's' : ''} per round.`;
         if (p.mined.mine && p.mined.mine !== r.key) return 'You can work only one mine per round.';
-        if (r.miner && r.miner !== p.id) return 'Someone else is working this mine this round.';
+        if (this.players.some((o) => o !== p && o.channel && o.channel.kind === 'mine' && o.channel.target.room === r.key)) return 'Someone else is mining here right now — wait for them to finish.';
         if (r.mineCount >= 2) return 'This mine already produced 2 coins this round.';
-        r.miner = p.id; p.mined.mine = r.key;
+        p.mined.mine = r.key;
         this.startChannel(p, s, 'mine', { room: r.key }, CHANNEL_T); return;
       }
       case 'drill': {
@@ -905,6 +906,35 @@ class Match {
     if (!mt.volunteers.includes(p.id)) mt.volunteers.push(p.id);
   }
 
+  // ---------- contribution proposals (non-binding pledges; no coins move)
+  c_propose(p, m) {
+    if (p.status !== 'alive') return 'Only living players can propose.';
+    if (this.meeting) return 'Not during a meeting.';
+    if (!this.inCamp(p)) return 'Make proposals from a camp.';
+    if (Date.now() - p.lastPropose < 2000) return 'Wait a moment before editing again.';
+    const src = m.amounts && typeof m.amounts === 'object' ? m.amounts : {};
+    const amounts = {};
+    let total = 0;
+    for (const o of this.living()) {
+      const n = Math.floor(+src[o.id] || 0);
+      if (n < 0 || n > 99) return 'Amounts must be 0–99.';
+      if (n > 0) { amounts[o.id] = n; total += n; }
+    }
+    if (total <= 0) return 'Ask at least one player for a coin.';
+    const old = this.proposals[p.id];
+    p.lastPropose = Date.now();
+    this.proposals[p.id] = { by: p.id, amounts, total, votes: { [p.id]: true }, rev: (old ? old.rev : 0) + 1 };
+    this.pub(`${p.name} ${old ? 'updated' : 'posted'} a contribution plan (total ${total}). Open Pledges to approve or reject.`);
+  }
+  c_withdraw(p) { if (this.proposals[p.id]) { delete this.proposals[p.id]; this.pub(`${p.name} withdrew their contribution plan.`); } }
+  c_approve(p, m) {
+    if (p.status !== 'alive') return;
+    if (!this.inCamp(p)) return 'Approve or reject from a camp.';
+    const pr = this.proposals[m.by];
+    if (!pr || pr.rev !== m.rev) return 'That plan changed — check the new version.';
+    if (m.v === true || m.v === false) pr.votes[p.id] = m.v; else delete pr.votes[p.id];
+  }
+
   c_haunt(p) {
     if (p.status !== 'dead' || !p.murderer) return;
     if (p.hauntRound === this.round) return 'You already haunted this round.';
@@ -926,10 +956,11 @@ class Match {
       ...base,
       round: this.round, sec: this.sec, fund: this.fund, fare: FARE * living.length,
       log: this.log.slice(-8),
-      roster: this.players.map((o) => ({ id: o.id, name: o.name, color: o.color, career: o.career, appearance: o.appearance, status: o.status, connected: o.connected, contrib: o.contrib })),
+      roster: this.players.map((o) => ({ id: o.id, name: o.name, color: o.color, career: o.career, appearance: o.appearance, status: o.status, connected: o.connected, contrib: o.contrib, roundContrib: o.roundContrib })),
       merchant: { tier: this.merchant.tier, invested: this.merchant.invested, open: this.merchant.open, nextPrice: this.merchant.sales + 1, sold: this.merchant.sold, upgradedRound: this.merchant.upgradedRound },
       guard: { open: this.guard.open, sold: { lock: !!this.guard.sold.lock, shield: !!this.guard.sold.shield } },
       trialUsed: this.trialRound === this.round,
+      proposals: Object.values(this.proposals).map((pr) => ({ ...pr, votes: { ...pr.votes } })),
       meeting: this.meeting && {
         type: this.meeting.type, remaining: this.meeting.remaining / TICK_HZ, caller: this.meeting.caller, accused: this.meeting.accused,
         electorate: this.meeting.electorate.length, voted: Object.keys(this.meeting.votes).length, myVote: this.meeting.votes[p.id],

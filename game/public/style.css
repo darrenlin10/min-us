@@ -61,7 +61,7 @@ h1, h2, h3 { margin: 0 0 8px; }
 .side button { min-width: 74px; }
 .big { padding: 10px 14px; font-weight: 700; }
 
-.sheet { position: fixed; right: 8px; top: 64px; bottom: 96px; width: min(440px, calc(100vw - 16px)); background: var(--panel); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; overflow: hidden; z-index: 5; }
+.sheet { position: fixed; right: 8px; top: 64px; bottom: 96px; width: min(440px, calc(100vw - 16px)); background: #2a2236; border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; overflow: hidden; z-index: 5; }
 .sheet .hd { display: flex; align-items: center; gap: 6px; padding: 8px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 .sheet .bd { overflow: auto; padding: 10px; flex: 1; }
 .tabs button { padding: 5px 9px; font-size: 13px; }

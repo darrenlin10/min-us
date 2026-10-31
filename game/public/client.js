@@ -5,7 +5,7 @@ import {
 } from './shared.js';
 
 // ------------------------------------------------------------ state & network
-const S = { conn: 'connecting', view: null, rooms: {}, mapVersion: 0, me: { x: 0, y: 0, d: 0 }, toasts: [], disp: {}, error: '' };
+const S = { screen: 'menu', conn: 'connecting', view: null, rooms: {}, mapVersion: 0, me: { x: 0, y: 0, d: 0 }, toasts: [], disp: {}, error: '' };
 let ws, joinMsg = null, rerender = () => {};
 const store = {
   get token() { try { return localStorage.getItem('me_token'); } catch { return null; } },
@@ -14,14 +14,28 @@ const store = {
   set name(v) { try { localStorage.setItem('me_name', v); } catch {} },
 };
 const urlCode = (location.pathname.match(/^\/room\/([A-Za-z]{4})/) || [])[1];
+if (urlCode && store.token) S.screen = 'play'; // refresh during a match resumes directly
 
 function connect() {
   ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');
-  ws.onopen = () => { S.conn = 'open'; if (store.token) send({ t: 'join', token: store.token, code: urlCode, rejoin: !joinMsg }); else if (joinMsg) send(joinMsg); rerender(); };
+  ws.onopen = () => { S.conn = 'open'; if (S.screen !== 'play') { rerender(); return; } if (store.token) send({ t: 'join', token: store.token, code: urlCode, rejoin: !joinMsg }); else if (joinMsg) send(joinMsg); rerender(); };
   ws.onclose = () => { S.conn = 'closed'; rerender(); setTimeout(connect, 1500); };
   ws.onmessage = (e) => onMsg(JSON.parse(e.data));
 }
 const send = (o) => ws && ws.readyState === 1 && ws.send(JSON.stringify(o));
+
+function goMenu() {
+  S.screen = 'menu'; S.view = null; S.rooms = {}; joinMsg = null;
+  if (ws) ws.close(); // the server keeps our seat for one round of game time
+  history.replaceState(null, '', '/'); rerender();
+}
+function resume() { S.screen = 'play'; S.error = ''; if (ws && ws.readyState === 1) send({ t: 'join', token: store.token, rejoin: true }); rerender(); }
+function quit() {
+  if (store.token) send({ t: 'leave' });
+  store.token = null; S.screen = 'quit'; S.view = null; joinMsg = null;
+  if (ws) ws.close();
+  history.replaceState(null, '', '/'); rerender();
+}
 
 function toast(msg, kind = 'info') {
   const id = Math.random();
@@ -299,31 +313,85 @@ const Icon = ({ k, sm }) => html`<img class=${'icon' + (sm ? ' sm' : '')} src=${
 const fmt = (s) => `${Math.max(0, Math.ceil(s))}s`;
 const itemLabel = (it) => `${ITEMS[it.type].name}${it.personal ? ' (perk)' : ''} · until R${it.expires}`;
 
-function JoinScreen() {
-  const [name, setName] = useState(store.name);
-  const [code, setCode] = useState(urlCode || '');
+const CAREER_ORDER = ['worker', 'explorer', 'merchant', 'guard', 'thief', 'scavenger'];
+function MainMenu() {
+  const [tab, setTab] = useState('goal');
   const [rules, setRules] = useState(false);
-  const go = (c) => {
-    const n = name.trim(); if (n.length < 2) { S.error = 'Enter a nickname (2–18 characters).'; rerender(); return; }
-    store.name = n; store.token = null;
-    joinMsg = { t: 'join', name: n, code: c }; send(joinMsg);
+  const panels = {
+    goal: html`<p>The mine collapsed behind your crew. You have <b>${ROUNDS} rounds</b> to get out.</p>
+      <ul><li>Everyone starts with <b>2 coins</b> and <b>3 HP</b>.</li>
+      <li>Mine, explore and trade, then put coins into the shared <b>escape fund</b>.</li>
+      <li>When the fund reaches <b>${FARE} × living players</b> at the end of a round, the whole group escapes.</li>
+      <li>Rare <b>natural exits</b> hide 14+ rooms away — finding one saves every survivor for free.</li>
+      <li>Every round: walk back to a <b>camp</b> to prepare, go out to use your actions, then walk back again.</li></ul>`,
+    careers: html`<p>Your career is public — everyone sees your outfit.</p>
+      <div class="col">${CAREER_ORDER.map((c) => html`<div class="item"><img src=${charSrc(c)} style="width:40px" /><div class="grow"><b>${CAREERS[c].name}</b><small>${CAREERS[c].blurb}</small></div></div>`)}</div>`,
+    smuggler: html`<p>0–2 players are secretly <b class="smug">Smugglers</b>. A Smuggler looks exactly like a normal career and has its full abilities.</p>
+      <ul><li>Smugglers win alone by holding <b>${SMUGGLER_FARE} coins</b> in their own wallet at a round's end (a private escape).</li>
+      <li>Wallets are private — but contributions to the fund are public. Who promised coins and never paid?</li>
+      <li>You can steal, fight, or put a suspect on trial (majority vote) — but you might be wrong.</li>
+      <li>Your private identity card (🪪) tells you if you are one. Identities are revealed when the match ends.</li></ul>`,
+    controls: html`<ul>
+      <li><b>Move:</b> WASD / arrow keys, or drag anywhere on the screen (phone).</li>
+      <li><b>🏕 Camp</b> (bottom right): fill your action slots, shop, buy services, post pledges.</li>
+      <li><b>Action slots</b> (bottom): tap one during field time to use it where you stand.</li>
+      <li><b>Ladders:</b> stand on one and press E or the Climb button.</li>
+      <li><b>🪪</b> shows your secret identity · <b>📖</b> full rules · <b>☰</b> menu.</li></ul>`,
   };
-  return html`<div class="screen"><div style="width:100%;max-width:520px">
+  return html`<div class="screen"><div style="width:100%;max-width:560px">
     <div class="card">
       <div class="title">⛏ MINE ESCAPE</div>
-      <p class="muted">The mine collapsed. Pool coins to pay everyone's way out in 10 rounds — but one of you might be a <b class="smug">Smuggler</b> saving up for a private escape.</p>
-      <div class="cast">${['worker', 'explorer', 'merchant', 'guard', 'thief', 'scavenger'].map((a) => html`<img src=${charSrc(a)} alt=${a} />`)}</div>
+      <div class="muted">A multiplayer game of cooperation and secret greed · 2–8 players · each on their own device</div>
+      <div class="cast">${CAREER_ORDER.map((a) => html`<img src=${charSrc(a)} alt=${a} />`)}</div>
       <div class="col">
-        <label>Nickname<br/><input maxlength="18" value=${name} onInput=${(e) => setName(e.target.value)} placeholder="Your name" style="width:100%" /></label>
-        ${urlCode ? html`<button class="primary big" onClick=${() => go(code)}>Join room ${code.toUpperCase()}</button>` : html`
-        <button class="primary big" onClick=${() => go('')}>Create a new room</button>
-        <div class="row"><input class="grow" maxlength="4" value=${code} onInput=${(e) => setCode(e.target.value.toUpperCase())} placeholder="ROOM CODE" style="text-transform:uppercase;letter-spacing:3px" /><button onClick=${() => go(code)} disabled=${code.length !== 4}>Join</button></div>`}
-        ${S.error && html`<div class="bad">${S.error}</div>`}
-        <button onClick=${() => setRules(true)}>📖 How to play</button>
+        ${store.token && html`<button class="primary big" onClick=${resume}>▶ Resume your game</button>`}
+        <button class=${store.token ? 'big' : 'primary big'} onClick=${() => { S.screen = 'play'; S.error = ''; rerender(); }}>${urlCode ? `▶ Start game (join room ${urlCode.toUpperCase()})` : '▶ Start game'}</button>
+        <button onClick=${quit}>✕ Quit game</button>
       </div>
-      <p class="muted" style="font-size:12px">2–8 players, each on their own phone or computer. No login or install.</p>
+    </div>
+    <div class="card">
+      <div class="row tabs" style="margin-bottom:8px">${[['goal', '🎯 Objective'], ['careers', '⛏ Careers'], ['smuggler', '🕵 Smugglers'], ['controls', '🎮 Controls']].map(([k, l]) => html`<button class=${tab === k ? 'on' : ''} onClick=${() => setTab(k)}>${l}</button>`)}</div>
+      <div class="rules">${panels[tab]}</div>
+      <button onClick=${() => setRules(true)}>📖 Full rules</button>
     </div></div>
     ${rules && html`<${RulesModal} close=${() => setRules(false)} />`}
+  </div>`;
+}
+
+function QuitScreen() {
+  return html`<div class="screen"><div class="card" style="text-align:center">
+    <div class="title">Thanks for playing!</div>
+    <p class="muted">You left the game. You can close this tab now.</p>
+    <button class="primary" onClick=${() => { S.screen = 'menu'; rerender(); }}>Back to main menu</button>
+  </div></div>`;
+}
+
+function JoinScreen() {
+  const [name, setName] = useState(store.name);
+  const [code, setCode] = useState((urlCode || '').toUpperCase());
+  const go = (c) => {
+    const n = name.trim(); if (n.length < 2) { S.error = 'Enter a nickname (2–18 characters) first.'; rerender(); return; }
+    store.name = n; store.token = null; S.error = '';
+    joinMsg = { t: 'join', name: n, code: c }; send(joinMsg);
+  };
+  return html`<div class="screen"><div style="width:100%;max-width:560px">
+    <div class="card">
+      <div class="row"><h2 class="grow">🏕 Game lobby</h2><button class="small" onClick=${() => { S.screen = 'menu'; S.error = ''; rerender(); }}>← Main menu</button></div>
+      <label>Your nickname<br/><input maxlength="18" value=${name} onInput=${(e) => setName(e.target.value)} placeholder="2–18 characters" style="width:100%" /></label>
+      ${S.error && html`<div class="bad" style="margin-top:6px">${S.error}</div>`}
+      ${S.conn !== 'open' && html`<div class="warn" style="margin-top:6px">Connecting to the server…</div>`}
+    </div>
+    <div class="card">
+      <h3>➕ Create a room</h3>
+      <p class="muted" style="font-size:13px">Get a new unique room code to share with your friends (2–8 players).</p>
+      <button class="primary big" style="width:100%" disabled=${S.conn !== 'open'} onClick=${() => go('')}>Create room</button>
+    </div>
+    <div class="card">
+      <h3>🔑 Join a room</h3>
+      <p class="muted" style="font-size:13px">Enter the 4-letter code from the room's creator (or open their invite link).</p>
+      <div class="row"><input class="grow" maxlength="4" value=${code} onInput=${(e) => setCode(e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))} placeholder="CODE" style="text-transform:uppercase;letter-spacing:4px;font-size:20px" />
+        <button class="primary big" disabled=${code.length !== 4 || S.conn !== 'open'} onClick=${() => go(code)}>Join</button></div>
+    </div></div>
   </div>`;
 }
 
@@ -348,7 +416,7 @@ function Lobby({ v }) {
       <div class="row">
         <button class=${me && me.ready ? '' : 'primary'} style="flex:1" onClick=${() => send({ t: 'ready', v: !(me && me.ready) })} disabled=${n < 2}>${me && me.ready ? 'Cancel ready' : n < 2 ? 'Waiting for players…' : "I'm ready"}</button>
         <button onClick=${() => setRules(true)}>📖 Rules</button>
-        <button class="danger" onClick=${() => { send({ t: 'leave' }); store.token = null; history.replaceState(null, '', '/'); location.reload(); }}>Leave</button>
+        <button class="danger" onClick=${() => { send({ t: 'leave' }); store.token = null; goMenu(); }}>Leave room</button>
       </div>
     </div></div>
     ${rules && html`<${RulesModal} close=${() => setRules(false)} />`}
@@ -368,7 +436,7 @@ function RulesModal({ close }) {
     <h3>Actions</h3>
     <p>You get <b>2 free action slots</b> per round (buy up to 2 more from the Merchant). In camp, fill each slot: a free basic tool (pickaxe, hook, crowbar…), an item you own, or a <b>Deposit</b>/<b>Trial</b> marker. In the field, tap a slot to use it. Physical actions take 3 seconds standing still — moving or getting hit cancels them and the tool is spent. Unused items stay in your 7-slot bag until they expire; unused actions do not carry over.</p>
     <ul>
-      <li><b>Pickaxe</b> — mine 1 coin in a coin mine (Workers up to 2/round; a mine gives max 2 per round, 8 total).</li>
+      <li><b>Pickaxe</b> — mine 1 coin in a coin mine (Workers up to 2/round, others 1). First come, first served: one person mines at a time; a mine gives at most 2 coins per round and 8 in total.</li>
       <li><b>Drill</b> (Explorer only) — open a new room through a sealed wall, or downward. Finds mines, treasure, caches, new camps, traps or empty galleries.</li>
       <li><b>Crowbar</b> — loot a treasure chest, a dropped item, or half of a body's coins (Scavengers take all).</li>
       <li><b>Hook</b> — pick a victim in camp; when choices close, if you're still in the same room, you silently steal 1 coin (Thief: 2).</li>
@@ -379,8 +447,9 @@ function RulesModal({ close }) {
     <h3>Careers</h3>
     <ul>${Object.entries(CAREERS).map(([k, c]) => html`<li><b>${c.name}</b> — ${c.blurb}</li>`)}</ul>
     <h3>Other rules</h3>
+    <p><b>Pledges</b> (Camp → Pledges): post a plan asking each player for coins; others approve or reject. Pledges are promises only — compare them with what people actually gave.</p>
     <p>Traps snare the Explorer for the next round's field time (a Merchant rescue kit frees them). Dark rooms limit sight; lanterns light them. If no Explorer is left alive, survivors elect a new one. Dead players become ghosts who see everyone and can haunt their killer once per round. Disconnected players have one round of game time to reconnect from the same browser.</p>
-    <p class="muted">Controls: WASD/arrow keys or drag anywhere on the screen to walk. E or the Climb button uses ladders.</p>
+    <p class="muted">Controls: WASD/arrow keys or drag anywhere on the screen to walk. E or the Climb button uses ladders. ☰ returns to the main menu (resume within one round or forfeit).</p>
   </div></div>`;
 }
 
@@ -388,8 +457,11 @@ function RulesModal({ close }) {
 function Game({ v }) {
   const [tab, setTab] = useState(null);
   const [picker, setPicker] = useState(null);
-  const [showId, setShowId] = useState(v.round === 1 && v.sec < 8);
+  const idKey = 'me_idseen_' + v.code;
+  const [showId, setShowId] = useState(() => { try { return v.round === 1 && !sessionStorage.getItem(idKey); } catch { return v.round === 1 && v.sec < 8; } });
+  const closeId = () => { setShowId(false); try { sessionStorage.setItem(idKey, '1'); } catch {} };
   const [rules, setRules] = useState(false);
+  const [menu, setMenu] = useState(false);
   const y = v.you;
   const ph = phaseAt(v.sec);
   const left = ph.end - v.sec;
@@ -422,6 +494,7 @@ function Game({ v }) {
       ${S.conn !== 'open' && html`<span class="chip bad">reconnecting…</span>`}
       <button class="small" onClick=${() => setShowId(true)}>🪪 ${careerName(y.career)}</button>
       <button class="small" onClick=${() => setRules(true)}>📖</button>
+      <button class="small" onClick=${() => setMenu(true)}>☰</button>
     </div>
     <div class="feed">${S.toasts.map((t) => html`<div class="toast ${t.kind}" key=${t.id}>${t.msg}</div>`)}</div>
     ${hint && !picker && html`<div class="hint">${hint}</div>`}
@@ -434,13 +507,18 @@ function Game({ v }) {
       </div>
       ${alive ? html`<div class="slots">${y.slots.map((s, i) => html`<${SlotBtn} s=${s} i=${i} v=${v} onPick=${setPicker} />`)}</div>` : html`<div></div>`}
       <div class="side">
-        <button class="big" onClick=${() => setTab(tab ? null : alive ? 'loadout' : 'people')}>${y.inCamp ? '🏕 Camp' : '🎒 Info'}</button>
+        <button class="big" onClick=${() => setTab(tab ? null : alive ? 'loadout' : 'people')}>${y.inCamp ? '🏕 Camp' : '🎒 Info'}${(v.proposals || []).length ? ` · 📜${v.proposals.length}` : ''}</button>
       </div>
     </div>
     ${picker && html`<${Picker} p=${picker} v=${v} close=${() => setPicker(null)} />`}
     ${tab && html`<${Sheet} v=${v} tab=${tab} setTab=${setTab} />`}
-    ${showId && html`<${IdCard} v=${v} close=${() => setShowId(false)} />`}
+    ${showId && html`<${IdCard} v=${v} close=${closeId} />`}
     ${rules && html`<${RulesModal} close=${() => setRules(false)} />`}
+    ${menu && html`<div class="modal" onClick=${() => setMenu(false)}><div class="card" onClick=${(e) => e.stopPropagation()}>
+      <h2>Return to main menu?</h2>
+      <p class="muted">Your character stays in the mine and can be robbed or attacked. Resume from the main menu within one round of game time (${ROUND_SECONDS}s) or you forfeit: your coins drop as a body and you can't come back.</p>
+      <div class="row"><button class="danger" onClick=${goMenu}>Return to main menu</button><button onClick=${() => setMenu(false)}>Keep playing</button></div>
+    </div></div>`}
     ${S.haunt && html`<img class="haunt" style=${{ [Math.random() < 0.5 ? 'left' : 'right']: '6px' }} src=${charSrc(S.haunt.appearance)} />`}
   `;
 }
@@ -539,7 +617,7 @@ function Meeting({ v }) {
 
 function Sheet({ v, tab, setTab }) {
   const y = v.you, alive = y.status === 'alive';
-  const tabs = alive ? [['loadout', 'Actions'], ['machine', 'Machine'], ['merchant', 'Merchant'], ['guard', 'Guard'], ['bag', `Bag ${y.inv.length}/${INVENTORY}`], ['people', 'People']] : [['people', 'People']];
+  const tabs = alive ? [['loadout', 'Actions'], ['machine', 'Machine'], ['merchant', 'Merchant'], ['guard', 'Guard'], ['pledges', `Pledges${(v.proposals || []).length ? ' ' + v.proposals.length : ''}`], ['bag', `Bag ${y.inv.length}/${INVENTORY}`], ['people', 'People']] : [['pledges', 'Pledges'], ['people', 'People']];
   const sec = v.sec, ph = phaseAt(sec).id;
   const shopOpen = y.inCamp && sec >= 10 && sec < SHOP_CLOSE && !v.meeting;
   const loadOpen = y.inCamp && sec < CHOICE_CLOSE && !v.meeting;
@@ -552,6 +630,7 @@ function Sheet({ v, tab, setTab }) {
   else if (tab === 'merchant') body = html`${shopNote}<${Merchant} v=${v} open=${shopOpen} />`;
   else if (tab === 'guard') body = html`${shopNote}<${Guard} v=${v} open=${shopOpen} />`;
   else if (tab === 'bag') body = html`<${Bag} v=${v} />`;
+  else if (tab === 'pledges') body = html`<${Pledges} v=${v} />`;
   else body = html`<${People} v=${v} />`;
   return html`<div class="sheet">
     <div class="hd tabs">${tabs.map(([k, l]) => html`<button class=${tab === k ? 'on' : ''} onClick=${() => setTab(k)}>${l}</button>`)}<span class="grow"></span><button class="small" onClick=${() => setTab(null)}>✕</button></div>
@@ -644,6 +723,42 @@ function Guard({ v, open }) {
       <button class="small" disabled=${!open || g.sold.shield || y.coins < 2} onClick=${() => send({ t: 'guardBuy', svc: 'shield' })}>${g.sold.shield ? 'Sold' : 'Buy'}</button></div>`;
 }
 
+function Pledges({ v }) {
+  const y = v.you, alive = y.status === 'alive';
+  const living = v.roster.filter((r) => r.status === 'alive');
+  const name = (id) => (v.roster.find((r) => r.id === id) || {}).name || id;
+  const mine = (v.proposals || []).find((p) => p.by === v.me);
+  const [draft, setDraft] = useState(() => (mine ? { ...mine.amounts } : {}));
+  const total = living.reduce((a, r) => a + (draft[r.id] || 0), 0);
+  const need = Math.max(0, v.fare - v.fund);
+  const split = () => { const d = {}, n = living.length; living.forEach((r, i) => (d[r.id] = Math.floor(need / n) + (i < need % n ? 1 : 0))); setDraft(d); };
+  const can = alive && y.inCamp && !v.meeting;
+  return html`
+    <div class="note">Pledges are <b>promises, not payments</b>: no coins move. Everyone still pays with their own Deposit action. Compare "asked" with "gave this round" to see who kept their word. Plans reset every round.</div>
+    <div>Fund <b class="gold">${v.fund}</b> / fare ${v.fare} · still needed <b>${need}</b></div>
+    ${(v.proposals || []).length === 0 && html`<p class="muted">No plans posted this round.</p>`}
+    ${(v.proposals || []).map((pr) => {
+      const yes = Object.entries(pr.votes).filter(([, x]) => x).map(([k]) => name(k)), no = Object.entries(pr.votes).filter(([, x]) => !x).map(([k]) => name(k));
+      const my = pr.votes[v.me];
+      return html`<div class="note" style="color:var(--ink)">
+        <b>${name(pr.by)}'s plan</b> · total <b class="gold">${pr.total}</b>
+        <table><tr><th>Player</th><th>Asked</th><th>Gave this round</th></tr>
+          ${Object.entries(pr.amounts).map(([id, n]) => { const r = v.roster.find((x) => x.id === id) || {}; return html`<tr><td>${name(id)}${r.status && r.status !== 'alive' ? ' (' + r.status + ')' : ''}</td><td class="gold">${n}</td><td class=${(r.roundContrib || 0) >= n ? 'good' : ''}>${r.roundContrib || 0}</td></tr>`; })}</table>
+        <div style="font-size:13px;margin:4px 0">👍 ${yes.join(', ') || '—'} · 👎 ${no.join(', ') || '—'}</div>
+        ${alive && pr.by !== v.me && html`<div class="row"><button class=${'small' + (my === true ? ' primary' : '')} disabled=${!can} onClick=${() => send({ t: 'approve', by: pr.by, rev: pr.rev, v: my === true ? null : true })}>👍 Approve</button>
+          <button class=${'small' + (my === false ? ' danger' : '')} disabled=${!can} onClick=${() => send({ t: 'approve', by: pr.by, rev: pr.rev, v: my === false ? null : false })}>👎 Reject</button></div>`}
+      </div>`;
+    })}
+    ${alive && html`<h3 style="margin-top:10px">${mine ? 'Edit your plan' : 'Post a plan'}</h3>
+      ${!can && html`<div class="note warn">Go to a camp to post or approve plans.</div>`}
+      ${living.map((r) => html`<div class="row" style="margin:3px 0"><span class="grow"><span class="dot" style=${{ background: r.color }}></span>${r.name}${r.id === v.me ? ' (you)' : ''}</span>
+        <button class="small" onClick=${() => setDraft({ ...draft, [r.id]: Math.max(0, (draft[r.id] || 0) - 1) })}>−</button><b style="min-width:26px;text-align:center">${draft[r.id] || 0}</b>
+        <button class="small" onClick=${() => setDraft({ ...draft, [r.id]: Math.min(99, (draft[r.id] || 0) + 1) })}>+</button></div>`)}
+      <div class="row" style="margin-top:6px"><button class="small" onClick=${split}>Split what's needed (${need})</button><span class="grow">Total ${total}</span>
+        <button class="primary small" disabled=${!can || total <= 0} onClick=${() => send({ t: 'propose', amounts: draft })}>${mine ? 'Update plan' : 'Post plan'}</button>
+        ${mine && html`<button class="small" onClick=${() => send({ t: 'withdraw' })}>Withdraw</button>`}</div>`}`;
+}
+
 function Bag({ v }) {
   const y = v.you;
   return html`<h3>Bag ${y.inv.length}/${INVENTORY}</h3>
@@ -679,15 +794,17 @@ function Results({ v }) {
       if (s.looted) bits.push(`looted ${s.looted}`); if (s.kills) bits.push(`eliminated ${s.kills}`); if (s.traps) bits.push(`hit ${s.traps} trap${s.traps > 1 ? 's' : ''}`); if (s.rescues) bits.push(`rescued ${s.rescues}`);
       return bits.length ? html`<li><b>${p.name}</b> ${bits.join(', ')}.</li>` : ''; })}</ul>
     <div class="row"><button class="primary" onClick=${() => send({ t: 'rematch' })}>Play again (back to lobby)</button>
-      <button onClick=${() => { store.token = null; location.href = '/'; }}>Leave</button></div>
+      <button onClick=${() => { store.token = null; goMenu(); }}>Main menu</button></div>
   </div></div>`;
 }
 
 function App() {
   const [, set] = useState(0);
   useEffect(() => { rerender = () => set((n) => n + 1); }, []);
+  if (S.screen === 'menu') return html`<${MainMenu} />`;
+  if (S.screen === 'quit') return html`<${QuitScreen} />`;
   const v = S.view;
-  if (!v) return S.conn !== 'open' && store.token ? html`<div class="screen"><div class="card">Connecting…</div></div>` : html`<${JoinScreen} />`;
+  if (!v) return store.token ? html`<div class="screen"><div class="card">Connecting… <button class="small" onClick=${goMenu}>Main menu</button></div></div>` : html`<${JoinScreen} />`;
   if (v.state === 'lobby') return html`<${Lobby} v=${v} />`;
   if (v.state === 'over') return html`<${Results} v=${v} />`;
   return html`<${Game} v=${v} />`;

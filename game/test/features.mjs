@@ -315,7 +315,23 @@ test('ghost sees everyone and can haunt murderer once per round', () => {
   w.lastMove = Date.now() - 300; const gx = w.x; m.c_mv(w, { x: w.x - 0.3, y: w.y }); assert.notEqual(w.x, gx, 'ghost moves');
 });
 
-test('mining limits: one miner per mine, 2/round per mine, cap per career, reserve 8', () => {
+test('mines are first-come: busy only while someone mines; next player can take the rest', () => {
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
+  const [w, ex, me] = m.players;
+  runTo(m, FIELD_START + 1);
+  const mine = room(m, 1, 0, 'mine'); mine.reserve = 8;
+  at(w, mine); at(me, mine, 2.5, 2.5);
+  give(m, me, 'pickaxe', 0); give(m, w, 'pickaxe', 0); give(m, w, 'pickaxe', 1);
+  assert.equal(cmd(m, me, { t: 'act', slot: me.slots[0].id }), null);
+  assert.match(cmd(m, w, { t: 'act', slot: w.slots[0].id }), /right now/);
+  assert(!w.slots[0].used, 'rejected start costs nothing');
+  finish(m, me);
+  assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null); finish(m, w);
+  assert.equal(w.coins, 21); assert.equal(me.coins, 21);
+  assert.match(cmd(m, w, { t: 'act', slot: w.slots[1].id }), /2 coins this round/);
+});
+
+test('mining limits: 2/round per mine, cap per career, reserve 8', () => {
   const m = setup(3, ['worker', 'explorer', 'merchant']);
   const [w, ex, me] = m.players;
   runTo(m, FIELD_START + 1);
@@ -323,7 +339,7 @@ test('mining limits: one miner per mine, 2/round per mine, cap per career, reser
   at(w, mine); at(me, mine, 2.5, 2.5);
   give(m, w, 'pickaxe', 0); give(m, w, 'pickaxe', 1); give(m, me, 'pickaxe', 0);
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null);
-  assert.match(cmd(m, me, { t: 'act', slot: me.slots[0].id }), /Someone else/);
+  assert.match(cmd(m, me, { t: 'act', slot: me.slots[0].id }), /right now/);
   finish(m, w); assert.equal(cmd(m, w, { t: 'act', slot: w.slots[1].id }), null); finish(m, w);
   assert.equal(w.coins, 22); assert.equal(mine.reserve, 1);
   w.slots.push(m.newSlot('extra')); give(m, w, 'pickaxe', 2);
@@ -344,6 +360,28 @@ test('field cutoff interrupts unfinished channels; deposits allowed after field'
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[0].id }), null);
   runTo(m, FIELD_END + 1); assert.equal(w.channel, null); assert.equal(w.coins, 20);
   assert.equal(cmd(m, w, { t: 'act', slot: w.slots[1].id, target: { amount: 5 } }), null); assert.equal(m.fund, 5);
+});
+
+test('contribution proposals: camp-only, edits reset approvals, cleared each round, no coins move', () => {
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
+  const [a, b, c] = m.players;
+  assert.equal(cmd(m, a, { t: 'propose', amounts: { [a.id]: 3, [b.id]: 2, [c.id]: 0 } }), null);
+  const pr = m.proposals[a.id]; assert.equal(pr.total, 5); assert.equal(pr.votes[a.id], true);
+  assert.equal(cmd(m, b, { t: 'approve', by: a.id, rev: pr.rev, v: true }), null);
+  assert.equal(cmd(m, c, { t: 'approve', by: a.id, rev: pr.rev, v: false }), null);
+  assert.equal(m.fund, 0); assert.equal(a.coins, 20);
+  at(c, room(m, 1, 0, 'gallery'));
+  assert.match(cmd(m, c, { t: 'approve', by: a.id, rev: pr.rev, v: true }), /camp/);
+  assert.match(cmd(m, c, { t: 'propose', amounts: { [a.id]: 1 } }), /camp/);
+  a.lastPropose = 0;
+  assert.equal(cmd(m, a, { t: 'propose', amounts: { [a.id]: 4, [b.id]: 4 } }), null);
+  const pr2 = m.proposals[a.id]; assert.equal(pr2.rev, 2); assert.deepEqual(Object.keys(pr2.votes), [a.id], 'edit resets approvals');
+  assert.match(cmd(m, b, { t: 'approve', by: a.id, rev: 1, v: true }), /changed/);
+  a.lastPropose = 0; assert.match(cmd(m, a, { t: 'propose', amounts: { [a.id]: 0 } }), /at least one/);
+  a.lastPropose = 0; assert.match(cmd(m, a, { t: 'propose', amounts: { [a.id]: -2 } }), /0–99/);
+  const v = m.view(b, false); assert.equal(v.proposals.length, 1);
+  nextRound(m); assert.equal(Object.keys(m.proposals).length, 0, 'cleared at round end');
+  assert.equal(cmd(m, b, { t: 'withdraw' }), null);
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);
