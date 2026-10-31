@@ -431,5 +431,30 @@ test('interrupted actions keep the tool and action; completed ones use them up',
   assert(ex.inv.includes(d) && !ex.slots[0].used && !m.rooms['0,-1,0'], 'field cutoff refunds, no room opened');
 });
 
+test('unused tool slots carry over (max 2, locked), plus 2 new free slots; 4-action cap', () => {
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
+  const [w, ex, me] = m.players;
+  runTo(m, 12);
+  cmd(m, w, { t: 'setSlot', slot: w.slots[0].id, what: 'free:pickaxe' });
+  cmd(m, w, { t: 'setSlot', slot: w.slots[1].id, what: 'deposit' });
+  assert.equal(cmd(m, w, { t: 'buyExtra' }), null);
+  cmd(m, w, { t: 'buy', item: 'hook' }); cmd(m, w, { t: 'setSlot', slot: w.slots[2].id, what: 'item:' + w.inv.find((i) => i.type === 'hook').id });
+  const pick = w.slots[0].item;
+  nextRound(m);
+  assert.deepEqual(w.slots.map((s) => s.kind), ['free', 'free', 'saved', 'saved'], 'two saved + two new');
+  assert.equal(w.slots[2].item, pick, 'pickaxe still in its slot');
+  assert.match(cmd(m, w, { t: 'setSlot', slot: w.slots[2].id, what: 'deposit' }) || '', /locked/);
+  runTo(m, 12);
+  assert.match(cmd(m, w, { t: 'buyExtra' }), /4 actions/);
+  // using it in the field consumes only that saved slot
+  runTo(m, FIELD_START + 1);
+  const mine = room(m, 1, 0, 'mine'); mine.reserve = 8; at(w, mine);
+  assert.equal(cmd(m, w, { t: 'act', slot: w.slots[2].id }), null); finish(m, w);
+  assert(w.slots[2].used && w.coins === 20 - 1 - 1 + 1);
+  // markers/empties don't carry; nothing carries beyond expiry
+  nextRound(m); assert.equal(w.slots.filter((s) => s.kind === 'saved').length, 1, 'unused hook still carries');
+  nextRound(m); assert.equal(w.slots.filter((s) => s.kind === 'saved').length, 0, 'hook expired (TTL 2) so its slot is gone');
+});
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

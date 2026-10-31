@@ -45,7 +45,6 @@ const server = http.createServer((req, res) => {
 });
 
 // ---------------------------------------------------------------- matches
-process.on('uncaughtException', (err) => console.error('uncaught', err));
 const timers = [];
 const matches = new Map(); // code -> Match
 const sessions = new Map(); // token -> { code, pid }
@@ -203,7 +202,11 @@ class Match {
     for (const p of this.players) {
       if (p.status !== 'alive') continue;
       p.inv = p.inv.filter((it) => this.round <= it.issued + ITEMS[it.type].ttl - 1);
-      p.slots = [this.newSlot('free'), this.newSlot('free')];
+      // Unused slots holding a still-valid tool carry over (locked to that tool), max 2, so the
+      // round total including 2 new free slots stays within the 4-action limit.
+      const saved = p.slots.filter((s) => !s.used && s.item && !s.service && p.inv.some((it) => it.id === s.item && !(ITEMS[it.type].weapon && (it.paidS || 0) < surcharge(this.round)))).slice(0, 2);
+      p.slots = [this.newSlot('free'), this.newSlot('free'), ...saved.map((s) => ({ ...this.newSlot('saved'), item: s.item }))];
+      if (saved.length) this.tell(p, `${saved.length} unused action${saved.length > 1 ? 's' : ''} with ${saved.length > 1 ? 'their tools were' : 'its tool was'} saved from last round.`, 'good');
       p.extras = 0; p.freeIssued = 0; p.channel = null; p.roundContrib = 0;
       if (p.career === 'merchant') {
         const own = p.inv.filter((it) => it.type === 'potion' && it.personal).length;
@@ -609,6 +612,7 @@ class Match {
     const e = this.campCheck(p, CHOICE_CLOSE); if (e) return e;
     const s = p.slots.find((x) => x.id === m.slot); if (!s || s.used) return 'Invalid slot.';
     if (s.service) return 'This kit is committed to a paid Guard service.';
+    if (s.kind === 'saved') return 'A saved action stays locked to its tool — use it in the field (or discard the tool).';
     const what = String(m.what || 'none');
     if (what === 'none') { Object.assign(s, { item: null, marker: null, target: null }); return; }
     if (what === 'deposit' || what === 'trial') { Object.assign(s, { item: null, marker: what, target: null }); return; }
@@ -682,7 +686,7 @@ class Match {
     const mer = this.merchantP();
     if (!mer) return 'There is no living Merchant.';
     if (mer !== p && (!this.merchant.open || !this.inCamp(mer))) return 'The Merchant must be in a camp and open for business.';
-    if (p.extras >= 2) return 'At most 2 extra actions (4 total).';
+    if (p.extras >= 2 || p.slots.length >= 4) return 'At most 4 actions per round (saved actions count too).';
     const price = this.merchant.sales + 1;
     if (p.coins < price) return `An extra action costs ${price} now.`;
     p.coins -= price;
@@ -1116,6 +1120,9 @@ timers.push(setInterval(() => {
   }
 }, 1000 / TICK_HZ));
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) server.listen(PORT, () => console.log(`Mine Escape listening on http://localhost:${PORT}`));
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  process.on('uncaughtException', (err) => console.error('uncaught', err)); // keep other rooms alive
+  server.listen(PORT, () => console.log(`Mine Escape listening on http://localhost:${PORT}`));
+}
 else { clearIntervalsForTests(); }
 export { Match, matches };

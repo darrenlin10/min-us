@@ -479,7 +479,7 @@ function RulesModal({ close }) {
     <ul>${PHASES.map((p) => html`<li><b>${p.start}–${p.end}s</b> ${p.label}</li>`)}</ul>
     <p>Walk back to a <b>camp</b> (bright crystal Safe Zone) each round — shopping, loadouts, votes and theft targets only work there. Nobody teleports home!</p>
     <h3>Actions</h3>
-    <p>You get <b>2 free action slots</b> per round (buy up to 2 more from the Merchant). In camp, fill each slot: a free basic tool (pickaxe, hook, crowbar…), an item you own, or a <b>Deposit</b>/<b>Trial</b> marker. In the field, tap a slot to use it. Physical actions take 3 seconds standing still — moving or getting hit interrupts them, but you keep the tool and the action and can try again. Tools are only used up when the work finishes. Unused items stay in your 7-slot bag until they expire; unused actions do not carry over.</p>
+    <p>You get <b>2 free action slots</b> per round (buy up to 2 more from the Merchant). In camp, fill each slot: a free basic tool (pickaxe, hook, crowbar…), an item you own, or a <b>Deposit</b>/<b>Trial</b> marker. In the field, tap a slot to use it. Physical actions take 3 seconds standing still — moving or getting hit interrupts them, but you keep the tool and the action and can try again. Tools are only used up when the work finishes. Unused items stay in your 7-slot bag until they expire. A tool you put in a slot but didn't use keeps its slot next round (↺, up to 2), on top of your 2 new free slots — max 4 actions per round.</p>
     <ul>
       <li><b>Pickaxe</b> — mine 1 coin in a coin mine (Workers up to 2/round, others 1). First come, first served: one person mines at a time; a mine gives at most 2 coins per round and 8 in total.</li>
       <li><b>Drill</b> (Explorer only) — open a new room through a sealed wall, or downward. Finds mines, treasure, caches, new camps, traps or empty galleries.</li>
@@ -534,6 +534,7 @@ function Game({ v }) {
       <span class="chip" title="Escape fund / fare">🏦 <b>${v.fund}</b>/${v.fare}</span>
       ${alive && html`<span class="chip"><${Icon} k="coin" sm /> <b>${y.coins}</b></span><span class="chip hp">${'❤'.repeat(Math.max(0, y.hp))}${'♡'.repeat(Math.max(0, 3 - y.hp))}</span>`}
       ${y.status === 'escaped' && html`<span class="chip good">🎉 Escaped!</span>`}${y.status === 'dead' && html`<span class="chip">👻 Ghost</span>`}${y.status === 'forfeit' && html`<span class="chip bad">Forfeited</span>`}
+      ${alive && html`<span class=${'chip' + (y.inv.length >= INVENTORY ? ' bad' : '')} title="Bag (7 items max)">🎒 <b>${y.inv.length}</b>/${INVENTORY}</span>`}
       ${y.lock && html`<span class="chip"><${Icon} k="lock" sm />lock</span>`}${y.shield && html`<span class="chip"><${Icon} k="shield" sm />shield</span>`}
       <span class="grow"></span>
       ${S.conn !== 'open' && html`<span class="chip bad">reconnecting…</span>`}
@@ -591,7 +592,7 @@ function SlotBtn({ s, i, v }) {
   const usable = !s.used && k && !['hook', 'kit'].includes(k);
   const tgt = s.target && v.roster.find((r) => r.id === s.target);
   return html`<div class=${'slot' + (s.used ? ' used' : usable ? ' ready' : '')} title=${label}>
-    <span class="k">${i + 1}${s.kind === 'extra' ? '+' : ''}</span>
+    <span class="k">${i + 1}${s.kind === 'extra' ? '+' : s.kind === 'saved' ? '↺' : ''}</span>
     ${k ? html`<img src=${itemSrc(k)} />` : html`<span class="muted">—</span>`}
     <span>${s.used ? 'used' : tgt ? '→' + tgt.name.slice(0, 6) : s.service ? s.service : label}</span>
   </div>`;
@@ -770,7 +771,7 @@ function Loadout({ v, open }) {
     ${y.slots.map((s, i) => {
       const it = s.item && y.inv.find((x) => x.id === s.item);
       const pend = pending[s.id] && pending[s.id].before === current(s) && Date.now() - pending[s.id].at < 1500; // waiting for the server
-      const canEdit = open && !s.used && !s.service;
+      const canEdit = open && !s.used && !s.service && s.kind !== 'saved';
       const isOpen = editing === s.id && canEdit;
       const opts = [];
       if (s.kind === 'free' && !s.freeIssued) for (const t of freeTools) opts.push([`free:${t}`, `${EMOJI[t]} Take a FREE ${ITEMS[t].name}`, ITEMS[t].use]);
@@ -782,7 +783,7 @@ function Loadout({ v, open }) {
         <button class="choice" disabled=${!canEdit} onClick=${() => setEditing(isOpen ? null : s.id)}>
           <span class="ch-n">${i + 1}</span>
           <span class="grow"><span class="ch-l">${s.used ? 'used' : pend ? '⏳ saving…' : describe(s)}</span>
-            <small>${s.kind === 'extra' ? 'extra slot (no free tool)' : s.freeIssued ? 'free tool already taken' : 'free slot — can take a free tool'}${s.service ? ' · committed to ' + s.service : ''}${it && !s.service ? ' · ' + ITEMS[it.type].use : ''}</small></span>
+            <small>${s.kind === 'saved' ? '↺ saved from last round — locked to this tool' : s.kind === 'extra' ? 'extra slot (no free tool)' : s.freeIssued ? 'free tool already taken' : 'free slot — can take a free tool'}${s.service ? ' · committed to ' + s.service : ''}${it && !s.service ? ' · ' + ITEMS[it.type].use : ''}</small></span>
           ${canEdit && html`<span class="ch-toggle">${isOpen ? '▲' : 'Change ▼'}</span>`}
         </button>
         ${isOpen && html`<div class="col" style="gap:5px;margin-top:6px">${opts.map(([what, label, sub]) => html`<button class=${'choice' + (what === current(s) ? ' picked' : '')} onClick=${() => pick(s, what)}><span class="grow"><span class="ch-l">${label}${what === current(s) ? ' ✔' : ''}</span><small>${sub}</small></span></button>`)}</div>`}
@@ -792,7 +793,7 @@ function Loadout({ v, open }) {
           ${s.target && !sameRoom.some((e) => e.id === s.target) && html`<span class="warn" style="font-size:13px">Target: ${(v.roster.find((r) => r.id === s.target) || {}).name} (not here now)</span>`}</div></div>`}
       </div>`;
     })}
-    <p class="muted" style="font-size:12px">Need more actions? See the Merchant tab (max 4 per round).</p>`;
+    <p class="muted" style="font-size:12px">Unused tools in slots carry over to next round (↺, max 2) on top of your 2 new free slots. Need more actions? See the Merchant tab (max 4 per round in total).</p>`;
 }
 
 function Machine({ v, open }) {
@@ -819,7 +820,7 @@ function Merchant({ v, open }) {
       <div class="note">You keep at most 2 coins of profit per round; the rest of each price is burned. Buying your own goods costs only the stock price.</div>`
       : html`<div class="note ${m.open ? '' : 'warn'}">${m.open ? 'Open — the Merchant must also be standing in a camp.' : 'The Merchant has closed the shop.'}</div>`}
     <div class="item"><${Icon} k="extra" /><div class="grow">Extra action slot <b class="gold">${m.nextPrice}c</b><small>Price rises with each sale this round (1, 2, 3…). You have ${y.extras}/2 extras.</small></div>
-      <button class="small" disabled=${!open || y.coins < m.nextPrice || y.extras >= 2} onClick=${() => send({ t: 'buyExtra' })}>Buy</button></div>
+      <button class="small" disabled=${!open || y.coins < m.nextPrice || y.extras >= 2 || y.slots.length >= 4} onClick=${() => send({ t: 'buyExtra' })}>Buy</button></div>
     ${Object.entries(MERCHANT_GOODS).map(([k, g]) => {
       const price = isM ? g.cost : g.price, left = 2 - (m.sold[k] || 0);
       const locked = m.tier < g.tier || (k === 'compass' && v.round < 2);

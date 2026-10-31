@@ -46,7 +46,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   assert.equal(cmd(m, e, { t: 'act', slot: e.slots[1].id, target: { amount: 2 } }), null);
   assert.equal(m.fund, 2); assert.equal(e.contrib, 2);
   runUntilRound(m, 2);
-  assert.equal(m.round, 2); assert.equal(w.slots.length, 2);
+  assert.equal(m.round, 2); assert.equal(w.slots.length, 3, 'interrupted pickaxe slot carried over'); assert.equal(w.slots[2].kind, 'saved');
   console.log('ok 3p basic loop');
 }
 
@@ -64,7 +64,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   assert.equal(cmd(m, a, { t: 'buyExtra' }), null); assert.equal(a.coins, c0 - 1); assert.equal(a.slots.length, 3);
   assert.equal(cmd(m, b, { t: 'buyExtra' }), null); assert.equal(b.coins, 8);
   assert.equal(cmd(m, b, { t: 'buyExtra' }), null); assert.equal(b.coins, 5);
-  assert.equal(mer.coins, mc + 2, 'profit cap 2'); assert.match(cmd(m, b, { t: 'buyExtra' }), /At most 2/);
+  assert.equal(mer.coins, mc + 2, 'profit cap 2'); assert.match(cmd(m, b, { t: 'buyExtra' }), /At most 4/);
   // theft: a hooks b
   cmd(m, a, { t: 'setSlot', slot: a.slots[0].id, what: 'free:hook' });
   assert.equal(cmd(m, a, { t: 'setTheft', slot: a.slots[0].id, target: b.id }), null);
@@ -179,7 +179,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
         p.events = [];
       }
       m.step();
-      for (const p of m.players) { assert(p.coins >= 0, 'negative coins'); assert(!p.inv || p.inv.length <= 7, 'inventory > 7'); assert(p.hp <= 3); }
+      for (const p of m.players) { assert(p.coins >= 0, 'negative coins'); assert(!p.inv || p.inv.length <= 7, 'inventory > 7'); assert(p.hp <= 3); assert(!p.slots || p.slots.length <= 4, 'more than 4 slots'); }
       assert(m.fund >= 0);
       if (m.state === 'game') for (const p of m.players) m.view(p, true);
     }
