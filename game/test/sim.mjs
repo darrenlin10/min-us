@@ -71,14 +71,14 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   const bBefore = b.coins, aBefore = a.coins + 10 - 10;
   // weapons
   a.coins += 10;
-  assert.equal(cmd(m, a, { t: 'merchantBuy', good: 'gun' }), null);
+  assert.equal(cmd(m, a, { t: 'buy', item: 'gun' }), null);
   const gun = a.inv.find((i) => i.type === 'gun');
   cmd(m, a, { t: 'setSlot', slot: a.slots[1].id, what: 'item:' + gun.id });
   cmd(m, a, { t: 'setSlot', slot: a.slots[2].id, what: 'deposit' });
   runTo(m, CHOICE_CLOSE + 1);
   const steal = a.career === 'thief' ? 2 : 1;
   assert.equal(b.coins, bBefore - steal); assert.equal(a.coins, aBefore + steal);
-  assert.match(cmd(m, b, { t: 'merchantBuy', good: 'club' }), /closed/);
+  assert.match(cmd(m, b, { t: 'buy', item: 'club' }), /closed/);
   runTo(m, FIELD_START + 1);
   // no attacks in camp
   assert.match(cmd(m, a, { t: 'act', slot: a.slots[1].id, target: { id: b.id } }), /camp/);
@@ -164,7 +164,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
           const r = Math.random();
           if (s && r < 0.3) m.cmd(p, { t: 'setSlot', slot: s.id, what: opts[Math.floor(Math.random() * opts.length)] });
           else if (s && r < 0.7) m.cmd(p, { t: 'act', slot: s.id, target: { dir: ['n', 'e', 's', 'w', 'down'][Math.floor(Math.random() * 5)], amount: 1, id: m.players[Math.floor(Math.random() * n)].id, kind: 'chest' } });
-          else if (r < 0.8) m.cmd(p, Math.random() < 0.5 ? { t: 'buy', item: 'pickaxe' } : { t: 'merchantBuy', good: ['club', 'lantern', 'gun', 'blade'][Math.floor(Math.random() * 4)] });
+          else if (r < 0.8) m.cmd(p, Math.random() < 0.7 ? { t: 'buy', item: ['pickaxe', 'club', 'lantern', 'gun'][Math.floor(Math.random() * 4)] } : { t: 'merchantBuy', good: 'potion' });
           else if (r < 0.85) m.cmd(p, { t: 'buyExtra' });
           else if (r < 0.9) m.cmd(p, { t: 'merchantBuy', good: 'potion' });
           else if (r < 0.95) m.cmd(p, { t: 'guardBuy', svc: 'lock' });

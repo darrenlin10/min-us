@@ -53,7 +53,7 @@ Everything you can do is offered in the **"What do you do?" box** at the bottom 
 | Crowbar | Loot a treasure chest, a dropped item, or a body (half its coins; Scavengers take all). |
 | Hook | Choose a victim in camp. When choices close, if you're still in the same room, you silently steal 1 coin (Thief: 2). |
 | Deposit marker | Put any amount into the escape fund (field, return or settlement). |
-| Club / Blade / Gun (from the Merchant) | Attack a visible player in an unsafe room: 1 / 2 / 3 damage (gun reaches 4 tiles). Bodies keep their coins. |
+| Club / Blade / Gun (bought privately at the machine) | Attack a visible player in an unsafe room: 1 / 2 / 3 damage (gun reaches 4 tiles). Bodies keep their coins. |
 | Trial marker | In a camp during field time, pay 6+ coins to accuse someone there. Guilty needs a majority of **all** living players. |
 | Potion / Rescue kit / Lantern / Compass | Heal 1 HP / free a trapped player / light a room / private rough bearing to the nearest exit (Explorer, depth 0). |
 
@@ -62,7 +62,7 @@ Everything you can do is offered in the **"What do you do?" box** at the bottom 
 |---|---|
 | Worker | Mines up to 2 coins per round (others mine 1). |
 | Explorer | The only career that drills new rooms; gets a 1-coin finder's share of treasure. |
-| Merchant | The only seller of **weapons** and lanterns, plus extra action slots (prices 1, 2, 3… per round) and unlockable goods (potions, compass, rescue kits, reinforced lanterns). At most 2 coins of profit per round; gets a free potion each round. |
+| Merchant | Sells extra action slots (prices 1, 2, 3… per round) and advanced goods unlocked by upgrading the shop (potions, compass, rescue kits, reinforced lanterns). At most 2 coins of profit per round; gets a free potion each round. |
 | Guard | Sells one wallet lock (1c, blocks theft) and one life shield (2c, blocks a hit) per round. |
 | Thief | Steals 2 coins per hook instead of 1. |
 | Scavenger | Loots in 1 s instead of 3 s and can take every coin from a body. |
@@ -93,7 +93,7 @@ The detailed rules come from the design handoff in `mine-escape-handoff/`. These
 - **3–8 players.** Every team always has at least a Worker, an Explorer and a Merchant (a 2-player mode was tried and removed).
 - **Camp choices last 40 s instead of 20 s**, so shopping and planning are comfortable on a phone; rounds are therefore 130 s instead of 110 s.
 - **No mine reservations.** Mines are first come, first served, and another player's action can only be interrupted by attacking them.
-- **Two shops.** The tool machine in every camp sells only basic career tools (pickaxe, hook, crowbar, plus drills for Explorers and protection kits for Guards) for 1 coin. The **Merchant sells everything advanced, including all weapons** and lanterns, so buying a weapon means dealing with the Merchant, who learns who bought it. If the Merchant dies, no more weapons can be bought.
+- **Two shops.** The private tool machine in every camp sells basic career tools (1 coin), lanterns and weapons, so nobody learns who is armed. The Merchant sells extra action slots and advanced goods unlocked by upgrading the shop. (Moving weapons to the Merchant was tried and reverted.)
 - **Contribution proposals (Pledges) are included** as the only structured communication; still no free chat.
 - **A main menu** with instruction panels plus Start / Quit, a **game lobby** to create or join a room by unique code, and **Return to main menu** during a match.
 

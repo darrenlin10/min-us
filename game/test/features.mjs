@@ -38,7 +38,7 @@ test('guard wallet lock blocks theft; shield blocks one hit', () => {
   assert.match(cmd(m, g, { t: 'setSlot', slot: g.slots[0].id, what: 'none' }), /committed/);
   cmd(m, th, { t: 'setSlot', slot: th.slots[0].id, what: 'free:hook' });
   assert.equal(cmd(m, th, { t: 'setTheft', slot: th.slots[0].id, target: w.id }), null);
-  th.coins += 10; assert.equal(cmd(m, th, { t: 'merchantBuy', good: 'blade' }), null, 'no merchant in this roster? ');
+  th.coins += 10; assert.equal(cmd(m, th, { t: 'buy', item: 'blade' }), null);
   cmd(m, th, { t: 'setSlot', slot: th.slots[1].id, what: 'item:' + th.inv.find((i) => i.type === 'blade').id });
   runTo(m, CHOICE_CLOSE + 1);
   assert.equal(w.coins, 17, 'lock blocked theft'); assert(th.slots[0].used, 'hook still spent');
@@ -165,9 +165,9 @@ test('weapon surcharge top-up, one weapon, no purchase after cutoff', () => {
   const m = setup(3, ['worker', 'explorer', 'merchant']);
   const [w, , mer] = m.players;
   runTo(m, 12);
-  assert.match(cmd(m, w, { t: 'buy', item: 'club' }), /only sells basic tools/);
-  assert.equal(cmd(m, w, { t: 'merchantBuy', good: 'club' }), null); assert.equal(w.coins, 16); assert.equal(mer.coins, 24, 'merchant: 3 cost back + 1 profit');
-  assert.match(cmd(m, w, { t: 'merchantBuy', good: 'gun' }), /one weapon/);
+  assert.equal(cmd(m, w, { t: 'buy', item: 'club' }), null); assert.equal(w.coins, 16); assert.equal(mer.coins, 20, 'machine sale pays nobody');
+  assert.match(cmd(m, w, { t: 'buy', item: 'gun' }), /one weapon/);
+  cmd(m, w, { t: 'merchantBuy', good: 'club' }); assert.equal(w.inv.filter((i) => i.type === 'club').length, 1, 'merchant does not sell weapons');
   nextRound(m); nextRound(m); runTo(m, 12); // round 3: surcharge 1
   const club = w.inv.find((i) => i.type === 'club');
   const c = w.coins;
@@ -385,7 +385,7 @@ test('contribution proposals: camp-only, edits reset approvals, cleared each rou
   assert.equal(cmd(m, b, { t: 'withdraw' }), null);
 });
 
-test('roster: needs 3+ players; 3 = worker, explorer, merchant; machine sells only basic tools', () => {
+test('roster: needs 3+ players; 3 = worker, explorer, merchant; machine sells tools & weapons', () => {
   const m2 = new Match('TWO'); for (let i = 0; i < 2; i++) m2.addPlayer('P' + i, 'x' + i); m2.players.forEach((p) => (p.ready = true));
   m2.tryStart(); assert.equal(m2.state, 'lobby', '2 players cannot start');
   for (let n = 3; n <= 8; n++) {
@@ -396,14 +396,13 @@ test('roster: needs 3+ players; 3 = worker, explorer, merchant; machine sells on
   }
   const m = setup(3, ['worker', 'explorer', 'merchant']); const [w, ex, mer] = m.players;
   runTo(m, 12);
-  for (const t of ['lantern', 'gun', 'potion']) assert.match(cmd(m, w, { t: 'buy', item: t }), /basic tools/);
+  assert.match(cmd(m, w, { t: 'buy', item: 'potion' }), /Not sold/);
   assert.equal(cmd(m, w, { t: 'buy', item: 'hook' }), null);
+  assert.equal(cmd(m, w, { t: 'buy', item: 'lantern' }), null);
+  assert.equal(cmd(m, w, { t: 'buy', item: 'gun' }), null);
   assert.match(cmd(m, w, { t: 'buy', item: 'drill' }), /Explorer/);
   assert.equal(cmd(m, ex, { t: 'buy', item: 'drill' }), null);
-  assert.equal(cmd(m, w, { t: 'merchantBuy', good: 'lantern' }), null);
-  const c = mer.coins; assert.equal(cmd(m, mer, { t: 'merchantBuy', good: 'gun' }), null); assert.equal(mer.coins, c - 9, 'merchant pays cost for own gun');
-  m.merchant.open = false; assert.match(cmd(m, ex, { t: 'merchantBuy', good: 'club' }), /open for business/);
-  m.merchant.open = true; mer.status = 'dead'; assert.match(cmd(m, ex, { t: 'merchantBuy', good: 'club' }), /no living Merchant/);
+  assert.match(cmd(m, ex, { t: 'merchantBuy', good: 'potion' }), /not unlocked/);
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);
