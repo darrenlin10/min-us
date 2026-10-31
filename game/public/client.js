@@ -1,7 +1,7 @@
 import { html, render, useState, useEffect } from './vendor/preact-htm.js';
 import {
   ROOM, SPEED, PHASES, ROUND_SECONDS, SHOP_CLOSE, CHOICE_CLOSE, ROUNDS, FARE, SMUGGLER_FARE, INVENTORY, phaseAt, surcharge,
-  CAREERS, ITEMS, ICON, MERCHANT_GOODS, UPGRADES, weaponPrice, trialFee, DIRS, cellKey, LADDER, LADDER_UP, walkable, roomAt,
+  CAREERS, ITEMS, ICON, MERCHANT_GOODS, UPGRADES, goodPrice, trialFee, DIRS, cellKey, LADDER, LADDER_UP, walkable, roomAt,
 } from './shared.js';
 
 // ------------------------------------------------------------ state & network
@@ -380,7 +380,7 @@ function MainMenu() {
   return html`<div class="screen"><div style="width:100%;max-width:560px">
     <div class="card">
       <div class="title">⛏ MINE ESCAPE</div>
-      <div class="muted">A multiplayer game of cooperation and secret greed · 2–8 players · each on their own device</div>
+      <div class="muted">A multiplayer game of cooperation and secret greed · 3–8 players · each on their own device</div>
       <div class="cast">${CAREER_ORDER.map((a) => html`<img src=${charSrc(a)} alt=${a} />`)}</div>
       <div class="col">
         ${store.token && html`<button class="primary big" onClick=${resume}>▶ Resume your game</button>`}
@@ -422,7 +422,7 @@ function JoinScreen() {
     </div>
     <div class="card">
       <h3>➕ Create a room</h3>
-      <p class="muted" style="font-size:13px">Get a new unique room code to share with your friends (2–8 players).</p>
+      <p class="muted" style="font-size:13px">Get a new unique room code to share with your friends (3–8 players).</p>
       <button class="primary big" style="width:100%" disabled=${S.conn !== 'open'} onClick=${() => go('')}>Create room</button>
     </div>
     <div class="card">
@@ -451,9 +451,9 @@ function Lobby({ v }) {
       ${n >= 4 && n <= 7 && html`<label class="row">Specialist career${n === 7 ? 's' : ''}:
         <select value=${v.settings.specialist} onChange=${(e) => send({ t: 'setting', specialist: e.target.value })}>
           <option value="random">Random</option><option value="guard">Guard</option><option value="thief">Thief</option><option value="scavenger">Scavenger</option></select></label>`}
-      <p class="muted" style="font-size:13px">The game starts when <b>everyone</b> is Ready (2–8 players). Any change un-readies everyone.</p>
+      <p class="muted" style="font-size:13px">The game starts when <b>everyone</b> is Ready (3–8 players). Any change un-readies everyone.</p>
       <div class="row">
-        <button class=${me && me.ready ? '' : 'primary'} style="flex:1" onClick=${() => send({ t: 'ready', v: !(me && me.ready) })} disabled=${n < 2}>${me && me.ready ? 'Cancel ready' : n < 2 ? 'Waiting for players…' : "I'm ready"}</button>
+        <button class=${me && me.ready ? '' : 'primary'} style="flex:1" onClick=${() => send({ t: 'ready', v: !(me && me.ready) })} disabled=${n < 3}>${me && me.ready ? 'Cancel ready' : n < 3 ? `Waiting for players (${n}/3 minimum)…` : "I'm ready"}</button>
         <button onClick=${() => setRules(true)}>📖 Rules</button>
         <button class="danger" onClick=${() => { send({ t: 'leave' }); store.token = null; goMenu(); }}>Leave room</button>
       </div>
@@ -480,7 +480,7 @@ function RulesModal({ close }) {
       <li><b>Crowbar</b> — loot a treasure chest, a dropped item, or half of a body's coins (Scavengers take all).</li>
       <li><b>Hook</b> — pick a victim in camp; when choices close, if you're still in the same room, you silently steal 1 coin (Thief: 2).</li>
       <li><b>Deposit</b> — put any amount into the fund (field, return or settlement time).</li>
-      <li><b>Weapons</b> (club 1 dmg, blade 2, gun 3 at range) — attack a visible player in an unsafe room during field time. Bodies keep their coins for looting.</li>
+      <li><b>Weapons</b> (bought from the Merchant: club 1 dmg, blade 2, gun 3 at range) — attack a visible player in an unsafe room during field time. Bodies keep their coins for looting.</li>
       <li><b>Trial</b> — in a camp during field time, pay ${trialFee(1)}+ coins to accuse someone there. Majority of ALL living players must vote guilty to execute.</li>
     </ul>
     <h3>Careers</h3>
@@ -527,6 +527,7 @@ function Game({ v }) {
       <span class="chip phase">${v.meeting ? (v.meeting.type === 'trial' ? '⚖ Trial' : '🗳 Election') : ph.label.split(' — ')[0]} <span class="timer">${v.meeting ? fmt(v.meeting.remaining) : fmt(left)}</span></span>
       <span class="chip" title="Escape fund / fare">🏦 <b>${v.fund}</b>/${v.fare}</span>
       ${alive && html`<span class="chip"><${Icon} k="coin" sm /> <b>${y.coins}</b></span><span class="chip hp">${'❤'.repeat(Math.max(0, y.hp))}${'♡'.repeat(Math.max(0, 3 - y.hp))}</span>`}
+      ${y.status === 'escaped' && html`<span class="chip good">🎉 Escaped!</span>`}${y.status === 'dead' && html`<span class="chip">👻 Ghost</span>`}${y.status === 'forfeit' && html`<span class="chip bad">Forfeited</span>`}
       ${y.lock && html`<span class="chip"><${Icon} k="lock" sm />lock</span>`}${y.shield && html`<span class="chip"><${Icon} k="shield" sm />shield</span>`}
       <span class="grow"></span>
       ${S.conn !== 'open' && html`<span class="chip bad">reconnecting…</span>`}
@@ -545,7 +546,7 @@ function Game({ v }) {
         <button class="big" onClick=${() => setTab(tab ? null : alive ? 'loadout' : 'people')}>${y.inCamp ? '🏕 Camp' : '🎒 Info'}${(v.proposals || []).length ? ` · 📜${v.proposals.length}` : ''}</button>
       </div>
     </div>
-    ${!v.meeting && y.status !== 'forfeit' && html`<${ChoiceBox} v=${v} setTab=${setTab} title=${hint || 'What do you do?'} />`}
+    ${!v.meeting && !tab && y.status !== 'forfeit' && html`<${ChoiceBox} v=${v} setTab=${setTab} title=${hint || 'What do you do?'} />`}
     ${tab && html`<${Sheet} v=${v} tab=${tab} setTab=${setTab} />`}
     ${showId && html`<${IdCard} v=${v} close=${closeId} />`}
     ${rules && html`<${RulesModal} close=${() => setRules(false)} />`}
@@ -664,8 +665,8 @@ function buildChoices(v, setTab) {
   }
   if (y.inCamp && v.sec < CHOICE_CLOSE) {
     add('📋 Prepare my action slots', () => setTab('loadout'), { sub: `before ${CHOICE_CLOSE}s` });
-    add('🛒 Shop at the machine', () => setTab('machine'), { disabled: v.sec < 10 && 'opens at 10s', sub: `closes at ${SHOP_CLOSE}s` });
-    if (v.roster.some((x) => x.career === 'merchant' && x.status === 'alive')) add('🤝 Visit the Merchant (extra actions & goods)', () => setTab('merchant'), { disabled: v.sec < 10 && 'opens at 10s' });
+    add('🛒 Buy basic tools at the machine', () => setTab('machine'), { disabled: v.sec < 10 && 'opens at 10s', sub: `closes at ${SHOP_CLOSE}s` });
+    if (v.roster.some((x) => x.career === 'merchant' && x.status === 'alive')) add('🤝 Visit the Merchant (extra actions, weapons & goods)', () => setTab('merchant'), { disabled: v.sec < 10 && 'opens at 10s' });
     if (v.roster.some((x) => x.career === 'guard' && x.status === 'alive')) add('🛡 Hire the Guard (lock / shield)', () => setTab('guard'), { disabled: v.sec < 10 && 'opens at 10s' });
   }
   if (y.inCamp) add(`📜 Pledges${(v.proposals || []).length ? ` (${v.proposals.length} posted)` : ''}`, () => setTab('pledges'));
@@ -688,7 +689,7 @@ function ChoiceBox({ v, setTab, title }) {
   return html`<div class="choices">
     <div class="ch-hd" onClick=${() => setMin(!min)}><span class="grow">${title}</span><span class="ch-toggle">${min ? '▲' : '▼'}</span></div>
     ${!min && html`<div class="ch-list">
-      ${list.length === 0 && html`<div class="ch-empty">Nothing to do right here. Walk somewhere else, or wait for the next phase.</div>`}
+      ${list.length === 0 && html`<div class="ch-empty">${v.you.status === 'escaped' ? 'You escaped and won! Drift around to watch the others until the match ends.' : 'Nothing to do right here. Walk somewhere else, or wait for the next phase.'}</div>`}
       ${list.map((c) => { const live = c.pick && !c.disabled; const num = live ? ++n : null;
         return html`<button class=${'choice' + (c.danger ? ' danger' : '')} disabled=${!live} onClick=${() => live && c.pick()}>
           <span class="ch-n">${num && num <= 9 ? num : '·'}</span><span class="grow"><span class="ch-l">${c.label}</span>${(c.disabled || c.sub) && html`<small>${c.disabled ? '✖ ' + c.disabled : c.sub}</small>`}</span></button>`; })}
@@ -773,21 +774,17 @@ function Loadout({ v, open }) {
 
 function Machine({ v, open }) {
   const y = v.you;
-  const hasWeapon = y.inv.some((i) => ITEMS[i.type].weapon);
-  const line = (type, price, extra = '') => html`<div class="item"><${Icon} k=${type} /><div class="grow">${ITEMS[type].name} <b class="gold">${price}c</b><small>${ITEMS[type].use}${extra}</small></div>
-    <button class="small" disabled=${!open || y.coins < price || y.inv.length >= INVENTORY} onClick=${() => send({ t: 'buy', item: type })}>Buy</button></div>`;
-  return html`<h3>Machine terminal (private)</h3>
-    ${['pickaxe', 'hook', 'crowbar', 'drill', 'kit'].filter((t) => !ITEMS[t].career || ITEMS[t].career === y.career).map((t) => line(t, 1, ' · extra basic tool'))}
-    ${line('lantern', 2)}
-    <h3 style="margin-top:10px">Weapons</h3>
-    <div class="muted" style="font-size:12px">One weapon max. Prices rise every 2 rounds; older weapons pay the difference when equipped.</div>
-    ${['club', 'blade', 'gun'].map((t) => hasWeapon ? html`<div class="item muted"><${Icon} k=${t} /><div class="grow">${ITEMS[t].name} ${weaponPrice(t, v.round)}c — you already own a weapon</div></div>` : line(t, weaponPrice(t, v.round)))}`;
+  const line = (type) => html`<div class="item"><${Icon} k=${type} /><div class="grow">${ITEMS[type].name} <b class="gold">1c</b><small>${ITEMS[type].use}</small></div>
+    <button class="small" disabled=${!open || y.coins < 1 || y.inv.length >= INVENTORY} onClick=${() => send({ t: 'buy', item: type })}>Buy</button></div>`;
+  return html`<h3>Tool machine (private)</h3>
+    <div class="note plain">Basic career tools, 1 coin each. Each free action slot already gives you one free tool — buy extras here to save for later. Weapons, lanterns and advanced goods are sold by the Merchant.</div>
+    ${['pickaxe', 'hook', 'crowbar', 'drill', 'kit'].filter((t) => !ITEMS[t].career || ITEMS[t].career === y.career).map(line)}`;
 }
 
 function Merchant({ v, open }) {
   const y = v.you, m = v.merchant, isM = y.career === 'merchant';
   const merchant = v.roster.find((r) => r.career === 'merchant' && r.status === 'alive');
-  if (!merchant) return html`<div class="note">There is no living Merchant in this game, so no extra actions or goods.</div>`;
+  if (!merchant) return html`<div class="note">The Merchant is gone — no more extra actions, weapons or goods can be bought.</div>`;
   const nextU = UPGRADES[m.tier + 1];
   return html`<h3>${isM ? 'Your shop' : `${merchant.name}'s shop`} · tier ${m.tier}</h3>
     ${isM ? html`<label class="row note"><input type="checkbox" checked=${m.open} onChange=${(e) => send({ t: 'merchantOpen', v: e.target.checked })} /> Open for business (customers can buy while we're both in camps)</label>
@@ -795,11 +792,14 @@ function Merchant({ v, open }) {
       : html`<div class="note ${m.open ? '' : 'warn'}">${m.open ? 'Open — the Merchant must also be standing in a camp.' : 'The Merchant has closed the shop.'}</div>`}
     <div class="item"><${Icon} k="extra" /><div class="grow">Extra action slot <b class="gold">${m.nextPrice}c</b><small>Price rises with each sale this round (1, 2, 3…). You have ${y.extras}/2 extras.</small></div>
       <button class="small" disabled=${!open || y.coins < m.nextPrice || y.extras >= 2} onClick=${() => send({ t: 'buyExtra' })}>Buy</button></div>
-    ${Object.entries(MERCHANT_GOODS).map(([k, g]) => {
-      const price = isM ? g.cost : g.price, left = 2 - (m.sold[k] || 0);
+    ${Object.entries(MERCHANT_GOODS).map(([k, g], i) => {
+      const q = goodPrice(k, v.round), price = isM ? q.cost : q.price, left = 2 - (m.sold[k] || 0);
       const locked = m.tier < g.tier || (k === 'compass' && v.round < 2);
-      return html`<div class="item ${locked ? 'muted' : ''}"><${Icon} k=${k} /><div class="grow">${ITEMS[k].name} <b class="gold">${price}c</b><small>${locked ? `Unlocks at tier ${g.tier}${k === 'compass' ? ' (round 2+)' : ''}` : `${ITEMS[k].use} · ${left} left this round`}</small></div>
-        <button class="small" disabled=${locked || !open || y.coins < price || left <= 0 || (k === 'compass' && y.career !== 'explorer')} onClick=${() => send({ t: 'merchantBuy', good: k })}>Buy</button></div>`;
+      const hasWeapon = g.weapon && y.inv.some((it) => ITEMS[it.type].weapon);
+      const head = i === 0 ? html`<h3 style="margin-top:10px">⚔ Weapons</h3><div class="muted" style="font-size:12px">One weapon max per person. Prices rise every 2 rounds; an older weapon pays the difference when equipped.</div>`
+        : k === 'lantern' ? html`<h3 style="margin-top:10px">🎒 Supplies</h3>` : '';
+      return html`${head}<div class="item ${locked ? 'muted' : ''}"><${Icon} k=${k} /><div class="grow">${ITEMS[k].name} <b class="gold">${price}c</b><small>${locked ? `Unlocks at tier ${g.tier}${k === 'compass' ? ' (round 2+)' : ''}` : hasWeapon ? 'You already own a weapon' : `${ITEMS[k].use} · ${left} left this round`}</small></div>
+        <button class="small" disabled=${locked || hasWeapon || !open || y.coins < price || left <= 0 || (k === 'compass' && y.career !== 'explorer')} onClick=${() => send({ t: 'merchantBuy', good: k })}>Buy</button></div>`;
     })}
     ${isM && html`<h3 style="margin-top:10px">Upgrade catalog</h3>${nextU ? html`<div class="item"><div class="grow">Tier ${m.tier + 1} for <b class="gold">${nextU.cost}c</b> (burned)<small>Available from round ${nextU.round}. Upgrades are public.</small></div>
       <button class="small" disabled=${!open || y.coins < nextU.cost || v.round < nextU.round || m.upgradedRound === v.round} onClick=${() => send({ t: 'upgrade' })}>Upgrade</button></div>` : html`<div class="muted">Fully upgraded.</div>`}`}`;

@@ -20,9 +20,9 @@ const by = (m, c) => m.players.find((p) => p.career === c);
 
 // --- 2-player game: explorer drills a guaranteed mine, worker mines it, deposits.
 {
-  const m = setup(2);
+  const m = setup(3);
   const w = by(m, 'worker'), e = by(m, 'explorer');
-  assert(w && e, '2p roster');
+  assert(w && e && by(m, 'merchant'), '3p roster');
   const camp = m.rooms['0,0,0'];
   runTo(m, 12);
   assert.equal(cmd(m, e, { t: 'setSlot', slot: e.slots[0].id, what: 'free:drill' }), null);
@@ -47,7 +47,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   assert.equal(m.fund, 2); assert.equal(e.contrib, 2);
   runUntilRound(m, 2);
   assert.equal(m.round, 2); assert.equal(w.slots.length, 2);
-  console.log('ok 2p basic loop');
+  console.log('ok 3p basic loop');
 }
 
 // --- theft, guard lock, merchant extra slot, weapons & loot, trial, natural exit, group win
@@ -71,14 +71,14 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   const bBefore = b.coins, aBefore = a.coins + 10 - 10;
   // weapons
   a.coins += 10;
-  assert.equal(cmd(m, a, { t: 'buy', item: 'gun' }), null);
+  assert.equal(cmd(m, a, { t: 'merchantBuy', good: 'gun' }), null);
   const gun = a.inv.find((i) => i.type === 'gun');
   cmd(m, a, { t: 'setSlot', slot: a.slots[1].id, what: 'item:' + gun.id });
   cmd(m, a, { t: 'setSlot', slot: a.slots[2].id, what: 'deposit' });
   runTo(m, CHOICE_CLOSE + 1);
   const steal = a.career === 'thief' ? 2 : 1;
   assert.equal(b.coins, bBefore - steal); assert.equal(a.coins, aBefore + steal);
-  assert.match(cmd(m, b, { t: 'buy', item: 'club' }), /closed/);
+  assert.match(cmd(m, b, { t: 'merchantBuy', good: 'club' }), /closed/);
   runTo(m, FIELD_START + 1);
   // no attacks in camp
   assert.match(cmd(m, a, { t: 'act', slot: a.slots[1].id, target: { id: b.id } }), /camp/);
@@ -153,7 +153,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
 // --- random full-game fuzz: bots wander and spam commands; check invariants
 {
   for (let g = 0; g < 30; g++) {
-    const n = 2 + (g % 7);
+    const n = 3 + (g % 6);
     const m = setup(n);
     let guard = 0;
     while (m.state === 'game' && guard++ < 200000) {
@@ -164,7 +164,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
           const r = Math.random();
           if (s && r < 0.3) m.cmd(p, { t: 'setSlot', slot: s.id, what: opts[Math.floor(Math.random() * opts.length)] });
           else if (s && r < 0.7) m.cmd(p, { t: 'act', slot: s.id, target: { dir: ['n', 'e', 's', 'w', 'down'][Math.floor(Math.random() * 5)], amount: 1, id: m.players[Math.floor(Math.random() * n)].id, kind: 'chest' } });
-          else if (r < 0.8) m.cmd(p, { t: 'buy', item: ['pickaxe', 'club', 'lantern', 'gun'][Math.floor(Math.random() * 4)] });
+          else if (r < 0.8) m.cmd(p, Math.random() < 0.5 ? { t: 'buy', item: 'pickaxe' } : { t: 'merchantBuy', good: ['club', 'lantern', 'gun', 'blade'][Math.floor(Math.random() * 4)] });
           else if (r < 0.85) m.cmd(p, { t: 'buyExtra' });
           else if (r < 0.9) m.cmd(p, { t: 'merchantBuy', good: 'potion' });
           else if (r < 0.95) m.cmd(p, { t: 'guardBuy', svc: 'lock' });

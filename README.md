@@ -1,6 +1,6 @@
 # Mine Escape (min-us)
 
-A real-time multiplayer social strategy game for **2–8 players**, each on their own phone or computer. No login, no install: open the link, pick a nickname, create or join a room with a 4-letter code.
+A real-time multiplayer social strategy game for **3–8 players**, each on their own phone or computer. No login, no install: open the link, pick a nickname, create or join a room with a 4-letter code.
 
 > The mine has collapsed behind your crew. Over 10 rounds you walk the tunnels, drill new rooms, mine coins and pool them into a shared **escape fund**. But some of you may secretly be **Smugglers**, hoarding coins for a private way out.
 
@@ -15,7 +15,7 @@ A real-time multiplayer social strategy game for **2–8 players**, each on thei
 ### Getting into a game
 1. Open the game URL. The **main menu** explains the objective, careers, Smugglers and controls. **Start game** opens the game lobby; **Quit game** leaves.
 2. In the **game lobby**, enter a nickname, then either **Create a room** (you get a unique 4-letter room code) or **Join a room** by typing a friend's code. Invite links (`/room/CODE`) fill the code in for you.
-3. In the room, everyone taps **I'm ready**. The match starts when **all** players (2–8) are ready.
+3. In the room, everyone taps **I'm ready**. The match starts when **all** players (3–8) are ready.
 4. Read your **private identity card** (🪪): your career and whether you are secretly a Smuggler.
 
 During a match, **☰ → Return to main menu** steps away without leaving. Your character stays in the mine and you can **Resume your game** from the main menu. If you're gone for more than one round of game time (130 s), you forfeit.
@@ -53,7 +53,7 @@ Everything you can do is offered in the **"What do you do?" box** at the bottom 
 | Crowbar | Loot a treasure chest, a dropped item, or a body (half its coins; Scavengers take all). |
 | Hook | Choose a victim in camp. When choices close, if you're still in the same room, you silently steal 1 coin (Thief: 2). |
 | Deposit marker | Put any amount into the escape fund (field, return or settlement). |
-| Club / Blade / Gun | Attack a visible player in an unsafe room: 1 / 2 / 3 damage (gun reaches 4 tiles). Bodies keep their coins. |
+| Club / Blade / Gun (from the Merchant) | Attack a visible player in an unsafe room: 1 / 2 / 3 damage (gun reaches 4 tiles). Bodies keep their coins. |
 | Trial marker | In a camp during field time, pay 6+ coins to accuse someone there. Guilty needs a majority of **all** living players. |
 | Potion / Rescue kit / Lantern / Compass | Heal 1 HP / free a trapped player / light a room / private rough bearing to the nearest exit (Explorer, depth 0). |
 
@@ -62,12 +62,12 @@ Everything you can do is offered in the **"What do you do?" box** at the bottom 
 |---|---|
 | Worker | Mines up to 2 coins per round (others mine 1). |
 | Explorer | The only career that drills new rooms; gets a 1-coin finder's share of treasure. |
-| Merchant | Sells extra action slots (prices 1, 2, 3… per round) and unlockable goods (potions, compass, rescue kits, reinforced lanterns). At most 2 coins of profit per round; gets a free potion each round. |
+| Merchant | The only seller of **weapons** and lanterns, plus extra action slots (prices 1, 2, 3… per round) and unlockable goods (potions, compass, rescue kits, reinforced lanterns). At most 2 coins of profit per round; gets a free potion each round. |
 | Guard | Sells one wallet lock (1c, blocks theft) and one life shield (2c, blocks a hit) per round. |
 | Thief | Steals 2 coins per hook instead of 1. |
 | Scavenger | Loots in 1 s instead of 3 s and can take every coin from a body. |
 
-Rosters by player count: 2 = Worker, Explorer · 3 = + Merchant · 4 = + one specialist (Guard/Thief/Scavenger, chosen in the room) · 5 = + second Worker · 6 = + second Explorer · 7 = + second specialist · 8 = all careers.
+Rosters by player count: 3 = Worker, Explorer, Merchant · 4 = + one specialist (Guard/Thief/Scavenger, chosen in the room) · 5 = + second Worker · 6 = + second Explorer · 7 = + second specialist · 8 = all careers.
 
 ### Pledges (contribution proposals)
 There is no free-text chat. In camp, open **🏕 Camp → Pledges** to post a plan asking each player for an amount (the **Split what's needed** button divides the remaining fare evenly). Others tap 👍 / 👎. Pledges are **promises only**: no coins move, and each player still has to use their own Deposit action. The board shows **asked vs. gave this round** for everyone, so broken promises are visible. Editing a plan resets its approvals; plans reset every round.
@@ -90,9 +90,10 @@ WASD / arrow keys, or drag anywhere on a phone screen, to walk (walking into a w
 The detailed rules come from the design handoff in `mine-escape-handoff/`. These decisions shaped the playable version:
 
 **Decided by the project owner**
-- **2-player games are allowed** (2–8 instead of 3–8), so two people on separate devices can always play. A 2-player game is Worker + Explorer.
+- **3–8 players.** Every team always has at least a Worker, an Explorer and a Merchant (a 2-player mode was tried and removed).
 - **Camp choices last 40 s instead of 20 s**, so shopping and planning are comfortable on a phone; rounds are therefore 130 s instead of 110 s.
 - **No mine reservations.** Mines are first come, first served, and another player's action can only be interrupted by attacking them.
+- **Two shops.** The tool machine in every camp sells only basic career tools (pickaxe, hook, crowbar, plus drills for Explorers and protection kits for Guards) for 1 coin. The **Merchant sells everything advanced, including all weapons** and lanterns, so buying a weapon means dealing with the Merchant, who learns who bought it. If the Merchant dies, no more weapons can be bought.
 - **Contribution proposals (Pledges) are included** as the only structured communication; still no free chat.
 - **A main menu** with instruction panels plus Start / Quit, a **game lobby** to create or join a room by unique code, and **Return to main menu** during a match.
 

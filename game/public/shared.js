@@ -33,7 +33,7 @@ export const surcharge = (round) => Math.floor((round - 1) / 2);
 export const CAREERS = {
   worker: { name: 'Worker', preset: 'pickaxe', blurb: 'Mines up to 2 coins per round (others mine 1).' },
   explorer: { name: 'Explorer', preset: 'drill', blurb: 'Only career that drills new rooms. Gets 1 finder coin from treasure.' },
-  merchant: { name: 'Merchant', preset: 'crowbar', blurb: 'Sells extra actions and goods; unlocks catalog tiers. Gets a free potion each round.' },
+  merchant: { name: 'Merchant', preset: 'crowbar', blurb: 'Sells extra actions, weapons, lanterns and unlockable goods. Gets a free potion each round.' },
   guard: { name: 'Guard', preset: 'kit', blurb: 'Sells one wallet lock (1c) and one life shield (2c) per round.' },
   thief: { name: 'Thief', preset: 'hook', blurb: 'Steals up to 2 coins per hook (others steal 1).' },
   scavenger: { name: 'Scavenger', preset: 'crowbar', blurb: 'Loots in 1s instead of 3s and can take ALL coins from a body.' },
@@ -61,7 +61,10 @@ export const ICON = {
   compass: 'compass', deposit: 'deposit', trial: 'trial', extra: 'extra_action', coin: 'coin', lock: 'wallet_lock', shield: 'life_shield',
 };
 
+// Merchant catalog. Weapons and lanterns are sold from tier 0; weapon prices rise every 2 rounds.
 export const MERCHANT_GOODS = {
+  club: { tier: 0, weapon: true }, blade: { tier: 0, weapon: true }, gun: { tier: 0, weapon: true },
+  lantern: { tier: 0, cost: 1, price: 2 },
   potion: { tier: 1, cost: 1, price: 2 },
   compass: { tier: 1, cost: 8, price: 9 },
   rescue: { tier: 2, cost: 1, price: 2 },
@@ -70,6 +73,12 @@ export const MERCHANT_GOODS = {
 export const UPGRADES = [null, { cost: 3, round: 2 }, { cost: 5, round: 4 }, { cost: 7, round: 6 }];
 
 export const weaponPrice = (type, round) => ITEMS[type].base + surcharge(round);
+// { cost, price }: customers pay price; the Merchant pays only cost for their own use.
+export function goodPrice(key, round) {
+  const g = MERCHANT_GOODS[key];
+  if (g.weapon) { const price = weaponPrice(key, round); return { cost: price - 1, price }; }
+  return { cost: g.cost, price: g.price };
+}
 export const trialFee = (round) => 6 + surcharge(round);
 
 // ---- Geometry: rooms are 4x4 tiles on a grid; each depth is its own plane. ----

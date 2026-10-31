@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
 import {
   ROOM, SPEED, TICK_HZ, ROUND_SECONDS, SHOP_CLOSE, CHOICE_CLOSE, FIELD_START, FIELD_END, ROUNDS, FARE,
-  SMUGGLER_FARE, INVENTORY, phaseAt, surcharge, CAREERS, ITEMS, MERCHANT_GOODS, UPGRADES, weaponPrice, trialFee,
+  SMUGGLER_FARE, INVENTORY, phaseAt, surcharge, CAREERS, ITEMS, MERCHANT_GOODS, UPGRADES, goodPrice, trialFee,
   DIRS, OPP, cellKey, LADDER, LADDER_UP, walkable, roomAt,
 } from './public/shared.js';
 
@@ -56,7 +56,6 @@ function newCode() {
 }
 
 const ROSTERS = {
-  2: ['worker', 'explorer'],
   3: ['worker', 'explorer', 'merchant'],
   4: ['worker', 'explorer', 'merchant', 'S'],
   5: ['worker', 'worker', 'explorer', 'merchant', 'S'],
@@ -123,7 +122,7 @@ class Match {
   }
   tryStart() {
     const n = this.players.length;
-    if (n < 2 || n > 8 || !this.players.every((p) => p.ready && p.connected)) return;
+    if (n < 3 || n > 8 || !this.players.every((p) => p.ready && p.connected)) return;
     this.start();
   }
 
@@ -659,18 +658,16 @@ class Match {
     p.inv = p.inv.filter((x) => x !== it);
   }
 
-  c_buy(p, m) { // machine terminal
+  c_buy(p, m) { // machine terminal: basic career tools only (1 coin)
     const e = this.shopCheck(p); if (e) return e;
     const type = m.item, def = ITEMS[type];
-    if (!def || !(def.basic || def.weapon || type === 'lantern')) return 'Not sold at the machine.';
+    if (!def || !def.basic) return 'The machine only sells basic tools — weapons and lanterns come from the Merchant.';
     if (def.career && def.career !== p.career) return `Only the ${CAREERS[def.career].name} can buy that.`;
-    let price = def.basic ? 1 : def.weapon ? weaponPrice(type, this.round) : def.price;
-    if (def.weapon && p.inv.some((it) => ITEMS[it.type].weapon)) return 'You may own only one weapon.';
     if (p.inv.length >= INVENTORY) return 'Your bag is full (7 items).';
-    if (p.coins < price) return 'Not enough coins.';
-    p.coins -= price;
-    p.inv.push(this.item(type, def.weapon ? { paidS: surcharge(this.round) } : {}));
-    this.tell(p, `Bought ${def.name} for ${price}.`);
+    if (p.coins < 1) return 'Not enough coins.';
+    p.coins -= 1;
+    p.inv.push(this.item(type));
+    this.tell(p, `Bought a ${def.name} for 1.`);
   }
 
   merchantP() { return this.living().find((x) => x.career === 'merchant'); }
@@ -698,19 +695,21 @@ class Match {
     if (m.good === 'compass' && p.career !== 'explorer') return 'Only Explorers can buy a compass.';
     if (m.good === 'compass' && this.round < 2) return 'Compasses are available from round 2.';
     if ((this.merchant.sold[m.good] || 0) >= 2) return 'Sold out this round (2 per round).';
+    if (g.weapon && p.inv.some((it) => ITEMS[it.type].weapon)) return 'You may own only one weapon.';
     if (p.inv.length >= INVENTORY) return 'Your bag is full (7 items).';
     const self = mer === p;
     if (!self && (!this.merchant.open || !this.inCamp(mer))) return 'The Merchant must be in a camp and open for business.';
-    const price = self ? g.cost : g.price;
+    const q = goodPrice(m.good, this.round);
+    const price = self ? q.cost : q.price;
     if (p.coins < price) return 'Not enough coins.';
     p.coins -= price;
     if (!self) {
-      const margin = Math.min(g.price - g.cost, 2 - this.merchant.profit);
-      mer.coins += g.cost + margin; this.merchant.profit += margin;
-      this.tell(mer, `Sold a ${ITEMS[m.good].name} to ${p.name} (+${margin} profit, ${g.cost} stock cost returned).`);
+      const margin = Math.min(q.price - q.cost, 2 - this.merchant.profit);
+      mer.coins += q.cost + margin; this.merchant.profit += margin;
+      this.tell(mer, `Sold a ${ITEMS[m.good].name} to ${p.name} (+${margin} profit, ${q.cost} stock cost returned).`);
     }
     this.merchant.sold[m.good] = (this.merchant.sold[m.good] || 0) + 1;
-    p.inv.push(this.item(m.good));
+    p.inv.push(this.item(m.good, g.weapon ? { paidS: surcharge(this.round) } : {}));
     this.tell(p, `Bought ${ITEMS[m.good].name} for ${price}.`);
   }
 

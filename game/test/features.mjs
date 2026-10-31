@@ -12,7 +12,7 @@ function setup(n, careers) {
   const m = new Match('TEST');
   for (let i = 0; i < n; i++) m.addPlayer('P' + i, 'tok' + i).ready = true;
   m.start();
-  if (careers) m.players.forEach((p, i) => { p.career = careers[i]; p.appearance = careers[i]; });
+  if (careers) m.players.forEach((p, i) => { p.career = careers[i]; p.appearance = careers[i]; p.inv = []; });
   m.players.forEach((p) => { p.events = []; p.smuggler = false; p.coins = 20; });
   m.camp = m.rooms['0,0,0'];
   return m;
@@ -26,7 +26,7 @@ const room = (m, gx, gy, cat, d = 0) => { const r = m.makeRoom(gx, gy, d, cat); 
 const finish = (m, p) => { for (let i = 0; i < 70 && p.channel; i++) m.step(); };
 
 test('guard wallet lock blocks theft; shield blocks one hit', () => {
-  const m = setup(4, ['guard', 'thief', 'worker', 'explorer']);
+  const m = setup(4, ['guard', 'thief', 'worker', 'merchant']);
   const [g, th, w] = m.players;
   runTo(m, 12);
   assert.equal(cmd(m, g, { t: 'setSlot', slot: g.slots[0].id, what: 'free:kit' }), null);
@@ -38,7 +38,7 @@ test('guard wallet lock blocks theft; shield blocks one hit', () => {
   assert.match(cmd(m, g, { t: 'setSlot', slot: g.slots[0].id, what: 'none' }), /committed/);
   cmd(m, th, { t: 'setSlot', slot: th.slots[0].id, what: 'free:hook' });
   assert.equal(cmd(m, th, { t: 'setTheft', slot: th.slots[0].id, target: w.id }), null);
-  th.coins += 10; cmd(m, th, { t: 'buy', item: 'blade' });
+  th.coins += 10; assert.equal(cmd(m, th, { t: 'merchantBuy', good: 'blade' }), null, 'no merchant in this roster? ');
   cmd(m, th, { t: 'setSlot', slot: th.slots[1].id, what: 'item:' + th.inv.find((i) => i.type === 'blade').id });
   runTo(m, CHOICE_CLOSE + 1);
   assert.equal(w.coins, 17, 'lock blocked theft'); assert(th.slots[0].used, 'hook still spent');
@@ -162,11 +162,12 @@ test('merchant: upgrades gated by round, goods & profit cap, personal potion', (
 });
 
 test('weapon surcharge top-up, one weapon, no purchase after cutoff', () => {
-  const m = setup(2, ['worker', 'explorer']);
-  const [w] = m.players;
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
+  const [w, , mer] = m.players;
   runTo(m, 12);
-  assert.equal(cmd(m, w, { t: 'buy', item: 'club' }), null); assert.equal(w.coins, 16);
-  assert.match(cmd(m, w, { t: 'buy', item: 'gun' }), /one weapon/);
+  assert.match(cmd(m, w, { t: 'buy', item: 'club' }), /only sells basic tools/);
+  assert.equal(cmd(m, w, { t: 'merchantBuy', good: 'club' }), null); assert.equal(w.coins, 16); assert.equal(mer.coins, 24, 'merchant: 3 cost back + 1 profit');
+  assert.match(cmd(m, w, { t: 'merchantBuy', good: 'gun' }), /one weapon/);
   nextRound(m); nextRound(m); runTo(m, 12); // round 3: surcharge 1
   const club = w.inv.find((i) => i.type === 'club');
   const c = w.coins;
@@ -180,7 +181,7 @@ test('weapon surcharge top-up, one weapon, no purchase after cutoff', () => {
 });
 
 test('item expiry and 7-slot inventory limit', () => {
-  const m = setup(2, ['worker', 'explorer']);
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
   const [w] = m.players;
   runTo(m, 12);
   for (let i = 0; i < 7; i++) assert.equal(cmd(m, w, { t: 'buy', item: 'pickaxe' }), null);
@@ -192,18 +193,18 @@ test('item expiry and 7-slot inventory limit', () => {
 });
 
 test('first-slot fallback gives career tool; blank second slot lost', () => {
-  const m = setup(2, ['worker', 'explorer']);
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
   const [w, ex] = m.players;
   runTo(m, CHOICE_CLOSE + 1);
   assert.equal(w.inv[0].type, 'pickaxe'); assert.equal(w.slots[0].item, w.inv[0].id);
   assert.equal(ex.inv[0].type, 'drill'); assert.equal(w.slots[1].item, null);
-  const away = setup(2, ['worker', 'explorer']);
+  const away = setup(3, ['worker', 'explorer', 'merchant']);
   at(away.players[0], room(away, 1, 0, 'gallery'));
   runTo(away, CHOICE_CLOSE + 1); assert.equal(away.players[0].inv.length, 0, 'no fallback outside camp');
 });
 
 test('ladders: drill down, climb both ways, depth-0-only exits', () => {
-  const m = setup(2, ['explorer', 'worker']);
+  const m = setup(3, ['explorer', 'worker', 'merchant']);
   const [ex] = m.players;
   runTo(m, FIELD_START + 1);
   give(m, ex, 'drill', 0); at(ex, m.camp);
@@ -217,7 +218,7 @@ test('ladders: drill down, climb both ways, depth-0-only exits', () => {
 });
 
 test('movement validation: walls, closed doors, speed', () => {
-  const m = setup(2, ['explorer', 'worker']);
+  const m = setup(3, ['explorer', 'worker', 'merchant']);
   const [ex] = m.players;
   at(ex, m.camp, 2, 2); ex.lastMove = Date.now() - 100;
   m.c_mv(ex, { x: ex.x + 0.25, y: ex.y }); assert.equal(ex.x, 2.25, 'normal step ok');
@@ -352,7 +353,7 @@ test('mining limits: 2/round per mine, cap per career, reserve 8', () => {
 });
 
 test('field cutoff interrupts unfinished channels; deposits allowed after field', () => {
-  const m = setup(2, ['worker', 'explorer']);
+  const m = setup(3, ['worker', 'explorer', 'merchant']);
   const [w] = m.players;
   runTo(m, 12); cmd(m, w, { t: 'setSlot', slot: w.slots[1].id, what: 'deposit' });
   runTo(m, FIELD_END - 1);
@@ -382,6 +383,27 @@ test('contribution proposals: camp-only, edits reset approvals, cleared each rou
   const v = m.view(b, false); assert.equal(v.proposals.length, 1);
   nextRound(m); assert.equal(Object.keys(m.proposals).length, 0, 'cleared at round end');
   assert.equal(cmd(m, b, { t: 'withdraw' }), null);
+});
+
+test('roster: needs 3+ players; 3 = worker, explorer, merchant; machine sells only basic tools', () => {
+  const m2 = new Match('TWO'); for (let i = 0; i < 2; i++) m2.addPlayer('P' + i, 'x' + i); m2.players.forEach((p) => (p.ready = true));
+  m2.tryStart(); assert.equal(m2.state, 'lobby', '2 players cannot start');
+  for (let n = 3; n <= 8; n++) {
+    const m = new Match('R' + n); for (let i = 0; i < n; i++) m.addPlayer('P' + i, 'y' + i); m.players.forEach((p) => (p.ready = true));
+    m.tryStart(); assert.equal(m.state, 'game');
+    const c = m.players.map((p) => p.career);
+    for (const need of ['worker', 'explorer', 'merchant']) assert(c.includes(need), `${n}p has ${need}`);
+  }
+  const m = setup(3, ['worker', 'explorer', 'merchant']); const [w, ex, mer] = m.players;
+  runTo(m, 12);
+  for (const t of ['lantern', 'gun', 'potion']) assert.match(cmd(m, w, { t: 'buy', item: t }), /basic tools/);
+  assert.equal(cmd(m, w, { t: 'buy', item: 'hook' }), null);
+  assert.match(cmd(m, w, { t: 'buy', item: 'drill' }), /Explorer/);
+  assert.equal(cmd(m, ex, { t: 'buy', item: 'drill' }), null);
+  assert.equal(cmd(m, w, { t: 'merchantBuy', good: 'lantern' }), null);
+  const c = mer.coins; assert.equal(cmd(m, mer, { t: 'merchantBuy', good: 'gun' }), null); assert.equal(mer.coins, c - 9, 'merchant pays cost for own gun');
+  m.merchant.open = false; assert.match(cmd(m, ex, { t: 'merchantBuy', good: 'club' }), /open for business/);
+  m.merchant.open = true; mer.status = 'dead'; assert.match(cmd(m, ex, { t: 'merchantBuy', good: 'club' }), /no living Merchant/);
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);
