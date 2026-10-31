@@ -477,14 +477,14 @@ function RulesModal({ close }) {
     <p>Somewhere far away there are hidden <b>natural exits</b> (14+ rooms from the start). Discovering one saves every survivor for free.</p>
     <h3>Each round (${ROUND_SECONDS}s)</h3>
     <ul>${PHASES.map((p) => html`<li><b>${p.start}–${p.end}s</b> ${p.label}</li>`)}</ul>
-    <p>Walk back to a <b>camp</b> (bright crystal Safe Zone) each round — shopping, loadouts, votes and theft targets only work there. Nobody teleports home!</p>
+    <p>Walk back to a <b>camp</b> (bright crystal Safe Zone) each round — shopping, loadouts and votes only work there. Nobody teleports home!</p>
     <h3>Actions</h3>
     <p>You get <b>2 free action slots</b> per round (buy up to 2 more from the Merchant). In camp, fill each slot: a free basic tool (pickaxe, hook, crowbar…), an item you own, or a <b>Deposit</b>/<b>Trial</b> marker. In the field, tap a slot to use it. Physical actions take 3 seconds standing still — moving or getting hit interrupts them, but you keep the tool and the action and can try again. Tools are only used up when the work finishes. Unused items stay in your 7-slot bag until they expire. A tool you put in a slot but didn't use keeps its slot next round (↺, up to 2), on top of your 2 new free slots — max 4 actions per round.</p>
     <ul>
       <li><b>Pickaxe</b> — mine 1 coin in a coin mine (Workers up to 2/round, others 1). First come, first served: one person mines at a time; a mine gives at most 2 coins per round and 8 in total.</li>
       <li><b>Drill</b> (Explorer only) — open a new room through a sealed wall, or downward. Finds mines, treasure, caches, new camps, traps or empty galleries.</li>
       <li><b>Crowbar</b> — loot a treasure chest, a dropped item, or half of a body's coins (Scavengers take all).</li>
-      <li><b>Hook</b> — pick a victim in camp; when choices close, if you're still in the same room, you silently steal 1 coin (Thief: 2).</li>
+      <li><b>Hook</b> — at any time, silently steal 1 coin (Thief: up to 2) from someone in the same room as you. They aren't told; each person can be robbed by you once per round.</li>
       <li><b>Deposit</b> — put any amount into the fund (field, return or settlement time).</li>
       <li><b>Weapons</b> (bought privately at the machine: club 1 dmg, blade 2, gun 3 at range) — attack a visible player in an unsafe room during field time. Bodies keep their coins for looting.</li>
       <li><b>Trial</b> — in a camp during field time, pay ${trialFee(1)}+ coins to accuse someone there. Majority of ALL living players must vote guilty to execute.</li>
@@ -589,12 +589,11 @@ function SlotBtn({ s, i, v }) {
   const y = v.you, k = slotIconKey(s, y);
   const it = s.item && y.inv.find((x) => x.id === s.item);
   const label = s.marker ? (s.marker === 'deposit' ? 'Deposit' : 'Trial') : it ? ITEMS[it.type].name.split(' ')[0] : 'empty';
-  const usable = !s.used && k && !['hook', 'kit'].includes(k);
-  const tgt = s.target && v.roster.find((r) => r.id === s.target);
+  const usable = !s.used && k && k !== 'kit';
   return html`<div class=${'slot' + (s.used ? ' used' : usable ? ' ready' : '')} title=${label}>
     <span class="k">${i + 1}${s.kind === 'extra' ? '+' : s.kind === 'saved' ? '↺' : ''}</span>
     ${k ? html`<img src=${itemSrc(k)} />` : html`<span class="muted">—</span>`}
-    <span>${s.used ? 'used' : tgt ? '→' + tgt.name.slice(0, 6) : s.service ? s.service : label}</span>
+    <span>${s.used ? 'used' : label}</span>
   </div>`;
 }
 
@@ -667,7 +666,10 @@ function buildChoices(v, setTab) {
       if (!y.trapped && !tr.length) add('🪢 Rescue a trapped player', null, { disabled: 'nobody trapped nearby', sub: tag });
     } else if (type === 'lantern' || type === 'rlantern') add(`🏮 Hang the ${name} to light this room`, act({}), { disabled: blocked || (r && r.safe && 'camps are already bright'), sub: tag });
     else if (type === 'compass') add('🧭 Survey with the compass', act({}), { disabled: blocked || (S.me.d !== 0 && 'only works at depth 0'), sub: `${tag} · private rough direction to the nearest exit` });
-    else if (type === 'hook') add(s.target ? `🪝 Hook is set on ${(v.roster.find((x) => x.id === s.target) || {}).name}` : '🪝 Choose who to rob (in camp)', () => setTab('loadout'), { disabled: v.sec >= CHOICE_CLOSE && 'resolves automatically when choices close', sub: tag });
+    else if (type === 'hook') {
+      if (!others.length) add('🪝 Rob someone (silently)', null, { disabled: 'nobody in this room with you', sub: tag });
+      for (const e of others) add(`🪝 Rob ${e.name} (silently)`, act({ id: e.id }), { disabled: trapped && "you're trapped", sub: `${tag} · takes ${y.career === 'thief' ? 'up to 2 coins' : '1 coin'} · they won't be told`, danger: true });
+    }
     else if (type === 'kit') add('🛡 Protection kit ready to sell', () => setTab('guard'), { sub: tag });
   }
   // Hints for things in this room that need a tool you don't have ready in an action slot.
@@ -793,10 +795,6 @@ function Loadout({ v, open }) {
           ${canEdit && html`<span class="ch-toggle">${isOpen ? '▲' : 'Change ▼'}</span>`}
         </button>
         ${isOpen && html`<div class="col" style="gap:5px;margin-top:6px">${opts.map(([what, label, sub]) => html`<button class=${'choice' + (what === current(s) ? ' picked' : '')} onClick=${() => pick(s, what)}><span class="grow"><span class="ch-l">${label}${what === current(s) ? ' ✔' : ''}</span><small>${sub}</small></span></button>`)}</div>`}
-        ${it && it.type === 'hook' && !s.used && html`<div style="margin-top:6px"><div class="muted" style="font-size:13px">🪝 Rob who? (must be in this camp; resolves when choices close if you're still in the same room)</div>
-          <div class="row" style="margin-top:4px">${sameRoom.map((e) => html`<button class=${'small' + (s.target === e.id ? ' primary' : '')} disabled=${!open} onClick=${() => send({ t: 'setTheft', slot: s.id, target: s.target === e.id ? null : e.id })}>${e.name}${s.target === e.id ? ' ✔' : ''}</button>`)}
-          ${!sameRoom.length && html`<span class="muted" style="font-size:13px">Nobody else is in this camp.</span>`}
-          ${s.target && !sameRoom.some((e) => e.id === s.target) && html`<span class="warn" style="font-size:13px">Target: ${(v.roster.find((r) => r.id === s.target) || {}).name} (not here now)</span>`}</div></div>`}
       </div>`;
     })}
     <p class="muted" style="font-size:12px">Unused tools in slots carry over to next round (↺, max 2) on top of your 2 new free slots. Need more actions? See the Merchant tab (max 4 per round in total).</p>`;
@@ -845,7 +843,7 @@ function Guard({ v, open }) {
     const kits = y.slots.filter((s) => !s.used && s.item && (y.inv.find((i) => i.id === s.item) || {}).type === 'kit');
     return html`<h3>Your protection services</h3>
       <label class="row note"><input type="checkbox" checked=${g.open} onChange=${(e) => send({ t: 'guardOpen', v: e.target.checked })} /> Open for business</label>
-      <div class="note">Each sale uses one <b>protection kit</b> sitting in one of your action slots (you have ${kits.length}). Put kits in your slots in the Actions tab. You are paid immediately; the service installs when choices close.</div>
+      <div class="note">Each sale uses one <b>protection kit</b> sitting in one of your action slots (you have ${kits.length}). Put kits in your slots in the Actions tab. You are paid immediately and the protection starts right away (one kit is used per sale).</div>
       <div>Wallet lock (1c): ${g.sold.lock ? 'sold ✔' : 'available'} · Life shield (2c): ${g.sold.shield ? 'sold ✔' : 'available'}</div>`;
   }
   return html`<h3>${guard.name}'s protection</h3>

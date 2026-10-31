@@ -35,7 +35,7 @@ Anyone still underground after round 10 loses. Wallets are private; contribution
 | Time | Phase | What to do |
 |---|---|---|
 | 0–10 s | Arrival | Walk to a **camp** (bright crystal Safe Zone). |
-| 10–50 s | Camp choices | Fill your action slots, shop (closes at 48 s), buy services, post/approve pledges, pick theft targets. |
+| 10–50 s | Camp choices | Fill your action slots, shop (closes at 48 s), buy services, post/approve pledges. |
 | 50–60 s | Departure | Walk out to where you'll act. |
 | 60–110 s | Field | Tap your action slots to mine, drill, loot, attack, heal, deposit… |
 | 110–125 s | Return | Walk back to a camp. Deposits still allowed. |
@@ -53,7 +53,7 @@ Everything you can do is offered in the **"What do you do?" box** at the bottom 
 | Pickaxe | Mine 1 coin in a coin mine. Workers mine up to 2/round, others 1. |
 | Drill (Explorer only) | Open a sealed wall or dig downward. Finds coin mines, treasure, supply caches, new camps, traps or empty galleries. |
 | Crowbar | Loot a treasure chest, a dropped item, or a body (half its coins; Scavengers take all). |
-| Hook | Choose a victim in camp. When choices close, if you're still in the same room, you silently steal 1 coin (Thief: 2). |
+| Hook | At any time, silently steal 1 coin (Thief: up to 2) from someone in the same room. The victim isn't told; you can rob each person once per round. |
 | Deposit marker | Put any amount into the escape fund (field, return or settlement). |
 | Club / Blade / Gun (bought privately at the machine) | Attack a visible player in an unsafe room: 1 / 2 / 3 damage (gun reaches 4 tiles). Bodies keep their coins. |
 | Trial marker | In a camp during field time, pay 6+ coins to accuse someone there. Guilty needs a majority of **all** living players. |
@@ -65,7 +65,7 @@ Everything you can do is offered in the **"What do you do?" box** at the bottom 
 | Worker | Mines up to 2 coins per round (others mine 1). |
 | Explorer | The only career that drills new rooms; gets a 1-coin finder's share of treasure. |
 | Merchant | Sells extra action slots (prices 1, 2, 3… per round) and advanced goods unlocked by upgrading the shop (potions, compass, rescue kits, reinforced lanterns). At most 2 coins of profit per round; gets a free potion each round. |
-| Guard | Sells one wallet lock (1c, blocks theft) and one life shield (2c, blocks a hit) per round. |
+| Guard | Sells one wallet lock (1c, blocks theft) and one life shield (2c, blocks a hit) per round; both work immediately until the round ends. |
 | Thief | Steals 2 coins per hook instead of 1. |
 | Scavenger | Loots in 1 s instead of 3 s and can take every coin from a body. |
 
@@ -96,6 +96,7 @@ The detailed rules come from the design handoff in `mine-escape-handoff/`. These
 - **Camp choices last 40 s instead of 20 s**, so shopping and planning are comfortable on a phone; rounds are therefore 130 s instead of 110 s.
 - **Saved actions.** An unused tool that was placed in an action slot keeps its slot into next round, so using a saved tool doesn't cost a new action. Up to 2 carry over (locked to their tool), keeping the 4-actions-per-round maximum; the original design discarded unused actions.
 - **7-item bag limit** for everything a player carries.
+- **Theft any time.** A hook can rob anyone in the same room at any moment (silently), instead of only resolving when camp choices close. Guard locks and shields therefore activate the moment they're bought.
 - **Interruptions are free.** If you move, get hit or cancel before an action finishes, you keep the tool and the action (the original design spent them). An action already in progress when field time ends still finishes.
 - **No mine reservations.** Mines are first come, first served, and another player's action can only be interrupted by attacking them.
 - **Two shops.** The private tool machine in every camp sells basic career tools (1 coin), lanterns and weapons, so nobody learns who is armed. The Merchant sells extra action slots and advanced goods unlocked by upgrading the shop. (Moving weapons to the Merchant was tried and reverted.)

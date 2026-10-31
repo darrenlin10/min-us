@@ -35,14 +35,13 @@ test('guard wallet lock blocks theft; shield blocks one hit', () => {
   assert.equal(cmd(m, w, { t: 'guardBuy', svc: 'shield' }), null);
   assert.equal(w.coins, 17); assert.equal(g.coins, 23);
   assert.match(cmd(m, th, { t: 'guardBuy', svc: 'lock' }), /already sold/);
-  assert.match(cmd(m, g, { t: 'setSlot', slot: g.slots[0].id, what: 'none' }), /committed/);
+  assert(g.slots[0].used && g.slots[1].used, 'guard kits used at the moment of sale');
+  assert.equal(w.lockRound, m.round); assert.equal(w.shieldRound, m.round);
   cmd(m, th, { t: 'setSlot', slot: th.slots[0].id, what: 'free:hook' });
-  assert.equal(cmd(m, th, { t: 'setTheft', slot: th.slots[0].id, target: w.id }), null);
+  assert.equal(cmd(m, th, { t: 'act', slot: th.slots[0].id, target: { id: w.id } }), null, 'theft works in camp during choices');
+  assert.equal(w.coins, 17, 'lock blocked theft'); assert(th.slots[0].used, 'hook still spent');
   th.coins += 10; assert.equal(cmd(m, th, { t: 'buy', item: 'blade' }), null);
   cmd(m, th, { t: 'setSlot', slot: th.slots[1].id, what: 'item:' + th.inv.find((i) => i.type === 'blade').id });
-  runTo(m, CHOICE_CLOSE + 1);
-  assert.equal(w.coins, 17, 'lock blocked theft'); assert(th.slots[0].used, 'hook still spent');
-  assert(g.slots[0].used && g.slots[1].used, 'guard kits spent');
   runTo(m, FIELD_START + 1);
   const gal = room(m, 1, 0, 'gallery'); at(w, gal, 2, 2); at(th, gal, 2.5, 2);
   assert.equal(cmd(m, th, { t: 'act', slot: th.slots[1].id, target: { id: w.id } }), null);
@@ -456,6 +455,27 @@ test('unused tool slots carry over (max 2, locked), plus 2 new free slots; 4-act
   // markers/empties don't carry; nothing carries beyond expiry
   nextRound(m); assert.equal(w.slots.filter((s) => s.kind === 'saved').length, 1, 'unused hook still carries');
   nextRound(m); assert.equal(w.slots.filter((s) => s.kind === 'saved').length, 0, 'hook expired (TTL 2) so its slot is gone');
+});
+
+test('theft: any time in the same room, silent, once per victim per round, thief takes 2', () => {
+  const m = setup(4, ['thief', 'worker', 'explorer', 'merchant']);
+  const [th, w, ex, me] = m.players;
+  w.coins = 3; ex.coins = 1;
+  runTo(m, 12);
+  for (let i = 0; i < 2; i++) cmd(m, th, { t: 'setSlot', slot: th.slots[i].id, what: i === 0 ? 'free:hook' : 'free:pickaxe' });
+  th.inv.push(m.item('hook')); th.slots[1].item = th.inv.at(-1).id;
+  const gal = room(m, 1, 0, 'gallery'); at(w, gal);
+  assert.match(cmd(m, th, { t: 'act', slot: th.slots[0].id, target: { id: w.id } }), /same room/);
+  assert(!th.slots[0].used, 'failed attempt costs nothing');
+  at(th, gal, 2.5, 2);
+  w.events = [];
+  assert.equal(cmd(m, th, { t: 'act', slot: th.slots[0].id, target: { id: w.id } }), null);
+  assert.equal(w.coins, 1); assert.equal(th.coins, 22);
+  assert.equal(w.events.length, 0, 'victim is not told');
+  assert.match(cmd(m, th, { t: 'act', slot: th.slots[1].id, target: { id: w.id } }), /already robbed/);
+  at(ex, gal, 2.2, 2.2); assert.equal(cmd(m, th, { t: 'act', slot: th.slots[1].id, target: { id: ex.id } }), null);
+  assert.equal(ex.coins, 0, 'takes only what they have');
+  runTo(m, FIELD_START + 1); // also allowed later, outside camps
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);

@@ -254,39 +254,6 @@ class Match {
         } else this.tell(p, 'Slot 1 was left empty and no fallback tool could be delivered.', 'warn');
       }
     }
-    // install Guard services
-    const g = this.living().find((p) => p.career === 'guard');
-    for (const svc of ['lock', 'shield']) {
-      const sale = this.guard.sold[svc];
-      if (!sale) continue;
-      const cust = this.P(sale.customer);
-      const slot = g && g.slots.find((s) => s.id === sale.slot);
-      if (g && slot && !slot.used) {
-        this.useSlot(g, slot);
-        if (cust && cust.status === 'alive') {
-          if (svc === 'lock') cust.lockRound = this.round; else cust.shieldRound = this.round;
-          this.tell(cust, svc === 'lock' ? 'Your wallet lock is active this round.' : 'Your life shield is active this round (blocks one hit).', 'good');
-        }
-      }
-    }
-    // silent theft batch
-    const opening = {};
-    for (const p of this.players) opening[p.id] = p.coins;
-    for (const thief of this.priority()) {
-      if (thief.status !== 'alive') continue;
-      for (const s of thief.slots) {
-        if (s.used || !s.target || !this.slotItem(thief, s) || this.slotItem(thief, s).type !== 'hook') continue;
-        const v = this.P(s.target);
-        if (!v || v.status !== 'alive' || this.room(thief) !== this.room(v) || v.d !== thief.d) continue;
-        this.useSlot(thief, s);
-        let amt = 0;
-        if (v.lockRound !== this.round) {
-          amt = Math.min(thief.career === 'thief' ? 2 : 1, opening[v.id], v.coins);
-          opening[v.id] -= amt; v.coins -= amt; thief.coins += amt;
-        }
-        this.tell(thief, `Your hook took ${amt} coin${amt === 1 ? '' : 's'} from ${v.name}.`, amt ? 'good' : 'info');
-      }
-    }
   }
 
   endRound() {
@@ -644,17 +611,6 @@ class Match {
     }
   }
 
-  c_setTheft(p, m) {
-    const e = this.campCheck(p, CHOICE_CLOSE); if (e) return e;
-    const s = p.slots.find((x) => x.id === m.slot);
-    if (!s || s.used || !this.slotItem(p, s) || this.slotItem(p, s).type !== 'hook') return 'Put a hook in that slot first.';
-    if (!m.target) { s.target = null; return; }
-    const v = this.P(m.target);
-    if (!v || v === p || v.status !== 'alive' || this.room(v) !== this.room(p)) return 'Target must be in your camp.';
-    if (p.slots.some((o) => o !== s && o.target === v.id && !o.used)) return 'Each hook needs a different target.';
-    s.target = v.id;
-  }
-
   c_discard(p, m) {
     if (p.status !== 'alive' || !this.inCamp(p) || this.meeting) return 'Discard only in camp.';
     const it = p.inv.find((x) => x.id === m.item); if (!it) return;
@@ -748,10 +704,12 @@ class Match {
     const price = svc === 'lock' ? 1 : 2;
     if (p.coins < price) return 'Not enough coins.';
     p.coins -= price; g.coins += price;
-    slot.service = svc;
-    this.guard.sold[svc] = { customer: p.id, slot: slot.id };
+    this.useSlot(g, slot); // the Guard's kit and action are spent; protection starts now
+    this.guard.sold[svc] = { customer: p.id };
+    if (svc === 'lock') p.lockRound = this.round; else p.shieldRound = this.round;
+    this.tell(p, svc === 'lock' ? 'Your wallet lock is active for the rest of this round.' : 'Your life shield is active for the rest of this round (blocks one hit).', 'good');
     this.pub(`${p.name} hired the Guard for a ${svc === 'lock' ? 'wallet lock' : 'life shield'}.`);
-    this.tell(g, `${p.name} bought a ${svc === 'lock' ? 'wallet lock' : 'life shield'} (+${price}). It installs at choice close using your kit.`);
+    this.tell(g, `${p.name} bought a ${svc === 'lock' ? 'wallet lock' : 'life shield'} (+${price}). It is active now (one of your kits was used).`);
   }
 
   // field action using a prepared slot
@@ -771,6 +729,8 @@ class Match {
       this.pub(`${p.name} contributed ${amt} coin${amt === 1 ? '' : 's'} to the escape fund.`);
       return;
     }
+    const hookIt = this.slotItem(p, s);
+    if (hookIt && hookIt.type === 'hook') return this.steal(p, s, tg);
     if (ph !== 'field') return 'Physical actions only during field time.';
     if (s.marker === 'trial') return this.startTrial(p, s, tg);
     if (p.channel) return 'You are already busy with an action.';
@@ -849,10 +809,24 @@ class Match {
         if (!r || r.d !== 0) return 'The compass only works at depth 0.';
         if (Object.values(this.rooms).some((x) => x.opening)) return 'An exit is already open!';
         this.startChannel(p, s, 'survey', {}, CHANNEL_T); return;
-      case 'hook': return 'Hooks are used automatically when camp choices close (pick a target in camp).';
       case 'kit': return 'Protection kits are used when a customer buys a Guard service.';
     }
     return 'Nothing to do with that here.';
+  }
+
+  // Silent theft: any phase, anywhere, as long as both are in the same room. No notice to the victim.
+  steal(p, s, tg) {
+    if (p.trappedRound === this.round && this.phase() === 'field') return "You're trapped.";
+    const v = this.P(tg.id);
+    if (!v || v === p || v.status !== 'alive' || v.d !== p.d || this.room(v) !== this.room(p)) return 'Your target must be in the same room as you.';
+    if (p.robbed && p.robbed.round === this.round && p.robbed.ids.includes(v.id)) return `You already robbed ${v.name} this round — pick someone else.`;
+    if (p.channel) this.cancelChannel(p, 'you used your hook');
+    this.useSlot(p, s);
+    if (!p.robbed || p.robbed.round !== this.round) p.robbed = { round: this.round, ids: [] };
+    p.robbed.ids.push(v.id);
+    const amt = v.lockRound === this.round ? 0 : Math.min(p.career === 'thief' ? 2 : 1, v.coins);
+    v.coins -= amt; p.coins += amt;
+    this.tell(p, `Your hook took ${amt} coin${amt === 1 ? '' : 's'} from ${v.name}.`, amt ? 'good' : 'info');
   }
 
   attack(p, s, it, tg) {

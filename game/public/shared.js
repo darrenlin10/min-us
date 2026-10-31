@@ -34,7 +34,7 @@ export const CAREERS = {
   worker: { name: 'Worker', preset: 'pickaxe', blurb: 'Mines up to 2 coins per round (others mine 1).' },
   explorer: { name: 'Explorer', preset: 'drill', blurb: 'Only career that drills new rooms. Gets 1 finder coin from treasure.' },
   merchant: { name: 'Merchant', preset: 'crowbar', blurb: 'Sells extra actions and advanced goods; unlocks catalog tiers. Gets a free potion each round.' },
-  guard: { name: 'Guard', preset: 'kit', blurb: 'Sells one wallet lock (1c) and one life shield (2c) per round.' },
+  guard: { name: 'Guard', preset: 'kit', blurb: 'Sells one wallet lock (1c, stops theft) and one life shield (2c, blocks a hit) per round; they work immediately.' },
   thief: { name: 'Thief', preset: 'hook', blurb: 'Steals up to 2 coins per hook (others steal 1).' },
   scavenger: { name: 'Scavenger', preset: 'crowbar', blurb: 'Loots in 1s instead of 3s and can take ALL coins from a body.' },
 };
@@ -42,7 +42,7 @@ export const CAREERS = {
 export const ITEMS = {
   pickaxe: { name: 'Pickaxe', ttl: 2, basic: true, use: 'Mine 1 coin in a mine room' },
   drill: { name: 'Drill', ttl: 2, basic: true, career: 'explorer', use: 'Explorer: open a new room' },
-  hook: { name: 'Hook', ttl: 2, basic: true, use: 'Steal from a player chosen in camp' },
+  hook: { name: 'Hook', ttl: 2, basic: true, use: 'Silently steal from someone in your room, any time' },
   crowbar: { name: 'Crowbar', ttl: 2, basic: true, use: 'Loot a body, chest or dropped item' },
   kit: { name: 'Protection kit', ttl: 2, basic: true, career: 'guard', use: 'Guard: deliver a sold service' },
   club: { name: 'Club', ttl: 3, weapon: true, base: 4, dmg: 1, reach: 1.3, use: 'Attack: 1 damage, close range' },

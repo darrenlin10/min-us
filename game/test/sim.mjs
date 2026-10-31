@@ -67,8 +67,8 @@ const by = (m, c) => m.players.find((p) => p.career === c);
   assert.equal(mer.coins, mc + 2, 'profit cap 2'); assert.match(cmd(m, b, { t: 'buyExtra' }), /At most 4/);
   // theft: a hooks b
   cmd(m, a, { t: 'setSlot', slot: a.slots[0].id, what: 'free:hook' });
-  assert.equal(cmd(m, a, { t: 'setTheft', slot: a.slots[0].id, target: b.id }), null);
-  const bBefore = b.coins, aBefore = a.coins + 10 - 10;
+  const bBefore = b.coins, aBefore = a.coins;
+  assert.equal(cmd(m, a, { t: 'act', slot: a.slots[0].id, target: { id: b.id } }), null);
   // weapons
   a.coins += 10;
   assert.equal(cmd(m, a, { t: 'buy', item: 'gun' }), null);
