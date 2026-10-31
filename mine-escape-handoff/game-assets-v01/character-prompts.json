@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-30",
+  "tool": "Built-in image_gen.imagegen",
+  "scope": "Eight static, single-view, empty-handed character base sprites: six careers plus second Worker and Explorer cosmetics. Not animation atlases or all-direction sprites.",
+  "style_reference": "characters/worker-idle.png",
+  "characters": [
+    {
+      "career": "worker",
+      "file": "characters/worker-idle.png",
+      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-5191cb6a-f263-48f6-bcb2-ed208111364b.png",
+      "reference_images": [],
+      "prompt": "Use case: stylized-concept\nAsset type: one transparent 2D game character idle sprite, square 1024x1024 canvas.\nPrimary request: create the Worker career for an original cartoon underground multiplayer game called Mine Escape.\nSubject: ONE full-body adult expedition worker, compact chunky three-heads-tall proportions, domed yellow hardhat with an unlit round headlamp, orange bib overalls over a charcoal short-sleeved work shirt, broad tan work gloves, chunky charcoal boots. Friendly neutral tiny face with simple eyes. NO tool held, both empty gloved hands relaxed at sides. No weapon, coin, shield or glowing lamp.\nStyle: original accessible social-game art, bold smooth near-charcoal outline, simple geometric shapes, flat cel shading with just one shadow tone, no texture, no painterly rendering. Clear at 64px. Not an astronaut, no visor, no spaceship, no copied existing game character.\nCamera: slightly elevated orthographic three-quarter view facing screen-right and toward viewer, show front and a little of the character's left side. Neutral standing idle pose.\nComposition: isolated centered character, same scale suitable for a six-career set; entire silhouette within x=25–75% and y=14–86%, feet on baseline y=86%; leave transparent margin around everything.\nBackground: genuinely transparent alpha, no ground plane, no cast shadow, no checkerboard painted into image.\nPalette: amber #F0BA3C, orange #D97830, charcoal #343743, warm tan skin/gloves.\nText: none. No labels, border, watermark or extra objects.",
+      "transparent_background_requested": true,
+      "review": "Visually inspected: complete full body, same three-quarter front-right style, empty hands, no secret-role or owned-equipment tells."
+    },
+    {
+      "career": "explorer",
+      "file": "characters/explorer-idle.png",
+      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-7afdf228-01de-47f2-a437-c0fba66c303a.png",
+      "reference_images": [
+        "characters/worker-idle.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated transparent 2D game idle character PNG.\nInput image: Worker sprite is a STYLE/CAMERA/PROPORTIONS reference only; create the different career described, not the Worker.\nMatch the reference's chunky three-heads-tall human proportions, smooth bold near-charcoal outline, simple geometric forms, restrained flat cel shading, friendly tiny face and mobile readability. Same slightly elevated orthographic three-quarter view facing screen-right and toward viewer, neutral standing idle, empty hands relaxed at sides. Keep character centered with complete hat and boots, generous transparent margins, feet aligned to the reference's baseline. Square canvas. Original underground expedition crew, not astronauts or copied existing game characters. Real transparent alpha, no ground, no cast shadow, no checkerboard, labels, text, watermark, weapons, coins, glow, extra objects or equipped usable tools.\nSubject: Explorer career. Broad tan field hat with folded decorative goggles, teal expedition coat, sand collar, dark-brown hiking boots, compact upright backpack with rolled map clearly visible behind shoulder. Warm medium-brown face, short dark hair, curious neutral smile. Narrow upright pack silhouette. Palette teal #2C7C82, sand #D3BA83, brown #514235. No compass in hands or worn compass; map pack is costume only.",
+      "transparent_background_requested": true,
+      "review": "Visually inspected: complete full body, same three-quarter front-right style, empty hands, no secret-role or owned-equipment tells."
+    },
+    {
+      "career": "merchant",
+      "file": "characters/merchant-idle.png",
+      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-5de2951f-8826-476e-abe0-af1dea7bfa44.png",
+      "reference_images": [
+        "characters/worker-idle.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated transparent 2D game idle character PNG.\nInput image: Worker sprite is a STYLE/CAMERA/PROPORTIONS reference only; create the different career described, not the Worker.\nMatch the reference's chunky three-heads-tall human proportions, smooth bold near-charcoal outline, simple geometric forms, restrained flat cel shading, friendly tiny face and mobile readability. Same slightly elevated orthographic three-quarter view facing screen-right and toward viewer, neutral standing idle, empty hands relaxed at sides. Keep character centered with complete hat and boots, generous transparent margins, feet aligned to the reference's baseline. Square canvas. Original underground expedition crew, not astronauts or copied existing game characters. Real transparent alpha, no ground, no cast shadow, no checkerboard, labels, text, watermark, weapons, coins, glow, extra objects or equipped usable tools.\nSubject: Merchant career. Plum waistcoat with short flared coat, cream collar, restrained brass trim, rectangular ledger satchel with square clasp at hip, charcoal trousers and simple brown boots. Dark-brown face and short softly curled hair, calm neutral smile. Upright coat and flat rectangular bag silhouette. Palette plum #713A61, cream #EFE1BF, brass #D0A24F. Both hands empty, no held ledger, coins or bottle; brass trim must not imply actual money.",
+      "transparent_background_requested": true,
+      "review": "Visually inspected: complete full body, same three-quarter front-right style, empty hands, no secret-role or owned-equipment tells."
+    },
+    {
+      "career": "guard",
+      "file": "characters/guard-idle.png",
+      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-aded1c24-da30-4d53-9f6e-3848ded57cd7.png",
+      "reference_images": [
+        "characters/worker-idle.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated transparent 2D game idle character PNG.\nInput image: Worker sprite is a STYLE/CAMERA/PROPORTIONS reference only; create the different career described, not the Worker.\nMatch the reference's chunky three-heads-tall human proportions, smooth bold near-charcoal outline, simple geometric forms, restrained flat cel shading, friendly tiny face and mobile readability. Same slightly elevated orthographic three-quarter view facing screen-right and toward viewer, neutral standing idle, empty hands relaxed at sides. Keep character centered with complete headwear and boots, generous transparent margins, feet aligned to the reference's baseline. Square canvas. Original underground expedition crew, not astronauts or copied existing game characters. Real transparent alpha, no ground, no cast shadow, no checkerboard, labels, text, watermark, weapons, coins, glow, extra objects or equipped usable tools.\nSubject: Guard career. Cobalt padded uniform, ivory shoulder and forearm plates, squared open-face helmet with visible friendly face, small decorative chest badge with simple watchtower silhouette, broad stable stance and charcoal boots. Neutral medium-tan face, simple eyes and subtle smile. Palette cobalt #38578A, ivory #D9D4BD, steel #747F8B. Both hands empty, no held shield, no active protection bubble. Costume armor is decoration only. Distinct squared helmet and shoulders.",
+      "transparent_background_requested": true,
+      "review": "Visually inspected: complete full body, same three-quarter front-right style, empty hands, no secret-role or owned-equipment tells."
+    },
+    {
+      "career": "thief",
+      "file": "characters/thief-idle.png",
+      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-a5e410ed-185c-4c89-b13d-e7b99e0edec0.png",
+      "reference_images": [
+        "characters/worker-idle.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated transparent 2D game idle character PNG.\nInput image: Worker sprite is a STYLE/CAMERA/PROPORTIONS reference only; create the different career described, not the Worker.\nMatch the reference's chunky three-heads-tall human proportions, smooth bold near-charcoal outline, simple geometric forms, restrained flat cel shading, friendly tiny face and mobile readability. Same slightly elevated orthographic three-quarter view facing screen-right and toward viewer, neutral standing idle, empty hands relaxed at sides. Keep character centered with complete headwear and boots, generous transparent margins, feet aligned to the reference's baseline. Square canvas. Original underground expedition crew, not astronauts or copied existing game characters. Real transparent alpha, no ground, no cast shadow, no checkerboard, labels, text, watermark, weapons, coins, glow, extra objects or equipped usable tools.\nSubject: Thief career. Charcoal fitted outfit, sharply pointed cloth hood with lime lining, short split coat tails, small dark eye mask on visible warm-tan face, soft charcoal boots, slim proportions but same overall height and footprint as Worker reference. Playful subtle smile, simple eyes. Palette charcoal #343743, lime #B6CC56, muted brown #74604A. Both hands empty, no visible hook, weapon, coin purse or stolen goods. Distinct triangular pointed hood.",
+      "transparent_background_requested": true,
+      "review": "Visually inspected: complete full body, same three-quarter front-right style, empty hands, no secret-role or owned-equipment tells."
+    },
+    {
+      "career": "scavenger",
+      "file": "characters/scavenger-idle.png",
+      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-c1a78c6b-fa6a-49c4-942b-2048d209325e.png",
+      "reference_images": [
+        "characters/worker-idle.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated transparent 2D game idle character PNG.\nInput image: Worker sprite is a STYLE/CAMERA/PROPORTIONS reference only; create the different career described, not the Worker.\nMatch the reference's chunky three-heads-tall human proportions, smooth bold near-charcoal outline, simple geometric forms, restrained flat cel shading, friendly tiny face and mobile readability. Same slightly elevated orthographic three-quarter view facing screen-right and toward viewer, neutral standing idle, empty hands relaxed at sides. Keep character centered with complete headwear and boots, generous transparent margins, feet aligned to the reference's baseline. Square canvas. Original underground expedition crew, not astronauts or copied existing game characters. Real transparent alpha, no ground, no cast shadow, no checkerboard, labels, text, watermark, weapons, coins, glow, extra objects or equipped usable tools.\nSubject: Scavenger career. Patched rust-red utility jacket, olive cargo trousers, rounded aviator cap with decorative goggles on top, large rounded canvas salvage backpack offset behind shoulder, reinforced brown boots. Light warm-brown face, simple friendly eyes and neutral smile, small dark hair curls. Palette rust #A5533D, olive #758050, canvas #C6AE79. Both hands empty, no tools or coins, backpack closed with no visible contents. Distinct rounded cap and big round pack.",
+      "transparent_background_requested": true,
+      "review": "Visually inspected: complete full body, same three-quarter front-right style, empty hands, no secret-role or owned-equipment tells."
+    },
+    {
+      "career": "worker",
+      "variant": 2,
+      "file": "characters/worker-02-idle.png",
+      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-eb80cb58-804c-47b0-910a-26648e5eaab8.png",
+      "reference_images": [
+        "characters/worker-idle.png"
+      ],
+      "prompt": "Use case: identity-preserve. Asset type: transparent static 2D Worker cosmetic variant.\nInput image is the edit target: existing Worker idle sprite. Preserve the exact character body size, overall silhouette, foot position, standing pose, camera angle, orange overalls, charcoal shirt/boots, tan gloves, yellow hardhat/unlit lamp, line weight, shading and transparent background.\nChange ONLY these cosmetic details: two clearly visible narrow dark-charcoal parallel stripes run front-to-back over the top of the yellow hardhat beside the unlit lamp; a different friendly face preset with slightly softer cheeks and a few freckles; the short visible hair beneath the helmet becomes auburn. No change in apparent role, ability or equipment.\nKeep BOTH hands empty, all of hat and boots within frame, same generous transparent margins. No held tool, coin, weapon, shield, text, ground shadow, extra object, new background or Smuggler tell. Make one character, not a comparison sheet. Preserve true alpha transparency.",
+      "transparent_background_requested": true,
+      "review": "Visually inspected: complete full body, matching original pose/camera/costume, empty hands, visible double career marker, different face/hair preset. No secret-role tell. Static cosmetic variant only."
+    },
+    {
+      "career": "explorer",
+      "variant": 2,
+      "file": "characters/explorer-02-idle.png",
+      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-1a336562-5d56-423c-aa16-bc2603303fbd.png",
+      "reference_images": [
+        "characters/explorer-idle.png"
+      ],
+      "prompt": "Use case: identity-preserve. Asset type: transparent static 2D Explorer cosmetic variant.\nInput image is the edit target: existing Explorer idle sprite. Preserve the exact character body size, overall silhouette, foot position, standing pose, camera angle, tan fieldhat/folded goggles, teal coat, sand trousers, dark hiking boots, upright backpack/rolled map, line weight, shading and transparent background.\nChange ONLY these cosmetic details: place two small but clearly readable sand-colored diamond patches side-by-side on the visible upper coat sleeve/shoulder; a different friendly face preset with dark-brown skin and short tightly curled black hair visible beneath the hat. Keep the same simple tiny-eye style and neutral smile.\nKeep BOTH hands empty, all hat and boots within frame, same generous transparent margins. No compass, held tool, coin, weapon, shield, text, ground shadow, extra object, new background or Smuggler tell. Make one character, not a comparison sheet. Preserve true alpha transparency.",
+      "transparent_background_requested": true,
+      "review": "Visually inspected: complete full body, matching original pose/camera/costume, empty hands, visible double career marker, different face/hair preset. No secret-role tell. Static cosmetic variant only."
+    }
+  ]
+}

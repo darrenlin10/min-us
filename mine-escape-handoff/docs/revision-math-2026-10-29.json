@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-29",
+  "scope": "Exact arithmetic only; no new funding or natural-win estimate",
+  "compass_candidates": [
+    {
+      "retail": 6,
+      "wholesale": 5,
+      "multiple_of_old_price": 2.0,
+      "maximum_margin": 1,
+      "crew_burn_with_margin": 5,
+      "crew_burn_without_margin": 6,
+      "worker_rounds_at_2_coins_to_fund": 3.0
+    },
+    {
+      "retail": 9,
+      "wholesale": 8,
+      "multiple_of_old_price": 3.0,
+      "maximum_margin": 1,
+      "crew_burn_with_margin": 8,
+      "crew_burn_without_margin": 9,
+      "worker_rounds_at_2_coins_to_fund": 4.5
+    },
+    {
+      "retail": 12,
+      "wholesale": 11,
+      "multiple_of_old_price": 4.0,
+      "maximum_margin": 1,
+      "crew_burn_with_margin": 11,
+      "crew_burn_without_margin": 12,
+      "worker_rounds_at_2_coins_to_fund": 6.0
+    }
+  ],
+  "selected_compass_retail": 9,
+  "selected_compass_wholesale": 8,
+  "mining": {
+    "activation": "at discovery completion",
+    "reserve": 8,
+    "throughput_per_round": 2,
+    "worker_per_round": 2,
+    "worker_ten_round_production_ceiling": 20,
+    "worker_ceiling_plus_starting_wallet": 22,
+    "smuggler_goal": 25,
+    "prior_delayed_activation_production_ceiling": 18,
+    "pickaxe_ttl_rounds": 2,
+    "saved_item_does_not_save_action": true,
+    "opening_worker_coins_max_one_mine": 2,
+    "opening_worker_coins_max_two_mines": 4,
+    "timing_examples": [
+      {
+        "discovered_at": 43,
+        "worker_travel_seconds": 2,
+        "attention_seconds": 0,
+        "two_mines_finish_at": 51,
+        "finishes_before_90": true,
+        "new_mine_no_show_deadline": 58
+      },
+      {
+        "discovered_at": 43,
+        "worker_travel_seconds": 2,
+        "attention_seconds": 6,
+        "two_mines_finish_at": 57,
+        "finishes_before_90": true,
+        "new_mine_no_show_deadline": 58
+      },
+      {
+        "discovered_at": 51,
+        "worker_travel_seconds": 2,
+        "attention_seconds": 6,
+        "two_mines_finish_at": 65,
+        "finishes_before_90": true,
+        "new_mine_no_show_deadline": 66
+      },
+      {
+        "discovered_at": 82,
+        "worker_travel_seconds": 2,
+        "attention_seconds": 0,
+        "two_mines_finish_at": 90,
+        "finishes_before_90": false,
+        "new_mine_no_show_deadline": 90
+      },
+      {
+        "discovered_at": 84,
+        "worker_travel_seconds": 2,
+        "attention_seconds": 6,
+        "two_mines_finish_at": 98,
+        "finishes_before_90": false,
+        "new_mine_no_show_deadline": 90
+      }
+    ]
+  },
+  "natural_exit": {
+    "openings_on_every_map": true,
+    "initial_opening_count": 3,
+    "old_map_gate_removed": true,
+    "unaided_win_rate_target_less_than": 0.01,
+    "target_is_measured": false,
+    "nearest_metric": "horizontal Euclidean distance from surveyed room anchor",
+    "success_estimate": null
+  },
+  "natural_exit_success_estimate": null
+}

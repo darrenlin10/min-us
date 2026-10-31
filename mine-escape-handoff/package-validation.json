@@ -1,0 +1,14 @@
+{
+  "rules_version": "mine-escape-playtest-2026-10-30-interactions",
+  "scope": "Packaging checks only; no game or new artwork created",
+  "game_pngs": 38,
+  "concept_pngs": 1,
+  "all_pngs_byte_identical_to_sources": true,
+  "original_concept_prompt_preserved": true,
+  "master_sections": 17,
+  "local_markdown_links_checked": 294,
+  "broken_or_external_local_links": [],
+  "gallery_source_references_valid": true,
+  "gallery_browser_rendering_verified": false,
+  "zip_crc_and_entries_match_folder": true
+}

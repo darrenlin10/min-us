@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-30",
+  "rules": "mine-escape-playtest-2026-10-30-interactions",
+  "scope": "Current design contract; not implemented or proven balanced",
+  "fare_per_living": 11,
+  "smuggler": 25,
+  "free_actions": 2,
+  "max_actions": 4,
+  "reconnect_base_seconds": 110,
+  "merchant_profit_cap": 2,
+  "upgrades": [
+    3,
+    5,
+    7
+  ],
+  "mines": {
+    "activation": "discovery completion, including round1",
+    "reserve": 8,
+    "throughput_per_round": 2,
+    "worker_cap": 2,
+    "others_cap": 1,
+    "new_mine_reservation_deadline": "min(discoveredAt+15,90)",
+    "existing_mine_reservation_deadline": 55
+  },
+  "pickaxe_ttl_rounds": 2,
+  "route": {
+    "openings_every_map": true,
+    "initial_opening_count": 3,
+    "map_gate": null,
+    "min_links_from_start": [
+      14,
+      15,
+      16
+    ],
+    "free_clues": false,
+    "recognized_wrong_branch_guarantee": false,
+    "compass": {
+      "date": "2026-10-30",
+      "rules": "mine-escape-playtest-2026-10-30-interactions",
+      "seller": "Merchant",
+      "tier": 1,
+      "earliest_round": 2,
+      "buyer_career": "Explorer",
+      "wholesale": 8,
+      "retail": 9,
+      "stock_per_round": 2,
+      "ttl_rounds": 3,
+      "single_use": true,
+      "action_cost": 1,
+      "channel_seconds": 3,
+      "depth": 0,
+      "sector_degrees": 90,
+      "noise_max_degrees": 22.5,
+      "same_room_reading": "fixed across players/items/reconnects",
+      "target": "nearest of three real hidden openings by horizontal Euclidean distance from surveyed room anchor; stable opening-ID tie break",
+      "openings_on_every_map": true,
+      "initial_opening_count": 3,
+      "map_existence_gate": null,
+      "no_exit_behavior": "not a legal generated map; no decoy readings",
+      "unaided_natural_win_target_less_than": 0.01,
+      "win_target_is_measured": false,
+      "free_hints": false,
+      "guaranteed_wrong_branch_recognition": false,
+      "exit_win_rate": null
+    },
+    "unaided_win_rate_target_less_than": 0.01,
+    "current_success_estimate": null
+  },
+  "guard_delivery_policy": "Explicit current-round authorization; accepted delivery survives ordinary disconnect. Current-round110-second timeout cannot precede second30 delivery; no new refund exception.",
+  "inventory": {
+    "capacity": 7,
+    "mutable": false,
+    "stacking": false,
+    "equipped_count_toward_capacity": true,
+    "personal_merchant_potions_count_toward_capacity": true,
+    "carried_overflow": false,
+    "pending_grants": "terminal claim only; current round; original issue expiry",
+    "retail_stock": "separate bounded terminal stock; no direct use or deposit of personal items",
+    "paid_guard_kit_binding_discardable": false
+  },
+  "purchases": {
+    "action_cost": 0,
+    "deposit_action_cost": 1,
+    "deposit_coin_fee": 0,
+    "extra_slot_tool_bundle_atomic": true,
+    "bundle_accept_before_tick": 560,
+    "bundle_settle_tick": 560,
+    "new_extra_slot_free_tool": false,
+    "bundle_capacity_revalidated": true
+  },
+  "physical_channels": {
+    "stationary": true,
+    "revalidate_every_tick": true,
+    "unblocked_hp_damage_interrupts": true,
+    "fully_shielded_hit_interrupts": false,
+    "meeting_movement_interrupts_even_if_returned": true,
+    "accepted_interruption_consumes_action_and_item": true
+  },
+  "loot": {
+    "reservation": "first valid accepted start",
+    "same_tick_priority": "rotating original seat",
+    "losing_start_consumes": false,
+    "later_scavenger_can_overtake": false,
+    "ordinary_half_claim": "once per corpse globally"
+  },
+  "ghosts": {
+    "visibility": "all living and ghost avatars throughout discovered space; no private state or unopened map",
+    "target": "own murderer only",
+    "haunts_per_base_round": 1,
+    "any_active_phase_including_meetings": true,
+    "range_limit": null,
+    "offline_queue": false,
+    "effect_ms": 450,
+    "reduced_motion": "static badge",
+    "effect_changes_gameplay": false,
+    "simultaneous_effects": "single appearance strip, no stacked audio/motion",
+    "escaped_spectator": "local bounded LOS view, no haunt",
+    "roaming_ghost_audience": "ghosts only; haunt overlay is private to sender and murderer",
+    "receipt_or_reconnect_replays_effect": false
+  },
+  "character_identity": {
+    "architecture": "shared body/head/outfit components",
+    "career_conversion_preserves_face_and_seat": true
+  },
+  "server": {
+    "tick_hz": 20,
+    "tick_ms": 50,
+    "base_round_ticks": 2200,
+    "reconnect_grace_ticks": 2200,
+    "channel_ticks": 60,
+    "scavenger_loot_ticks": 20,
+    "field_end_tick": 1800,
+    "completion_strictly_before_field_end": true,
+    "receipt_precedence": "current authorization, committed exact receipt lookup, then uncommitted execution freshness",
+    "command_time": "server receipt rounded up to next unresolved logical tick",
+    "reconnect_equality": "forfeit wins",
+    "meetings_pause_base_clock": true
+  }
+}

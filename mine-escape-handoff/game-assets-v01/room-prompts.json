@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-30",
+  "generator": "built-in image_gen",
+  "scope": "Eight base room plates plus four spent/depleted state variants. No application code or runtime collision validation.",
+  "requested_pixels": [
+    1024,
+    1024
+  ],
+  "actual_base_pixels": [
+    1254,
+    1254
+  ],
+  "base_prompt": "Use case: stylized-concept. Asset type: one actual 2D game room background plate for an original cartoon underground mining social-strategy game. Create a square 1024x1024 image, full opaque canvas, viewed orthographically from directly above with very short visible inner wall faces, like a readable 2D cutaway game map. NOT a diamond/isometric room, NOT a perspective scene. Thick smooth charcoal outlines, simple flat cel-shaded shapes, broad low-detail surfaces readable on a phone. Graphite and muted violet rock perimeter with warm slate/sand stone floor. One room fills the square: walls in the outer 16 percent, broad traversable central floor. Exactly four open rectangular passage ports, centered north/east/south/west at the middle of each image edge; each passage spans approximately 20 percent of its edge. Keep floor in a clear plus-shaped route connecting all four passage ports, with clear central square from 30 to70 percent x/y. Props tucked into corner/perimeter alcoves, never across these routes. All rooms in this pack should share this camera, footprint, centered passage positions and scale. No people, characters, names, labels, arrows, text, UI, game logos, watermark, floating icons or exterior background. No glowing doorway or surface exit clue; any safe-room glow comes only from peripheral minerals. This is artwork only, not a collision diagram.",
+  "assets": [
+    {
+      "id": "central_camp",
+      "prompt": "Use case: stylized-concept. Asset type: one actual 2D game room background plate for an original cartoon underground mining social-strategy game. Create a square 1024x1024 image, full opaque canvas, viewed orthographically from directly above with very short visible inner wall faces, like a readable 2D cutaway game map. NOT a diamond/isometric room, NOT a perspective scene. Thick smooth charcoal outlines, simple flat cel-shaded shapes, broad low-detail surfaces readable on a phone. Graphite and muted violet rock perimeter with warm slate/sand stone floor. One room fills the square: walls in the outer 16 percent, broad traversable central floor. Exactly four open rectangular passage ports, centered north/east/south/west at the middle of each image edge; each passage spans approximately 20 percent of its edge. Keep floor in a clear plus-shaped route connecting all four passage ports, with clear central square from 30 to70 percent x/y. Props tucked into corner/perimeter alcoves, never across these routes. All rooms in this pack should share this camera, footprint, centered passage positions and scale. No people, characters, names, labels, arrows, text, UI, game logos, watermark, floating icons or exterior background. No glowing doorway or surface exit clue; any safe-room glow comes only from peripheral minerals. This is artwork only, not a collision diagram.\nRoom subject: CENTRAL CAMP. A welcoming underground expedition base in a rough square cavern. Broad clean tan-slate walking floor. Small teal/cream machine terminal with blank dark screen inset into upper-left corner; a compact empty bench and rolled canvas beside lower-left corner; softly shining turquoise mineral cluster in upper-right; neatly stacked closed supply crates in lower-right. All four centered ports open and clearly navigable. Bright even ambient light, no productive gold veins or coin piles. Keep corner objects simple, bold and sparse. Central 60 percent mostly empty playable floor.",
+      "transparent_background": false,
+      "referenced_image_paths": [],
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-27b9e94f-908f-4a42-a1a6-7e11b24c983c.png",
+      "workspace_png": "rooms/central_camp.png",
+      "review": "Visually inspected: centered four ports, clear central floor, category props confined to corner alcoves; geometry not runtime-tested."
+    },
+    {
+      "id": "coin_mine",
+      "prompt": "Use case: stylized-concept. Asset type: one actual 2D game room background plate for an original cartoon underground mining social-strategy game. Create a square 1024x1024 image, full opaque canvas, viewed orthographically from directly above with very short visible inner wall faces, like a readable 2D cutaway game map. NOT a diamond/isometric room, NOT a perspective scene. Thick smooth charcoal outlines, simple flat cel-shaded shapes, broad low-detail surfaces readable on a phone. Graphite and muted violet rock perimeter with warm slate/sand stone floor. One room fills the square: walls in the outer 16 percent, broad traversable central floor. Exactly four open rectangular passage ports, centered north/east/south/west at the middle of each image edge; each passage spans approximately 20 percent of its edge. Keep floor in a clear plus-shaped route connecting all four passage ports, with clear central square from 30 to70 percent x/y. Props tucked into corner/perimeter alcoves, never across these routes. All rooms in this pack should share this camera, footprint, centered passage positions and scale. No people, characters, names, labels, arrows, text, UI, game logos, watermark, floating icons or exterior background. No glowing doorway or surface exit clue; any safe-room glow comes only from peripheral minerals. This is artwork only, not a collision diagram.\nInput image: style and geometric-layout reference, not an object to duplicate. Match its exact overhead camera, dark outlines, room footprint, centered doorport positions and floor scale; change only category-specific corner contents and subtle floor wear.\nRoom subject: COIN MINE. Replace camp decorations with an excavated gold-ore seam alcove only in the upper-right corner, showing a few large gold-colored chunks embedded in rock, plus one short disused rail spur and empty wooden minecart tucked into lower-left corner. No coins scattered on main floor, no terminal, no turquoise safe-room glow, no lantern or people. Keep the center clear and all four doors exactly like the reference. Muted tan floor, dim but fully legible environment; lighting and fog will be applied separately by the game.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/central_camp.png"
+      ],
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-3186fce1-74b9-42ca-841d-8f26b6f99728.png",
+      "workspace_png": "rooms/coin_mine.png",
+      "review": "Visually inspected: centered four ports, clear central floor, category props confined to corner alcoves; geometry not runtime-tested."
+    },
+    {
+      "id": "treasure_vault",
+      "prompt": "Use case: stylized-concept. Asset type: one actual 2D game room background plate for an original cartoon underground mining social-strategy game. Create a square 1024x1024 image, full opaque canvas, viewed orthographically from directly above with very short visible inner wall faces, like a readable 2D cutaway game map. NOT a diamond/isometric room, NOT a perspective scene. Thick smooth charcoal outlines, simple flat cel-shaded shapes, broad low-detail surfaces readable on a phone. Graphite and muted violet rock perimeter with warm slate/sand stone floor. One room fills the square: walls in the outer 16 percent, broad traversable central floor. Exactly four open rectangular passage ports, centered north/east/south/west at the middle of each image edge; each passage spans approximately 20 percent of its edge. Keep floor in a clear plus-shaped route connecting all four passage ports, with clear central square from 30 to70 percent x/y. Props tucked into corner/perimeter alcoves, never across these routes. All rooms in this pack should share this camera, footprint, centered passage positions and scale. No people, characters, names, labels, arrows, text, UI, game logos, watermark, floating icons or exterior background. No glowing doorway or surface exit clue; any safe-room glow comes only from peripheral minerals. This is artwork only, not a collision diagram.\nInput image: style and geometric-layout reference, not an object to duplicate. Match its exact overhead camera, dark outlines, room footprint, centered doorport positions and floor scale; change only category-specific corner contents and subtle floor wear.\nRoom subject: TREASURE VAULT. Same cavern footprint and four open centered doors. One large CLOSED wooden strongbox with simple brass bands in upper-right corner, resting on a small old stone slab; several worn closed crates in lower-left alcove. No loose gold/coins, no camp terminal, no glowing crystals, no text or emblem. Keep central floor wide and entirely clear. Muted tan slate floor and graphite/violet perimeter rocks. This is an abandoned underground pay vault, not a royal palace.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/central_camp.png"
+      ],
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-af33fe79-1cc2-4e2c-8c04-902caad226e1.png",
+      "workspace_png": "rooms/treasure_vault.png",
+      "review": "Visually inspected: centered four ports, clear central floor, category props confined to corner alcoves; geometry not runtime-tested."
+    },
+    {
+      "id": "crystal_safe_zone",
+      "prompt": "Use case: stylized-concept. Asset type: one actual 2D game room background plate for an original cartoon underground mining social-strategy game. Create a square 1024x1024 image, full opaque canvas, viewed orthographically from directly above with very short visible inner wall faces, like a readable 2D cutaway game map. NOT a diamond/isometric room, NOT a perspective scene. Thick smooth charcoal outlines, simple flat cel-shaded shapes, broad low-detail surfaces readable on a phone. Graphite and muted violet rock perimeter with warm slate/sand stone floor. One room fills the square: walls in the outer 16 percent, broad traversable central floor. Exactly four open rectangular passage ports, centered north/east/south/west at the middle of each image edge; each passage spans approximately 20 percent of its edge. Keep floor in a clear plus-shaped route connecting all four passage ports, with clear central square from 30 to70 percent x/y. Props tucked into corner/perimeter alcoves, never across these routes. All rooms in this pack should share this camera, footprint, centered passage positions and scale. No people, characters, names, labels, arrows, text, UI, game logos, watermark, floating icons or exterior background. No glowing doorway or surface exit clue; any safe-room glow comes only from peripheral minerals. This is artwork only, not a collision diagram.\nInput image: style and geometric-layout reference, not an object to duplicate. Match its exact overhead camera, dark outlines, room footprint, centered doorport positions and floor scale; change only category-specific corner contents and subtle floor wear.\nRoom subject: CRYSTAL SAFE ZONE, a luminous geode refuge. Same exact footprint and open centered ports as reference. Replace ordinary corner items with several generous pale aqua and lavender crystal clusters tucked into upper-right and lower-left perimeter alcoves, emitting soft mineral glow that makes the entire floor comfortably bright. Add one small cream/teal blank-screen machine terminal inset upper-left, no crates or weapons. Bright cool mint-gray central stone floor; huge clean center. Permanent natural mineral refuge, not a gold mine. No lettering, icons, external light shafts or exit clue.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/central_camp.png"
+      ],
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-fc50566d-b8e8-41ab-af40-9879c0feb750.png",
+      "workspace_png": "rooms/crystal_safe_zone.png",
+      "review": "Visually inspected: centered four ports, clear central floor, category props confined to corner alcoves; geometry not runtime-tested."
+    },
+    {
+      "id": "supply_cache",
+      "prompt": "Use case: stylized-concept. Asset type: one actual 2D game room background plate for an original cartoon underground mining social-strategy game. Create a square 1024x1024 image, full opaque canvas, viewed orthographically from directly above with very short visible inner wall faces, like a readable 2D cutaway game map. NOT a diamond/isometric room, NOT a perspective scene. Thick smooth charcoal outlines, simple flat cel-shaded shapes, broad low-detail surfaces readable on a phone. Graphite and muted violet rock perimeter with warm slate/sand stone floor. One room fills the square: walls in the outer 16 percent, broad traversable central floor. Exactly four open rectangular passage ports, centered north/east/south/west at the middle of each image edge; each passage spans approximately 20 percent of its edge. Keep floor in a clear plus-shaped route connecting all four passage ports, with clear central square from 30 to70 percent x/y. Props tucked into corner/perimeter alcoves, never across these routes. All rooms in this pack should share this camera, footprint, centered passage positions and scale. No people, characters, names, labels, arrows, text, UI, game logos, watermark, floating icons or exterior background. No glowing doorway or surface exit clue; any safe-room glow comes only from peripheral minerals. This is artwork only, not a collision diagram.\nInput image: style and geometric-layout reference, not an object to duplicate. Match its exact overhead camera, dark outlines, room footprint, centered doorport positions and floor scale; change only category-specific corner contents and subtle floor wear.\nRoom subject: SUPPLY CACHE, an abandoned equipment depot. Same exact footprint and open centered ports as reference. Replace all camp/crystal contents with two squat CLOSED steel lockers in the upper-right perimeter alcove, a CLOSED wooden supply crate at upper-left, and a neatly folded canvas bundle tucked lower-right. No visible tools, coins, terminal, crystals or heal potions. Plain tan-slate central floor fully clear, neutral dim ambience. Storage objects recognizable and not too detailed.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/central_camp.png"
+      ],
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-6ee2d135-7646-48f3-b638-755aed578cc1.png",
+      "workspace_png": "rooms/supply_cache.png",
+      "review": "Visually inspected: centered four ports, clear central floor, category props confined to corner alcoves; geometry not runtime-tested."
+    },
+    {
+      "id": "trap_gallery",
+      "prompt": "Use case: stylized-concept. Asset type: one actual 2D game room background plate for an original cartoon underground mining social-strategy game. Create a square 1024x1024 image, full opaque canvas, viewed orthographically from directly above with very short visible inner wall faces, like a readable 2D cutaway game map. NOT a diamond/isometric room, NOT a perspective scene. Thick smooth charcoal outlines, simple flat cel-shaded shapes, broad low-detail surfaces readable on a phone. Graphite and muted violet rock perimeter with warm slate/sand stone floor. One room fills the square: walls in the outer 16 percent, broad traversable central floor. Exactly four open rectangular passage ports, centered north/east/south/west at the middle of each image edge; each passage spans approximately 20 percent of its edge. Keep floor in a clear plus-shaped route connecting all four passage ports, with clear central square from 30 to70 percent x/y. Props tucked into corner/perimeter alcoves, never across these routes. All rooms in this pack should share this camera, footprint, centered passage positions and scale. No people, characters, names, labels, arrows, text, UI, game logos, watermark, floating icons or exterior background. No glowing doorway or surface exit clue; any safe-room glow comes only from peripheral minerals. This is artwork only, not a collision diagram.\nInput image: style and geometric-layout reference, not an object to duplicate. Match its exact overhead camera, dark outlines, room footprint, centered doorport positions and floor scale; change only category-specific corner contents and subtle floor wear.\nRoom subject: TRAP GALLERY after discovery. Same exact four-port cavern footprint. Replace camp/crystal props with one small EMPTY blunt-bar iron cage trap tucked in the upper-right alcove, its gate open and a coiled trigger rope next to it. In lower-left corner a subtle sticky violet mineral patch behind the rock edge. No spikes, teeth, blood, victims, torture imagery, weapons, terminal, coins, gold or safe-room crystals. Clear central walking floor and all four open ports untouched. The trap is environmental and nonlethal, not a hazard blocking travel between doors.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/central_camp.png"
+      ],
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-5250f76a-a520-4475-882b-7564243b4eb3.png",
+      "workspace_png": "rooms/trap_gallery.png",
+      "review": "Visually inspected: centered four ports, clear central floor, category props confined to corner alcoves; geometry not runtime-tested."
+    },
+    {
+      "id": "empty_junction",
+      "prompt": "Use case: stylized-concept. Asset type: one actual 2D game room background plate for an original cartoon underground mining social-strategy game. Create a square 1024x1024 image, full opaque canvas, viewed orthographically from directly above with very short visible inner wall faces, like a readable 2D cutaway game map. NOT a diamond/isometric room, NOT a perspective scene. Thick smooth charcoal outlines, simple flat cel-shaded shapes, broad low-detail surfaces readable on a phone. Graphite and muted violet rock perimeter with warm slate/sand stone floor. One room fills the square: walls in the outer 16 percent, broad traversable central floor. Exactly four open rectangular passage ports, centered north/east/south/west at the middle of each image edge; each passage spans approximately 20 percent of its edge. Keep floor in a clear plus-shaped route connecting all four passage ports, with clear central square from 30 to70 percent x/y. Props tucked into corner/perimeter alcoves, never across these routes. All rooms in this pack should share this camera, footprint, centered passage positions and scale. No people, characters, names, labels, arrows, text, UI, game logos, watermark, floating icons or exterior background. No glowing doorway or surface exit clue; any safe-room glow comes only from peripheral minerals. This is artwork only, not a collision diagram.\nInput image: style and geometric-layout reference, not an object to duplicate. Match its exact overhead camera, dark outlines, room footprint, centered doorport positions and floor scale; change only category-specific corner contents and subtle floor wear.\nRoom subject: EMPTY JUNCTION. Same exact cavern footprint and four open centered doorports. Remove ALL camp furniture, machine, storage, crystal clusters and other meaningful props. A broad empty junction with slightly varied cracked tan-slate floor, a few very small ordinary rocks confined to perimeter alcoves, plain graphite/violet cave walls. No rails, coins, gold, glow, ladders, treasures, traps or hidden exit. This is the clean neutral room background with full clear center.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/central_camp.png"
+      ],
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-920ea50a-7263-4423-abc3-f08d7e815c7c.png",
+      "workspace_png": "rooms/empty_junction.png",
+      "review": "Visually inspected: centered four ports, clear central floor, category props confined to corner alcoves; geometry not runtime-tested."
+    },
+    {
+      "id": "ladder_chamber",
+      "prompt": "Use case: stylized-concept. Asset type: one actual 2D game room background plate for an original cartoon underground mining social-strategy game. Create a square 1024x1024 image, full opaque canvas, viewed orthographically from directly above with very short visible inner wall faces, like a readable 2D cutaway game map. NOT a diamond/isometric room, NOT a perspective scene. Thick smooth charcoal outlines, simple flat cel-shaded shapes, broad low-detail surfaces readable on a phone. Graphite and muted violet rock perimeter with warm slate/sand stone floor. One room fills the square: walls in the outer 16 percent, broad traversable central floor. Exactly four open rectangular passage ports, centered north/east/south/west at the middle of each image edge; each passage spans approximately 20 percent of its edge. Keep floor in a clear plus-shaped route connecting all four passage ports, with clear central square from 30 to70 percent x/y. Props tucked into corner/perimeter alcoves, never across these routes. All rooms in this pack should share this camera, footprint, centered passage positions and scale. No people, characters, names, labels, arrows, text, UI, game logos, watermark, floating icons or exterior background. No glowing doorway or surface exit clue; any safe-room glow comes only from peripheral minerals. This is artwork only, not a collision diagram.\nInput image: style and geometric-layout reference, not an object to duplicate. Match its exact overhead camera, dark outlines, room footprint, centered doorport positions and floor scale; change only category-specific corner contents and subtle floor wear.\nRoom subject: LADDER CHAMBER. Same exact four-port cavern footprint. One clearly visible short wooden ladder descending into a small dark square shaft in the UPPER-RIGHT corner alcove, framed by a low stone curb. The shaft must be outside the main walking cross. No ladder in the central floor. Lower-left corner contains a restrained stack of plain wood boards. No machine terminal, treasure, coin vein, crystals, daylight beam, upward doorway or textual arrows. Neutral tan/slate floor, all four passages open, center empty. This connects down to another layer, not to the surface.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/central_camp.png"
+      ],
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-975ebe7d-cde0-4a76-a7a5-6fcf86a346da.png",
+      "workspace_png": "rooms/ladder_chamber.png",
+      "review": "Visually inspected: centered four ports, clear central floor, category props confined to corner alcoves; geometry not runtime-tested."
+    },
+    {
+      "id": "coin_mine_exhausted",
+      "prompt": "Use case: precise-object-edit. Asset type: a state variant for a 2D game room plate. Input image is the EDIT TARGET, not a loose reference. Change ONLY the gold ore deposit in the upper-right corner to a visibly exhausted dark-gray rock seam with a few chipped empty sockets. Remove every yellow/gold ore chunk in that alcove; no extractable gold remains. Keep the minecart and short rails unchanged. No new clues/coins/props. Preserve EVERYTHING else exactly: 1254x1254 square canvas, original camera, floor cracks/texture, perimeter geometry, passage positions, lighting, linework, prop placement and scale. Maintain opaque RGB-style background. No text, labels, characters, watermark or UI. This is a gameplay state swap; the entire room must not be redesigned.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/coin_mine.png"
+      ],
+      "edit_of": "coin_mine",
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-c793f6ce-7e5a-47aa-b8d3-9482e13d64aa.png",
+      "workspace_png": "rooms/coin_mine_exhausted.png",
+      "review": "Visually inspected state edit; footprint, ports and main floor preserved. No pixel-identical composite claim."
+    },
+    {
+      "id": "treasure_vault_empty",
+      "prompt": "Use case: precise-object-edit. Asset type: a state variant for a 2D game room plate. Input image is the EDIT TARGET, not a loose reference. Change ONLY the closed wooden treasure chest in the upper-right corner to the SAME chest with its lid open and clearly EMPTY dark wooden interior. Keep its brass bands, exact footprint, stone base and position; no coins or reward glow. All other crates unchanged. Preserve EVERYTHING else exactly: 1254x1254 square canvas, original camera, floor cracks/texture, perimeter geometry, passage positions, lighting, linework, prop placement and scale. Maintain opaque RGB-style background. No text, labels, characters, watermark or UI. This is a gameplay state swap; the entire room must not be redesigned.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/treasure_vault.png"
+      ],
+      "edit_of": "treasure_vault",
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-624a08a2-b10f-470a-9471-7e25aaf6ded4.png",
+      "workspace_png": "rooms/treasure_vault_empty.png",
+      "review": "Visually inspected state edit; footprint, ports and main floor preserved. No pixel-identical composite claim."
+    },
+    {
+      "id": "supply_cache_empty",
+      "prompt": "Use case: precise-object-edit. Asset type: a state variant for a 2D game room plate. Input image is the EDIT TARGET, not a loose reference. Change ONLY the pair of steel equipment lockers in the upper-right corner: open their doors and show plainly EMPTY dark metal shelves/interiors. Also change the small wooden supply crate in the upper-left to an OPEN empty crate. No tools, bottles, coins or reward glow remain. Keep these objects' same footprints, original positions and matching design. The rolled canvas lower-right remains unchanged. Preserve EVERYTHING else exactly: 1254x1254 square canvas, original camera, floor cracks/texture, perimeter geometry, passage positions, lighting, linework, prop placement and scale. Maintain opaque RGB-style background. No text, labels, characters, watermark or UI. This is a gameplay state swap; the entire room must not be redesigned.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/supply_cache.png"
+      ],
+      "edit_of": "supply_cache",
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-0c63407a-e05a-4524-9d68-c90f71d69025.png",
+      "workspace_png": "rooms/supply_cache_empty.png",
+      "review": "Visually inspected state edit; footprint, ports and main floor preserved. No pixel-identical composite claim."
+    },
+    {
+      "id": "trap_gallery_triggered",
+      "prompt": "Use case: precise-object-edit. Asset type: a state variant for a 2D game room plate. Input image is the EDIT TARGET, not a loose reference. Change ONLY the iron cage trap in the upper-right corner: its previously open gate is now CLOSED and latched, clearly showing that the trap has triggered. Cage remains EMPTY with no person/animal/body inside. Keep its exact original footprint, scale, bars and position. The nearby trigger rope is slack, no new spike/blood/weapon or reward. Lower-left mineral patch and all room geometry unchanged. Preserve EVERYTHING else exactly: 1254x1254 square canvas, original camera, floor cracks/texture, perimeter geometry, passage positions, lighting, linework, prop placement and scale. Maintain opaque RGB-style background. No text, labels, characters, watermark or UI. This is a gameplay state swap; the entire room must not be redesigned.",
+      "transparent_background": false,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/rooms/trap_gallery.png"
+      ],
+      "edit_of": "trap_gallery",
+      "source_png": "/Users/darrenlin/.codex/generated_images/01a18b2b-a8d8-7632-8997-33fa554a6893/exec-7e079a60-7f29-4255-b22e-3d94ee3e3480.png",
+      "workspace_png": "rooms/trap_gallery_triggered.png",
+      "review": "Visually inspected state edit; footprint, ports and main floor preserved. No pixel-identical composite claim."
+    }
+  ]
+}

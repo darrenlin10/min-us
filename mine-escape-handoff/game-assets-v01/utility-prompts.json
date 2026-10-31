@@ -1,0 +1,112 @@
+{
+  "date": "2026-10-30",
+  "generator": "built-in image_gen",
+  "prompts": [
+    {
+      "id": "pickaxe",
+      "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Subject: One mining pickaxe with an amber wooden handle, steel double-ended curved pick head, short charcoal grip and a single brass collar. Full object diagonally from lower left to upper right. It is the basic Worker mining tool; not held by a hand.",
+      "mode": "built-in image_gen",
+      "transparent_background": true,
+      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-78074853-60c4-4134-b179-ca423a6f1b36.png",
+      "file": "items/pickaxe.png",
+      "status": "completed"
+    },
+    {
+      "id": "drill",
+      "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Input image: style reference ONLY; create a new independent icon using the same outline weight and simplified shading, not a club. Subject: One compact handheld excavation drill with teal motor housing, brass collar, short broad steel spiral bit pointing upper right and charcoal pistol handle. Not a weapon, no cable or rock. It is the Explorer's single-use tool.",
+      "mode": "built-in image_gen",
+      "transparent_background": true,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+      ],
+      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-ff2a3ac1-f6d4-4f39-8c93-f5ce9afe2f69.png",
+      "file": "items/drill.png",
+      "status": "completed"
+    },
+    {
+      "id": "hook",
+      "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Input image: style reference ONLY, same outline weight and cel shading; create the requested NEW subject instead of the club. Subject: One small curved steel pickpocket hook with a wrapped dark-brown grip and tiny lime accent. Bold simple hook silhouette, not a grapple gun, no long rope, no hand. Private inventory icon only.",
+      "mode": "built-in image_gen",
+      "transparent_background": true,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+      ],
+      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-b07153c6-ad91-4e57-ae10-b8761e2122ae.png",
+      "file": "items/hook.png",
+      "status": "completed"
+    },
+    {
+      "id": "crowbar",
+      "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Input image: style reference ONLY, same outline weight and cel shading; create the requested NEW subject instead of the club. Subject: One short rust-red and charcoal steel salvage crowbar with hooked split claw at one end and flat wedge at other. Full diagonal single silhouette, simple tool.",
+      "mode": "built-in image_gen",
+      "transparent_background": true,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+      ],
+      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-ac5105ef-5ea9-4a32-b690-2bbeb31f03e3.png",
+      "file": "items/crowbar.png",
+      "status": "completed"
+    },
+    {
+      "id": "lantern",
+      "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Input image: style reference ONLY, same outline weight and cel shading; create the requested NEW subject instead of the club. Subject: One squat portable brass-and-charcoal mining lantern with sturdy top loop, warm amber glass and tiny warm inner flame. No emitted bloom outside the outline, no cast light pool. A simple ordinary lantern.",
+      "mode": "built-in image_gen",
+      "transparent_background": true,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+      ],
+      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-8025eebd-d54e-4c55-827f-ea50fa2c1c60.png",
+      "file": "items/lantern.png",
+      "status": "completed"
+    },
+    {
+      "id": "reinforced_lantern",
+      "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Input image: style reference ONLY, same outline weight and cel shading; create the requested NEW subject instead of the club. Subject: One reinforced portable mining lantern, clearly sturdier than the ordinary brass lamp: charcoal cage bars, cobalt side straps, chunky hexagonal base, thick handle, warm amber glass. No emitted bloom outside silhouette or floor light.",
+      "mode": "built-in image_gen",
+      "transparent_background": true,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+      ],
+      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-ac8383f5-45a8-44bf-9adc-d149d310e922.png",
+      "file": "items/reinforced_lantern.png",
+      "status": "completed"
+    },
+    {
+      "id": "healing_potion",
+      "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Input image: style reference ONLY, same outline weight and cel shading; create the requested NEW subject instead of the club. Subject: One squat round glass healing potion bottle with coral-red liquid, ivory stopper and a simple white heart symbol on a small cream label. Two-tone cel shading, no text, no medical cross, no extra bottle.",
+      "mode": "built-in image_gen",
+      "transparent_background": true,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+      ],
+      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-8a951a69-2cc4-4f82-8290-56eeb5c33c30.png",
+      "file": "items/healing_potion.png",
+      "status": "completed"
+    },
+    {
+      "id": "rescue_kit",
+      "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Input image: style reference ONLY, same outline weight and cel shading; create the requested NEW subject instead of the club. Subject: One compact olive-green rescue satchel with cream strap, chunky brass clasp and a simple rope-loop emblem. A short coil of orange rescue rope secured to its side, all one compact readable silhouette. No text or medical cross.",
+      "mode": "built-in image_gen",
+      "transparent_background": true,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+      ],
+      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-6f07949f-8795-468d-80fd-559929fa91b6.png",
+      "file": "items/rescue_kit.png",
+      "status": "completed"
+    },
+    {
+      "id": "compass",
+      "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Input image: style reference ONLY, same outline weight and cel shading; create the requested NEW subject instead of the club. Subject: One open brass pocket compass with ivory dial, one bold red needle and charcoal circular rim, lid slightly open behind. Compass needle is a decorative single icon, no letters numbers coordinates path arrows or surrounding map. Costly precise expedition equipment, simple silhouette.",
+      "mode": "built-in image_gen",
+      "transparent_background": true,
+      "referenced_image_paths": [
+        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+      ],
+      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-b7cd0912-872f-4c5d-a279-d510052f0bc1.png",
+      "file": "items/compass.png",
+      "status": "completed",
+      "retry_note": "First attempt failed with connection error; identical prompt retry succeeded."
+    }
+  ]
+}

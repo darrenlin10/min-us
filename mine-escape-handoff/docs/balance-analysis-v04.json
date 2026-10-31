@@ -1,0 +1,1611 @@
+{
+  "scope": "Abstract resource and private-wallet capacity analysis; not gameplay win rates",
+  "analysis_date": "2026-10-27",
+  "core_trials_per_scenario": 5000,
+  "secondary_trials_per_scenario": 1000,
+  "scenario_count": 42,
+  "total_trials": 90000,
+  "seed_base": 20261027,
+  "rounds": 10,
+  "seconds_per_round_design": 80,
+  "mine_capacity": 8,
+  "worker_production_bound": 20,
+  "fresh_match_worker_bound": 18,
+  "starting_coins_each": 2,
+  "group_targets_tested": [
+    10,
+    11,
+    12,
+    14
+  ],
+  "smuggler_targets_tested": [
+    25,
+    28,
+    30
+  ],
+  "natural_route_seed_gate_probability": 0.1,
+  "natural_route_length": [
+    14,
+    16
+  ],
+  "natural_route_success_modeled": false,
+  "trap_probabilities_by_luck": [
+    0.02,
+    0.035,
+    0.05,
+    0.06
+  ],
+  "treasure_ranges_by_starting_player_count": {
+    "3": [
+      5,
+      7
+    ],
+    "4": [
+      7,
+      9
+    ],
+    "5": [
+      7,
+      9
+    ],
+    "6": [
+      3,
+      5
+    ],
+    "7": [
+      4,
+      6
+    ],
+    "8": [
+      4,
+      6
+    ]
+  },
+  "markov_transition_matrix": [
+    [
+      0.45,
+      0.55,
+      0,
+      0
+    ],
+    [
+      0.45,
+      0,
+      0.55,
+      0
+    ],
+    [
+      0.45,
+      0,
+      0,
+      0.55
+    ],
+    [
+      0.45,
+      0,
+      0,
+      0.55
+    ]
+  ],
+  "markov_stationary_distribution": [
+    0.45,
+    0.2475,
+    0.136125,
+    0.166375
+  ],
+  "stationary_trap_probability": 0.03445125,
+  "results": [
+    {
+      "players": 3,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": null,
+      "trials": 5000,
+      "funding_coverage_percent": null,
+      "mean_success_round": null,
+      "mean_fund": 0.0,
+      "mean_unspent_wallets": 46.682,
+      "mean_mined_coins": 23.025,
+      "mean_generated_treasure": 35.178,
+      "mean_burned_coins": 16.762,
+      "mean_discoveries": 18.886,
+      "mean_traps": 0.615,
+      "mean_exhausted_mines": 0.874,
+      "mean_unused_mine_coins": 16.542,
+      "mean_uncollected_chest_coins": 0.759,
+      "unlock_completion_percent": {
+        "1": 99.98,
+        "2": 99.76,
+        "3": 96.78
+      },
+      "wallet_capacity_by_role": {
+        "Worker": {
+          "mean_peak_wallet": 21.359,
+          "threshold_reached_percent": {
+            "25": 19.74,
+            "28": 1.98,
+            "30": 0.68
+          }
+        },
+        "Explorer": {
+          "mean_peak_wallet": 5.866,
+          "threshold_reached_percent": {
+            "25": 0.0,
+            "28": 0.0,
+            "30": 0.0
+          }
+        },
+        "Merchant": {
+          "mean_peak_wallet": 20.016,
+          "threshold_reached_percent": {
+            "25": 29.08,
+            "28": 20.2,
+            "30": 15.26
+          }
+        }
+      }
+    },
+    {
+      "players": 3,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 10,
+      "trials": 1000,
+      "funding_coverage_percent": 89.0,
+      "mean_success_round": 8.427,
+      "mean_fund": 34.543,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 18.721,
+      "mean_generated_treasure": 28.557,
+      "mean_burned_coins": 16.436,
+      "mean_discoveries": 15.341,
+      "mean_traps": 0.493,
+      "mean_exhausted_mines": 0.591,
+      "mean_unused_mine_coins": 14.383,
+      "mean_uncollected_chest_coins": 2.299,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 99.7,
+        "3": 92.2
+      }
+    },
+    {
+      "players": 3,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 11,
+      "trials": 1000,
+      "funding_coverage_percent": 81.1,
+      "mean_success_round": 8.684,
+      "mean_fund": 36.518,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 19.568,
+      "mean_generated_treasure": 29.857,
+      "mean_burned_coins": 16.604,
+      "mean_discoveries": 15.965,
+      "mean_traps": 0.512,
+      "mean_exhausted_mines": 0.662,
+      "mean_unused_mine_coins": 14.632,
+      "mean_uncollected_chest_coins": 2.303,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 99.7,
+        "3": 94.6
+      }
+    },
+    {
+      "players": 3,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 12,
+      "trials": 5000,
+      "funding_coverage_percent": 72.46,
+      "mean_success_round": 8.983,
+      "mean_fund": 38.134,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 20.346,
+      "mean_generated_treasure": 30.617,
+      "mean_burned_coins": 16.73,
+      "mean_discoveries": 16.597,
+      "mean_traps": 0.531,
+      "mean_exhausted_mines": 0.704,
+      "mean_unused_mine_coins": 15.197,
+      "mean_uncollected_chest_coins": 2.1,
+      "unlock_completion_percent": {
+        "1": 99.98,
+        "2": 99.76,
+        "3": 96.32
+      }
+    },
+    {
+      "players": 3,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 14,
+      "trials": 1000,
+      "funding_coverage_percent": 52.9,
+      "mean_success_round": 9.27,
+      "mean_fund": 40.676,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 21.237,
+      "mean_generated_treasure": 32.252,
+      "mean_burned_coins": 16.737,
+      "mean_discoveries": 17.242,
+      "mean_traps": 0.563,
+      "mean_exhausted_mines": 0.768,
+      "mean_unused_mine_coins": 15.315,
+      "mean_uncollected_chest_coins": 2.076,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 99.7,
+        "3": 96.5
+      }
+    },
+    {
+      "players": 4,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": null,
+      "trials": 5000,
+      "funding_coverage_percent": null,
+      "mean_success_round": null,
+      "mean_fund": 0.0,
+      "mean_unspent_wallets": 65.304,
+      "mean_mined_coins": 26.384,
+      "mean_generated_treasure": 47.55,
+      "mean_burned_coins": 16.63,
+      "mean_discoveries": 18.882,
+      "mean_traps": 0.611,
+      "mean_exhausted_mines": 1.532,
+      "mean_unused_mine_coins": 12.893,
+      "mean_uncollected_chest_coins": 0.0,
+      "unlock_completion_percent": {
+        "1": 99.92,
+        "2": 99.48,
+        "3": 95.12
+      },
+      "wallet_capacity_by_role": {
+        "Worker": {
+          "mean_peak_wallet": 21.672,
+          "threshold_reached_percent": {
+            "25": 29.04,
+            "28": 9.94,
+            "30": 1.38
+          }
+        },
+        "Explorer": {
+          "mean_peak_wallet": 5.941,
+          "threshold_reached_percent": {
+            "25": 0.0,
+            "28": 0.0,
+            "30": 0.0
+          }
+        },
+        "Merchant": {
+          "mean_peak_wallet": 21.436,
+          "threshold_reached_percent": {
+            "25": 33.08,
+            "28": 23.98,
+            "30": 19.22
+          }
+        },
+        "Guard": {
+          "mean_peak_wallet": 17.162,
+          "threshold_reached_percent": {
+            "25": 14.66,
+            "28": 9.38,
+            "30": 5.42
+          }
+        }
+      }
+    },
+    {
+      "players": 4,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 10,
+      "trials": 1000,
+      "funding_coverage_percent": 93.0,
+      "mean_success_round": 8.004,
+      "mean_fund": 47.511,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 19.828,
+      "mean_generated_treasure": 36.727,
+      "mean_burned_coins": 15.889,
+      "mean_discoveries": 14.549,
+      "mean_traps": 0.438,
+      "mean_exhausted_mines": 0.895,
+      "mean_unused_mine_coins": 11.348,
+      "mean_uncollected_chest_coins": 1.155,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 98.7,
+        "3": 85.1
+      }
+    },
+    {
+      "players": 4,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 11,
+      "trials": 1000,
+      "funding_coverage_percent": 88.8,
+      "mean_success_round": 8.394,
+      "mean_fund": 50.51,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 21.217,
+      "mean_generated_treasure": 38.823,
+      "mean_burned_coins": 16.305,
+      "mean_discoveries": 15.35,
+      "mean_traps": 0.47,
+      "mean_exhausted_mines": 1.029,
+      "mean_unused_mine_coins": 11.383,
+      "mean_uncollected_chest_coins": 1.225,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 99.6,
+        "3": 90.4
+      }
+    },
+    {
+      "players": 4,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 12,
+      "trials": 5000,
+      "funding_coverage_percent": 79.68,
+      "mean_success_round": 8.723,
+      "mean_fund": 52.89,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 22.585,
+      "mean_generated_treasure": 39.98,
+      "mean_burned_coins": 16.49,
+      "mean_discoveries": 16.073,
+      "mean_traps": 0.514,
+      "mean_exhausted_mines": 1.141,
+      "mean_unused_mine_coins": 11.838,
+      "mean_uncollected_chest_coins": 1.185,
+      "unlock_completion_percent": {
+        "1": 99.92,
+        "2": 99.4,
+        "3": 93.18
+      }
+    },
+    {
+      "players": 4,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 14,
+      "trials": 1000,
+      "funding_coverage_percent": 62.9,
+      "mean_success_round": 9.073,
+      "mean_fund": 56.866,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 23.619,
+      "mean_generated_treasure": 43.039,
+      "mean_burned_coins": 16.674,
+      "mean_discoveries": 16.918,
+      "mean_traps": 0.526,
+      "mean_exhausted_mines": 1.271,
+      "mean_unused_mine_coins": 11.917,
+      "mean_uncollected_chest_coins": 1.118,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 99.7,
+        "3": 95.6
+      }
+    },
+    {
+      "players": 5,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": null,
+      "trials": 5000,
+      "funding_coverage_percent": null,
+      "mean_success_round": null,
+      "mean_fund": 0.0,
+      "mean_unspent_wallets": 74.763,
+      "mean_mined_coins": 36.096,
+      "mean_generated_treasure": 45.247,
+      "mean_burned_coins": 16.58,
+      "mean_discoveries": 18.877,
+      "mean_traps": 0.619,
+      "mean_exhausted_mines": 3.375,
+      "mean_unused_mine_coins": 9.407,
+      "mean_uncollected_chest_coins": 0.0,
+      "unlock_completion_percent": {
+        "1": 99.76,
+        "2": 99.22,
+        "3": 94.66
+      },
+      "wallet_capacity_by_role": {
+        "Worker": {
+          "mean_peak_wallet": 18.264,
+          "threshold_reached_percent": {
+            "25": 3.46,
+            "28": 0.8,
+            "30": 0.46
+          }
+        },
+        "Explorer": {
+          "mean_peak_wallet": 5.647,
+          "threshold_reached_percent": {
+            "25": 0.0,
+            "28": 0.0,
+            "30": 0.0
+          }
+        },
+        "Merchant": {
+          "mean_peak_wallet": 20.028,
+          "threshold_reached_percent": {
+            "25": 27.36,
+            "28": 19.88,
+            "30": 15.18
+          }
+        },
+        "Guard": {
+          "mean_peak_wallet": 14.346,
+          "threshold_reached_percent": {
+            "25": 8.58,
+            "28": 4.02,
+            "30": 2.5
+          }
+        }
+      }
+    },
+    {
+      "players": 5,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 10,
+      "trials": 1000,
+      "funding_coverage_percent": 92.6,
+      "mean_success_round": 8.279,
+      "mean_fund": 57.883,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 29.811,
+      "mean_generated_treasure": 34.806,
+      "mean_burned_coins": 16.149,
+      "mean_discoveries": 15.054,
+      "mean_traps": 0.45,
+      "mean_exhausted_mines": 2.33,
+      "mean_unused_mine_coins": 9.333,
+      "mean_uncollected_chest_coins": 0.585,
+      "unlock_completion_percent": {
+        "1": 99.6,
+        "2": 98.9,
+        "3": 88.8
+      }
+    },
+    {
+      "players": 5,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 11,
+      "trials": 1000,
+      "funding_coverage_percent": 86.3,
+      "mean_success_round": 8.699,
+      "mean_fund": 61.707,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 31.441,
+      "mean_generated_treasure": 37.226,
+      "mean_burned_coins": 16.416,
+      "mean_discoveries": 15.946,
+      "mean_traps": 0.477,
+      "mean_exhausted_mines": 2.551,
+      "mean_unused_mine_coins": 9.207,
+      "mean_uncollected_chest_coins": 0.544,
+      "unlock_completion_percent": {
+        "1": 99.6,
+        "2": 99.2,
+        "3": 92.4
+      }
+    },
+    {
+      "players": 5,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 12,
+      "trials": 5000,
+      "funding_coverage_percent": 74.18,
+      "mean_success_round": 8.99,
+      "mean_fund": 64.335,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 32.324,
+      "mean_generated_treasure": 39.046,
+      "mean_burned_coins": 16.545,
+      "mean_discoveries": 16.58,
+      "mean_traps": 0.534,
+      "mean_exhausted_mines": 2.751,
+      "mean_unused_mine_coins": 9.121,
+      "mean_uncollected_chest_coins": 0.489,
+      "unlock_completion_percent": {
+        "1": 99.72,
+        "2": 99.14,
+        "3": 94.24
+      }
+    },
+    {
+      "players": 5,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 14,
+      "trials": 1000,
+      "funding_coverage_percent": 52.4,
+      "mean_success_round": 9.426,
+      "mean_fund": 68.508,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 34.201,
+      "mean_generated_treasure": 41.331,
+      "mean_burned_coins": 16.564,
+      "mean_discoveries": 17.49,
+      "mean_traps": 0.531,
+      "mean_exhausted_mines": 3.001,
+      "mean_unused_mine_coins": 9.111,
+      "mean_uncollected_chest_coins": 0.46,
+      "unlock_completion_percent": {
+        "1": 99.7,
+        "2": 99.3,
+        "3": 94.4
+      }
+    },
+    {
+      "players": 6,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": null,
+      "trials": 5000,
+      "funding_coverage_percent": null,
+      "mean_success_round": null,
+      "mean_fund": 0.0,
+      "mean_unspent_wallets": 90.571,
+      "mean_mined_coins": 48.766,
+      "mean_generated_treasure": 47.122,
+      "mean_burned_coins": 16.983,
+      "mean_discoveries": 37.747,
+      "mean_traps": 1.236,
+      "mean_exhausted_mines": 1.594,
+      "mean_unused_mine_coins": 30.6,
+      "mean_uncollected_chest_coins": 0.334,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 99.76
+      },
+      "wallet_capacity_by_role": {
+        "Worker": {
+          "mean_peak_wallet": 20.779,
+          "threshold_reached_percent": {
+            "25": 4.59,
+            "28": 0.64,
+            "30": 0.0
+          }
+        },
+        "Explorer": {
+          "mean_peak_wallet": 6.888,
+          "threshold_reached_percent": {
+            "25": 0.0,
+            "28": 0.0,
+            "30": 0.0
+          }
+        },
+        "Merchant": {
+          "mean_peak_wallet": 16.997,
+          "threshold_reached_percent": {
+            "25": 6.64,
+            "28": 1.46,
+            "30": 0.54
+          }
+        },
+        "Guard": {
+          "mean_peak_wallet": 18.394,
+          "threshold_reached_percent": {
+            "25": 13.12,
+            "28": 5.4,
+            "30": 2.54
+          }
+        }
+      }
+    },
+    {
+      "players": 6,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 10,
+      "trials": 1000,
+      "funding_coverage_percent": 99.5,
+      "mean_success_round": 8.551,
+      "mean_fund": 69.655,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 39.089,
+      "mean_generated_treasure": 37.519,
+      "mean_burned_coins": 16.944,
+      "mean_discoveries": 30.555,
+      "mean_traps": 0.979,
+      "mean_exhausted_mines": 1.017,
+      "mean_unused_mine_coins": 27.263,
+      "mean_uncollected_chest_coins": 2.009,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 99.2
+      }
+    },
+    {
+      "players": 6,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 11,
+      "trials": 1000,
+      "funding_coverage_percent": 96.1,
+      "mean_success_round": 9.009,
+      "mean_fund": 74.756,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 41.813,
+      "mean_generated_treasure": 39.944,
+      "mean_burned_coins": 16.972,
+      "mean_discoveries": 32.398,
+      "mean_traps": 1.046,
+      "mean_exhausted_mines": 1.15,
+      "mean_unused_mine_coins": 27.659,
+      "mean_uncollected_chest_coins": 2.029,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 99.6
+      }
+    },
+    {
+      "players": 6,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 12,
+      "trials": 5000,
+      "funding_coverage_percent": 88.14,
+      "mean_success_round": 9.389,
+      "mean_fund": 79.006,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 43.9,
+      "mean_generated_treasure": 42.04,
+      "mean_burned_coins": 16.982,
+      "mean_discoveries": 33.933,
+      "mean_traps": 1.099,
+      "mean_exhausted_mines": 1.302,
+      "mean_unused_mine_coins": 28.655,
+      "mean_uncollected_chest_coins": 1.952,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 99.74
+      }
+    },
+    {
+      "players": 6,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 14,
+      "trials": 1000,
+      "funding_coverage_percent": 53.7,
+      "mean_success_round": 9.81,
+      "mean_fund": 83.737,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 46.473,
+      "mean_generated_treasure": 44.042,
+      "mean_burned_coins": 16.986,
+      "mean_discoveries": 35.554,
+      "mean_traps": 1.184,
+      "mean_exhausted_mines": 1.443,
+      "mean_unused_mine_coins": 28.663,
+      "mean_uncollected_chest_coins": 1.792,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 99.8
+      }
+    },
+    {
+      "players": 7,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": null,
+      "trials": 5000,
+      "funding_coverage_percent": null,
+      "mean_success_round": null,
+      "mean_fund": 0.0,
+      "mean_unspent_wallets": 108.714,
+      "mean_mined_coins": 52.816,
+      "mean_generated_treasure": 58.881,
+      "mean_burned_coins": 16.961,
+      "mean_discoveries": 37.751,
+      "mean_traps": 1.227,
+      "mean_exhausted_mines": 2.547,
+      "mean_unused_mine_coins": 26.112,
+      "mean_uncollected_chest_coins": 0.022,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 99.44
+      },
+      "wallet_capacity_by_role": {
+        "Worker": {
+          "mean_peak_wallet": 21.117,
+          "threshold_reached_percent": {
+            "25": 12.3,
+            "28": 3.04,
+            "30": 0.4
+          }
+        },
+        "Explorer": {
+          "mean_peak_wallet": 6.887,
+          "threshold_reached_percent": {
+            "25": 0.0,
+            "28": 0.0,
+            "30": 0.0
+          }
+        },
+        "Merchant": {
+          "mean_peak_wallet": 20.125,
+          "threshold_reached_percent": {
+            "25": 24.26,
+            "28": 11.76,
+            "30": 6.06
+          }
+        },
+        "Guard": {
+          "mean_peak_wallet": 19.809,
+          "threshold_reached_percent": {
+            "25": 21.94,
+            "28": 10.74,
+            "30": 6.56
+          }
+        },
+        "Thief": {
+          "mean_peak_wallet": 12.958,
+          "threshold_reached_percent": {
+            "25": 0.6,
+            "28": 0.08,
+            "30": 0.02
+          }
+        }
+      }
+    },
+    {
+      "players": 7,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 10,
+      "trials": 1000,
+      "funding_coverage_percent": 99.2,
+      "mean_success_round": 8.32,
+      "mean_fund": 81.849,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 40.978,
+      "mean_generated_treasure": 45.55,
+      "mean_burned_coins": 16.874,
+      "mean_discoveries": 29.683,
+      "mean_traps": 0.964,
+      "mean_exhausted_mines": 1.504,
+      "mean_unused_mine_coins": 23.79,
+      "mean_uncollected_chest_coins": 1.805,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 98.2
+      }
+    },
+    {
+      "players": 7,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 11,
+      "trials": 1000,
+      "funding_coverage_percent": 95.7,
+      "mean_success_round": 8.794,
+      "mean_fund": 88.216,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 44.118,
+      "mean_generated_treasure": 48.899,
+      "mean_burned_coins": 16.951,
+      "mean_discoveries": 31.592,
+      "mean_traps": 1.028,
+      "mean_exhausted_mines": 1.762,
+      "mean_unused_mine_coins": 24.034,
+      "mean_uncollected_chest_coins": 1.85,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 99.3
+      }
+    },
+    {
+      "players": 7,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 12,
+      "trials": 5000,
+      "funding_coverage_percent": 90.0,
+      "mean_success_round": 9.189,
+      "mean_fund": 93.324,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 46.535,
+      "mean_generated_treasure": 51.48,
+      "mean_burned_coins": 16.957,
+      "mean_discoveries": 33.228,
+      "mean_traps": 1.06,
+      "mean_exhausted_mines": 2.005,
+      "mean_unused_mine_coins": 24.336,
+      "mean_uncollected_chest_coins": 1.733,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 99.38
+      }
+    },
+    {
+      "players": 7,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 14,
+      "trials": 1000,
+      "funding_coverage_percent": 63.4,
+      "mean_success_round": 9.692,
+      "mean_fund": 100.014,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 49.971,
+      "mean_generated_treasure": 54.605,
+      "mean_burned_coins": 16.965,
+      "mean_discoveries": 35.18,
+      "mean_traps": 1.154,
+      "mean_exhausted_mines": 2.322,
+      "mean_unused_mine_coins": 24.477,
+      "mean_uncollected_chest_coins": 1.597,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 99.5
+      }
+    },
+    {
+      "players": 8,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief",
+        "Scavenger"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": null,
+      "trials": 5000,
+      "funding_coverage_percent": null,
+      "mean_success_round": null,
+      "mean_fund": 0.0,
+      "mean_unspent_wallets": 114.017,
+      "mean_mined_coins": 55.454,
+      "mean_generated_treasure": 59.443,
+      "mean_burned_coins": 16.88,
+      "mean_discoveries": 37.766,
+      "mean_traps": 1.217,
+      "mean_exhausted_mines": 3.411,
+      "mean_unused_mine_coins": 23.254,
+      "mean_uncollected_chest_coins": 0.0,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 98.28
+      },
+      "wallet_capacity_by_role": {
+        "Worker": {
+          "mean_peak_wallet": 21.159,
+          "threshold_reached_percent": {
+            "25": 13.12,
+            "28": 3.5,
+            "30": 0.65
+          }
+        },
+        "Explorer": {
+          "mean_peak_wallet": 6.939,
+          "threshold_reached_percent": {
+            "25": 0.0,
+            "28": 0.0,
+            "30": 0.0
+          }
+        },
+        "Merchant": {
+          "mean_peak_wallet": 16.739,
+          "threshold_reached_percent": {
+            "25": 8.22,
+            "28": 2.84,
+            "30": 1.06
+          }
+        },
+        "Guard": {
+          "mean_peak_wallet": 18.212,
+          "threshold_reached_percent": {
+            "25": 14.08,
+            "28": 6.1,
+            "30": 3.36
+          }
+        },
+        "Thief": {
+          "mean_peak_wallet": 12.428,
+          "threshold_reached_percent": {
+            "25": 0.24,
+            "28": 0.02,
+            "30": 0.0
+          }
+        },
+        "Scavenger": {
+          "mean_peak_wallet": 10.988,
+          "threshold_reached_percent": {
+            "25": 0.0,
+            "28": 0.0,
+            "30": 0.0
+          }
+        }
+      }
+    },
+    {
+      "players": 8,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief",
+        "Scavenger"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 10,
+      "trials": 1000,
+      "funding_coverage_percent": 98.2,
+      "mean_success_round": 8.766,
+      "mean_fund": 92.593,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 45.976,
+      "mean_generated_treasure": 48.891,
+      "mean_burned_coins": 16.818,
+      "mean_discoveries": 31.428,
+      "mean_traps": 0.983,
+      "mean_exhausted_mines": 2.382,
+      "mean_unused_mine_coins": 21.952,
+      "mean_uncollected_chest_coins": 1.456,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 97.4
+      }
+    },
+    {
+      "players": 8,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief",
+        "Scavenger"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 11,
+      "trials": 1000,
+      "funding_coverage_percent": 92.9,
+      "mean_success_round": 9.216,
+      "mean_fund": 98.691,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 49.038,
+      "mean_generated_treasure": 51.802,
+      "mean_burned_coins": 16.902,
+      "mean_discoveries": 33.233,
+      "mean_traps": 1.061,
+      "mean_exhausted_mines": 2.705,
+      "mean_unused_mine_coins": 22.018,
+      "mean_uncollected_chest_coins": 1.247,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 98.6
+      }
+    },
+    {
+      "players": 8,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief",
+        "Scavenger"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 12,
+      "trials": 5000,
+      "funding_coverage_percent": 79.3,
+      "mean_success_round": 9.507,
+      "mean_fund": 102.942,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 51.098,
+      "mean_generated_treasure": 54.007,
+      "mean_burned_coins": 16.873,
+      "mean_discoveries": 34.485,
+      "mean_traps": 1.111,
+      "mean_exhausted_mines": 3.002,
+      "mean_unused_mine_coins": 21.897,
+      "mean_uncollected_chest_coins": 1.29,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 98.18
+      }
+    },
+    {
+      "players": 8,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief",
+        "Scavenger"
+      ],
+      "direction_policy": "horizontal",
+      "group_target_per_living_player": 14,
+      "trials": 1000,
+      "funding_coverage_percent": 38.1,
+      "mean_success_round": 9.84,
+      "mean_fund": 106.942,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 53.31,
+      "mean_generated_treasure": 55.776,
+      "mean_burned_coins": 16.916,
+      "mean_discoveries": 35.734,
+      "mean_traps": 1.146,
+      "mean_exhausted_mines": 3.215,
+      "mean_unused_mine_coins": 22.202,
+      "mean_uncollected_chest_coins": 1.228,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 98.8
+      }
+    },
+    {
+      "players": 3,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant"
+      ],
+      "direction_policy": "mixed",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 49.6,
+      "mean_success_round": 9.391,
+      "mean_fund": 34.791,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 23.195,
+      "mean_generated_treasure": 23.579,
+      "mean_burned_coins": 16.464,
+      "mean_discoveries": 17.414,
+      "mean_traps": 0.556,
+      "mean_exhausted_mines": 0.343,
+      "mean_unused_mine_coins": 25.541,
+      "mean_uncollected_chest_coins": 1.519,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 99.7,
+        "3": 92.6
+      }
+    },
+    {
+      "players": 4,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "mixed",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 63.2,
+      "mean_success_round": 9.141,
+      "mean_fund": 49.257,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 27.191,
+      "mean_generated_treasure": 31.531,
+      "mean_burned_coins": 16.221,
+      "mean_discoveries": 16.973,
+      "mean_traps": 0.535,
+      "mean_exhausted_mines": 0.825,
+      "mean_unused_mine_coins": 20.265,
+      "mean_uncollected_chest_coins": 1.244,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 98.9,
+        "3": 89.7
+      }
+    },
+    {
+      "players": 5,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "mixed",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 63.7,
+      "mean_success_round": 9.345,
+      "mean_fund": 62.118,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 39.18,
+      "mean_generated_treasure": 29.73,
+      "mean_burned_coins": 16.163,
+      "mean_discoveries": 17.271,
+      "mean_traps": 0.515,
+      "mean_exhausted_mines": 2.516,
+      "mean_unused_mine_coins": 14.908,
+      "mean_uncollected_chest_coins": 0.629,
+      "unlock_completion_percent": {
+        "1": 99.6,
+        "2": 98.2,
+        "3": 89.5
+      }
+    },
+    {
+      "players": 6,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "mixed",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 63.2,
+      "mean_success_round": 9.771,
+      "mean_fund": 74.062,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 48.703,
+      "mean_generated_treasure": 31.708,
+      "mean_burned_coins": 16.804,
+      "mean_discoveries": 35.392,
+      "mean_traps": 1.156,
+      "mean_exhausted_mines": 0.358,
+      "mean_unused_mine_coins": 50.425,
+      "mean_uncollected_chest_coins": 1.545,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 97.2
+      }
+    },
+    {
+      "players": 7,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief"
+      ],
+      "direction_policy": "mixed",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 73.3,
+      "mean_success_round": 9.629,
+      "mean_fund": 88.432,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 53.822,
+      "mean_generated_treasure": 39.1,
+      "mean_burned_coins": 16.839,
+      "mean_discoveries": 34.98,
+      "mean_traps": 1.097,
+      "mean_exhausted_mines": 0.796,
+      "mean_unused_mine_coins": 43.778,
+      "mean_uncollected_chest_coins": 1.651,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 97.7
+      }
+    },
+    {
+      "players": 8,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief",
+        "Scavenger"
+      ],
+      "direction_policy": "mixed",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 61.9,
+      "mean_success_round": 9.8,
+      "mean_fund": 98.059,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 59.652,
+      "mean_generated_treasure": 40.578,
+      "mean_burned_coins": 16.678,
+      "mean_discoveries": 35.543,
+      "mean_traps": 1.116,
+      "mean_exhausted_mines": 1.529,
+      "mean_unused_mine_coins": 39.212,
+      "mean_uncollected_chest_coins": 1.493,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 95.4
+      }
+    },
+    {
+      "players": 3,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant"
+      ],
+      "direction_policy": "downward",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 19.3,
+      "mean_success_round": 9.658,
+      "mean_fund": 29.753,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 24.613,
+      "mean_generated_treasure": 15.341,
+      "mean_burned_coins": 15.389,
+      "mean_discoveries": 17.904,
+      "mean_traps": 0.549,
+      "mean_exhausted_mines": 0.172,
+      "mean_unused_mine_coins": 37.435,
+      "mean_uncollected_chest_coins": 0.812,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 99.2,
+        "3": 77.6
+      }
+    },
+    {
+      "players": 4,
+      "roles": [
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "downward",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 30.7,
+      "mean_success_round": 9.508,
+      "mean_fund": 42.333,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 30.537,
+      "mean_generated_treasure": 19.971,
+      "mean_burned_coins": 15.148,
+      "mean_discoveries": 17.693,
+      "mean_traps": 0.57,
+      "mean_exhausted_mines": 0.437,
+      "mean_unused_mine_coins": 31.359,
+      "mean_uncollected_chest_coins": 1.027,
+      "unlock_completion_percent": {
+        "1": 99.9,
+        "2": 96.9,
+        "3": 75.8
+      }
+    },
+    {
+      "players": 5,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "downward",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 38.5,
+      "mean_success_round": 9.647,
+      "mean_fund": 57.293,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 44.242,
+      "mean_generated_treasure": 19.002,
+      "mean_burned_coins": 15.331,
+      "mean_discoveries": 17.748,
+      "mean_traps": 0.552,
+      "mean_exhausted_mines": 1.938,
+      "mean_unused_mine_coins": 22.854,
+      "mean_uncollected_chest_coins": 0.62,
+      "unlock_completion_percent": {
+        "1": 99.6,
+        "2": 97.1,
+        "3": 78.4
+      }
+    },
+    {
+      "players": 6,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard"
+      ],
+      "direction_policy": "downward",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 20.8,
+      "mean_success_round": 9.942,
+      "mean_fund": 65.547,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 50.326,
+      "mean_generated_treasure": 20.232,
+      "mean_burned_coins": 16.146,
+      "mean_discoveries": 35.9,
+      "mean_traps": 1.157,
+      "mean_exhausted_mines": 0.058,
+      "mean_unused_mine_coins": 75.594,
+      "mean_uncollected_chest_coins": 0.865,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 87.8
+      }
+    },
+    {
+      "players": 7,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief"
+      ],
+      "direction_policy": "downward",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 30.2,
+      "mean_success_round": 9.904,
+      "mean_fund": 79.095,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 57.256,
+      "mean_generated_treasure": 25.084,
+      "mean_burned_coins": 16.181,
+      "mean_discoveries": 35.831,
+      "mean_traps": 1.164,
+      "mean_exhausted_mines": 0.195,
+      "mean_unused_mine_coins": 66.504,
+      "mean_uncollected_chest_coins": 1.064,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 88.3
+      }
+    },
+    {
+      "players": 8,
+      "roles": [
+        "Worker",
+        "Worker",
+        "Explorer",
+        "Explorer",
+        "Merchant",
+        "Guard",
+        "Thief",
+        "Scavenger"
+      ],
+      "direction_policy": "downward",
+      "group_target_per_living_player": 12,
+      "trials": 1000,
+      "funding_coverage_percent": 20.6,
+      "mean_success_round": 9.985,
+      "mean_fund": 88.362,
+      "mean_unspent_wallets": 0.0,
+      "mean_mined_coins": 63.793,
+      "mean_generated_treasure": 25.29,
+      "mean_burned_coins": 15.688,
+      "mean_discoveries": 36.035,
+      "mean_traps": 1.11,
+      "mean_exhausted_mines": 0.449,
+      "mean_unused_mine_coins": 61.143,
+      "mean_uncollected_chest_coins": 1.033,
+      "unlock_completion_percent": {
+        "1": 100.0,
+        "2": 99.8,
+        "3": 81.4
+      }
+    }
+  ],
+  "revision_scope": "Pre-manual-camp ideal-travel resource baseline; latest elections, pricing, trade cap, all-survivor natural escape and timing are not simulated",
+  "current_design_analytic_only": {
+    "weapon_trial_surcharge": "floor((round-1)/2)",
+    "merchant_trade_profit_cap_per_round": 2,
+    "ten_round_trade_plus_starting_coins_bound": 22,
+    "after_all_upgrade_burns": 7,
+    "timing_choice_pending": false,
+    "conversion_choice_pending": false,
+    "confirmed_seconds_per_round": 110,
+    "replacement_career_mode": "permanent_explorer"
+  }
+}

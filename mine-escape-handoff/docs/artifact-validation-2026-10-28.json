@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-28",
+  "scope": "Document, model-output and archive consistency only; no game exists/tested",
+  "rules_version": "mine-escape-playtest-2026-10-28-compass",
+  "current_markdown_files_checked": 24,
+  "local_links_checked": 153,
+  "broken_links": [],
+  "original_art_prompt_unchanged": true,
+  "economy_configurations": 264,
+  "economy_cases": 264000,
+  "route_cases": 180000,
+  "camp_gap_cases": 180000,
+  "selected_contract_consistency": true,
+  "analysis_scripts_parse": true,
+  "compass_contract_and_coin_arithmetic": true,
+  "route_model_status": "historical free-clue model; no current natural-win estimate",
+  "economy_model_status": "pre-compass spending baseline",
+  "package_file_count": 108,
+  "package_all_entries_equal_source": true
+}

@@ -1,0 +1,1145 @@
+{
+  "schema": "mine-escape-static-assets-v01",
+  "date": "2026-10-30",
+  "rules_version": "mine-escape-playtest-2026-10-30-interactions",
+  "generator": "built-in image_gen; PNG originals copied without image manipulation",
+  "counts": {
+    "characters": 8,
+    "items": 18,
+    "rooms": 12
+  },
+  "native_dimensions_note": "Actual generated resolution, not the requested 1024 size. No images resampled.",
+  "origin_note": "Suggested visual origin only, not collision geometry. Align by visible height; keep equal gameplay footprints.",
+  "room_layouts": "rooms-layouts.json",
+  "room_layout_status": "Authored candidate geometry and state pairs; not collision/path/occlusion tested.",
+  "assets": [
+    {
+      "id": "characters.worker-idle",
+      "file": "characters/worker-idle.png",
+      "label": "Worker",
+      "group": "characters",
+      "description": "Basic career \u00b7 yellow hardhat / orange overalls",
+      "texture_key": "mine_escape_characters_worker_idle",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        328,
+        118,
+        933,
+        1167
+      ],
+      "sha256": "d63ce4b4f841a492ff56cd753a59c4f02fef4fd9a5e87596667203c6db16ab81",
+      "file_bytes": 662631,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.502791,
+        0.930622
+      ],
+      "view": "three-quarter front-right idle",
+      "role": "worker",
+      "privacy": "same texture for ordinary and Smuggler cover; runtime seat marker separate"
+    },
+    {
+      "id": "characters.worker-02-idle",
+      "file": "characters/worker-02-idle.png",
+      "label": "Worker \u00b7 variant 2",
+      "group": "characters",
+      "description": "Same ability and collision size; alternate appearance",
+      "texture_key": "mine_escape_characters_worker_02_idle",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        326,
+        114,
+        935,
+        1168
+      ],
+      "sha256": "1b4944924017fe87b6c27597be4dfdd1450aa46c2e61c23601b114dc9211d91d",
+      "file_bytes": 682487,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.502791,
+        0.931419
+      ],
+      "view": "three-quarter front-right idle",
+      "role": "worker",
+      "privacy": "same texture for ordinary and Smuggler cover; runtime seat marker separate"
+    },
+    {
+      "id": "characters.explorer-idle",
+      "file": "characters/explorer-idle.png",
+      "label": "Explorer",
+      "group": "characters",
+      "description": "Basic career \u00b7 tan field hat / teal coat",
+      "texture_key": "mine_escape_characters_explorer_idle",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        355,
+        113,
+        936,
+        1191
+      ],
+      "sha256": "7c7cb28f0c45a05f5c04a40e6867ffe0ab4d8ec1a1253bea0c89be9f3b84cd92",
+      "file_bytes": 782861,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.514753,
+        0.949761
+      ],
+      "view": "three-quarter front-right idle",
+      "role": "explorer",
+      "privacy": "same texture for ordinary and Smuggler cover; runtime seat marker separate"
+    },
+    {
+      "id": "characters.explorer-02-idle",
+      "file": "characters/explorer-02-idle.png",
+      "label": "Explorer \u00b7 variant 2",
+      "group": "characters",
+      "description": "Same ability and collision size; alternate appearance",
+      "texture_key": "mine_escape_characters_explorer_02_idle",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        353,
+        111,
+        938,
+        1192
+      ],
+      "sha256": "dd335d5285c798f7ccc687c7541962e5c15e5e9a027212fe304f7b37a8082f20",
+      "file_bytes": 799654,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.514753,
+        0.950558
+      ],
+      "view": "three-quarter front-right idle",
+      "role": "explorer",
+      "privacy": "same texture for ordinary and Smuggler cover; runtime seat marker separate"
+    },
+    {
+      "id": "characters.merchant-idle",
+      "file": "characters/merchant-idle.png",
+      "label": "Merchant",
+      "group": "characters",
+      "description": "Plum coat / ledger satchel",
+      "texture_key": "mine_escape_characters_merchant_idle",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        325,
+        115,
+        933,
+        1167
+      ],
+      "sha256": "9eed35c6c41125d179fb036b421a8f1d63152c165384e8c3c2634e2754990311",
+      "file_bytes": 696916,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.501595,
+        0.930622
+      ],
+      "view": "three-quarter front-right idle",
+      "role": "merchant",
+      "privacy": "same texture for ordinary and Smuggler cover; runtime seat marker separate"
+    },
+    {
+      "id": "characters.guard-idle",
+      "file": "characters/guard-idle.png",
+      "label": "Guard",
+      "group": "characters",
+      "description": "Cobalt uniform / ivory plates; costume grants no shield",
+      "texture_key": "mine_escape_characters_guard_idle",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        335,
+        117,
+        938,
+        1203
+      ],
+      "sha256": "3276e8da4fb47a711d33c6b4be81ecbc7e90c06fbf663e52781ed7dd3efbe035",
+      "file_bytes": 766730,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.507576,
+        0.95933
+      ],
+      "view": "three-quarter front-right idle",
+      "role": "guard",
+      "privacy": "same texture for ordinary and Smuggler cover; runtime seat marker separate"
+    },
+    {
+      "id": "characters.thief-idle",
+      "file": "characters/thief-idle.png",
+      "label": "Thief",
+      "group": "characters",
+      "description": "Pointed charcoal hood / lime lining; no visible theft action",
+      "texture_key": "mine_escape_characters_thief_idle",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        356,
+        116,
+        912,
+        1190
+      ],
+      "sha256": "ee3d07604054ca371ef964d2af781c965b50c33957bc037daddee71bd70a2a4e",
+      "file_bytes": 693683,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.505582,
+        0.948963
+      ],
+      "view": "three-quarter front-right idle",
+      "role": "thief",
+      "privacy": "same texture for ordinary and Smuggler cover; runtime seat marker separate"
+    },
+    {
+      "id": "characters.scavenger-idle",
+      "file": "characters/scavenger-idle.png",
+      "label": "Scavenger",
+      "group": "characters",
+      "description": "Rust jacket / round cap / salvage pack",
+      "texture_key": "mine_escape_characters_scavenger_idle",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        259,
+        87,
+        954,
+        1202
+      ],
+      "sha256": "9d8d7c6e058a97fc142f8cae6cffd1218bf392c0805be21f8376928730875206",
+      "file_bytes": 873884,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.483652,
+        0.958533
+      ],
+      "view": "three-quarter front-right idle",
+      "role": "scavenger",
+      "privacy": "same texture for ordinary and Smuggler cover; runtime seat marker separate"
+    },
+    {
+      "id": "items.pickaxe",
+      "file": "items/pickaxe.png",
+      "label": "Pickaxe",
+      "group": "items",
+      "description": "Basic tool \u00b7 mine one coin \u00b7 TTL2",
+      "texture_key": "mine_escape_items_pickaxe",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        161,
+        84,
+        1175,
+        1195
+      ],
+      "sha256": "58aaf4463043e7feea0bb392c8229fe7ffe63489b734e3dd6e88b32d8a228786",
+      "file_bytes": 529956,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.drill",
+      "file": "items/drill.png",
+      "label": "Explorer drill",
+      "group": "items",
+      "description": "Basic tool \u00b7 discover one room \u00b7 TTL2",
+      "texture_key": "mine_escape_items_drill",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        98,
+        112,
+        1211,
+        1187
+      ],
+      "sha256": "966757c6c86d294176a62220f4113eb51a44b793d2b6ef7106ba1ba5e9cf96ed",
+      "file_bytes": 757016,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.hook",
+      "file": "items/hook.png",
+      "label": "Theft hook",
+      "group": "items",
+      "description": "Owner-only icon; never an observer-visible theft effect \u00b7 TTL2",
+      "texture_key": "mine_escape_items_hook",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        149,
+        95,
+        1167,
+        1168
+      ],
+      "sha256": "65752ee036dc3ab4084e80adc98a1df204d51363b2c220b53ab8632b07496bb7",
+      "file_bytes": 464404,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.crowbar",
+      "file": "items/crowbar.png",
+      "label": "Salvage crowbar",
+      "group": "items",
+      "description": "Basic tool \u00b7 loot chest, cache or corpse \u00b7 TTL2",
+      "texture_key": "mine_escape_items_crowbar",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        81,
+        128,
+        1189,
+        1194
+      ],
+      "sha256": "eb20e4a47ba893b93cc590e927e8d7e00d95f7ba2dcef3de6cc74e1a6d1d273a",
+      "file_bytes": 424402,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.club",
+      "file": "items/club.png",
+      "label": "Club",
+      "group": "items",
+      "description": "4 + round surcharge coins \u00b7 1 damage \u00b7 TTL3",
+      "texture_key": "mine_escape_items_club",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        71,
+        76,
+        1195,
+        1207
+      ],
+      "sha256": "0e2c1a1ce3061907e96726bde198535613f6da15bb30e28a892d17e6e6989b4b",
+      "file_bytes": 614680,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.blade",
+      "file": "items/blade.png",
+      "label": "Blade",
+      "group": "items",
+      "description": "7 + round surcharge coins \u00b7 2 damage \u00b7 TTL3",
+      "texture_key": "mine_escape_items_blade",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        106,
+        87,
+        1183,
+        1201
+      ],
+      "sha256": "d3221e88def63000289bc0d13d77a8fcf883a3ae9568f2c12cc9c9a31fd03345",
+      "file_bytes": 559742,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.gun",
+      "file": "items/gun.png",
+      "label": "Single-shot gun",
+      "group": "items",
+      "description": "10 + round surcharge coins \u00b7 3 damage \u00b7 TTL3",
+      "texture_key": "mine_escape_items_gun",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        35,
+        94,
+        1235,
+        1173
+      ],
+      "sha256": "c3b01a839e8d94bca32c3c65d3b0396f42afaab2da4ba24d1662a4cf29fc086b",
+      "file_bytes": 817927,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.wallet_lock",
+      "file": "items/wallet_lock.png",
+      "label": "Wallet lock",
+      "group": "items",
+      "description": "Guard service \u00b7 1 coin \u00b7 current round; not self-hire",
+      "texture_key": "mine_escape_items_wallet_lock",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        127,
+        82,
+        1134,
+        1176
+      ],
+      "sha256": "9115a9b78e1c804b3c7b48ea11c954f805ee72d51990916b6b07f153912c2a20",
+      "file_bytes": 1029644,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.life_shield",
+      "file": "items/life_shield.png",
+      "label": "Life shield",
+      "group": "items",
+      "description": "Guard service \u00b7 2 coins \u00b7 blocks one ordinary hit",
+      "texture_key": "mine_escape_items_life_shield",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        205,
+        78,
+        1112,
+        1177
+      ],
+      "sha256": "322e34bd7a7842c1203e3ade1ab10c441d51a876b6631f434046a9b2b6b2244a",
+      "file_bytes": 934601,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.lantern",
+      "file": "items/lantern.png",
+      "label": "Lantern",
+      "group": "items",
+      "description": "Machine \u00b7 2 coins \u00b7 original TTL3; does not make a camp",
+      "texture_key": "mine_escape_items_lantern",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        308,
+        45,
+        968,
+        1215
+      ],
+      "sha256": "d4925311cdb80f59945fa65a34afe62f0c8f906c3dc9864762acee61728b85d6",
+      "file_bytes": 820705,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.reinforced_lantern",
+      "file": "items/reinforced_lantern.png",
+      "label": "Reinforced lantern",
+      "group": "items",
+      "description": "Merchant tier3 \u00b7 retail3 / wholesale2 \u00b7 TTL5",
+      "texture_key": "mine_escape_items_reinforced_lantern",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        291,
+        56,
+        978,
+        1204
+      ],
+      "sha256": "8610c23f99070eaca3b36ec9d61e97661c43a1247b31f530b9eb518b0d884a1c",
+      "file_bytes": 769976,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.healing_potion",
+      "file": "items/healing_potion.png",
+      "label": "Healing potion",
+      "group": "items",
+      "description": "Merchant tier1 \u00b7 retail2 / wholesale1 \u00b7 +1 HP \u00b7 TTL3",
+      "texture_key": "mine_escape_items_healing_potion",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        236,
+        93,
+        1019,
+        1173
+      ],
+      "sha256": "ce15880b95f0bc28fa249a53ee84f7c6ba6b0730b6e5e51463ea62eb9e96355d",
+      "file_bytes": 796241,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.rescue_kit",
+      "file": "items/rescue_kit.png",
+      "label": "Rescue kit",
+      "group": "items",
+      "description": "Merchant tier2 \u00b7 retail2 / wholesale1 \u00b7 TTL3",
+      "texture_key": "mine_escape_items_rescue_kit",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        56,
+        227,
+        1211,
+        1057
+      ],
+      "sha256": "f3bbda3fabfe152362b617f221ba7568c563ec36cfa94c8164d7ee8703e80332",
+      "file_bytes": 997495,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.compass",
+      "file": "items/compass.png",
+      "label": "Compass",
+      "group": "items",
+      "description": "Merchant tier1 \u00b7 retail9 / wholesale8 \u00b7 one Survey \u00b7 TTL3",
+      "texture_key": "mine_escape_items_compass",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        200,
+        55,
+        1117,
+        1197
+      ],
+      "sha256": "74894cad7c22de31f00242814c55569dc1910fa1f3219ae4e919738a0a0e7718",
+      "file_bytes": 883557,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.extra_action",
+      "file": "items/extra_action.png",
+      "label": "Extra action",
+      "group": "items",
+      "description": "Service icon \u00b7 escalating 1,2,3\u2026 price; maximum four total slots",
+      "texture_key": "mine_escape_items_extra_action",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        185,
+        54,
+        1111,
+        1150
+      ],
+      "sha256": "8ff7888822e6966cbca8cae5e6abf2a9e69cbc74d70cba8ba6f4df03b816bd89",
+      "file_bytes": 963050,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.deposit",
+      "file": "items/deposit.png",
+      "label": "Deposit",
+      "group": "items",
+      "description": "Prepared action marker \u00b7 no coin or tool fee",
+      "texture_key": "mine_escape_items_deposit",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        155,
+        121,
+        1116,
+        1184
+      ],
+      "sha256": "78babfcccc827fa590699bf3f2ea96b7ce6dc86b4b16d7059271cc9ce3e8c560",
+      "file_bytes": 933162,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.trial",
+      "file": "items/trial.png",
+      "label": "Execution trial",
+      "group": "items",
+      "description": "Prepared action marker \u00b7 6 + round surcharge on accepted initiation",
+      "texture_key": "mine_escape_items_trial",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        157,
+        100,
+        1121,
+        1202
+      ],
+      "sha256": "6af8a65d2e1e69203c98af637276a32e81ea863a86a12a9eb6d7767c83512e2a",
+      "file_bytes": 1015452,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "items.coin",
+      "file": "items/coin.png",
+      "label": "Coin",
+      "group": "items",
+      "description": "Currency icon; not a purchasable object or public wallet counter",
+      "texture_key": "mine_escape_items_coin",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "has_transparency": true,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        141,
+        133,
+        1136,
+        1139
+      ],
+      "sha256": "50dbadb685d84ee283c87ff698731c95cad8e431f7b739824e78e1f327e6db05",
+      "file_bytes": 964427,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "id": "rooms.central_camp",
+      "file": "rooms/central_camp.png",
+      "label": "Central camp",
+      "group": "rooms",
+      "description": "Safe \u00b7 linked terminal \u00b7 no mine production",
+      "texture_key": "mine_escape_rooms_central_camp",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "daef7dfbd2780236a388e158f38abffdfaa6341e6b5af7ea5aa2e4a0a92aa0c8",
+      "file_bytes": 1923463,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.coin_mine",
+      "file": "rooms/coin_mine.png",
+      "label": "Coin mine",
+      "group": "rooms",
+      "description": "Unsafe \u00b7 gold vein art; resource reserve is server state",
+      "texture_key": "mine_escape_rooms_coin_mine",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "1deb8fc387f8fe8daf8899dc5951ff1b1506643ea6816c43c3cfd99e21341681",
+      "file_bytes": 1943624,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.coin_mine_exhausted",
+      "file": "rooms/coin_mine_exhausted.png",
+      "label": "Coin mine \u00b7 exhausted",
+      "group": "rooms",
+      "description": "State variant \u00b7 no productive gold vein",
+      "texture_key": "mine_escape_rooms_coin_mine_exhausted",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "66128ffcfb5e42de2357ea344ee81e7394b6ee49a6b99be0014f66c4577264c1",
+      "file_bytes": 1935460,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.treasure_vault",
+      "file": "rooms/treasure_vault.png",
+      "label": "Treasure vault",
+      "group": "rooms",
+      "description": "Unsafe \u00b7 closed chest",
+      "texture_key": "mine_escape_rooms_treasure_vault",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "79c9e43072c0d2c1fe26cd679cfcaed6fbf77135d1b738cc03cc67196b13ade5",
+      "file_bytes": 1916406,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.treasure_vault_empty",
+      "file": "rooms/treasure_vault_empty.png",
+      "label": "Treasure vault \u00b7 empty",
+      "group": "rooms",
+      "description": "State variant \u00b7 opened, emptied chest",
+      "texture_key": "mine_escape_rooms_treasure_vault_empty",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "816c2e45a8d21554cdea17e2d0900ae41de85ffea3bca46e7230c8eb3cdd9a8f",
+      "file_bytes": 1927093,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.crystal_safe_zone",
+      "file": "rooms/crystal_safe_zone.png",
+      "label": "Crystal refuge",
+      "group": "rooms",
+      "description": "Safe \u00b7 permanent minerals / linked terminal",
+      "texture_key": "mine_escape_rooms_crystal_safe_zone",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "5c6aaec583750eb79a9cff3b7a1c6207296c0daf1779aa5b8165b774951ef971",
+      "file_bytes": 2021835,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.supply_cache",
+      "file": "rooms/supply_cache.png",
+      "label": "Supply cache",
+      "group": "rooms",
+      "description": "Unsafe \u00b7 stocked equipment locker",
+      "texture_key": "mine_escape_rooms_supply_cache",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "c408827eb75c22510613944925f5b55d0d1b29b544fce0ff605b29c7fe066c80",
+      "file_bytes": 1901332,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.supply_cache_empty",
+      "file": "rooms/supply_cache_empty.png",
+      "label": "Supply cache \u00b7 empty",
+      "group": "rooms",
+      "description": "State variant \u00b7 emptied locker",
+      "texture_key": "mine_escape_rooms_supply_cache_empty",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "53a0e3a119da105f8d7c580cfbfda9a4e7d2f13a7d52a1cadedcf2f4863afccf",
+      "file_bytes": 1867596,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.trap_gallery",
+      "file": "rooms/trap_gallery.png",
+      "label": "Trap gallery",
+      "group": "rooms",
+      "description": "Unsafe \u00b7 cage in side alcove",
+      "texture_key": "mine_escape_rooms_trap_gallery",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "f48c03124b282dcd571029d31e112dd02868784f0098c69901affc8186e1ce12",
+      "file_bytes": 1895831,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.trap_gallery_triggered",
+      "file": "rooms/trap_gallery_triggered.png",
+      "label": "Trap gallery \u00b7 triggered",
+      "group": "rooms",
+      "description": "State variant \u00b7 activated trap",
+      "texture_key": "mine_escape_rooms_trap_gallery_triggered",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "c4329847241667dcabe1022c162169b294ced9084068d025e9924e4de8256f79",
+      "file_bytes": 1864057,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.empty_junction",
+      "file": "rooms/empty_junction.png",
+      "label": "Empty junction",
+      "group": "rooms",
+      "description": "Unsafe \u00b7 no automatic reward",
+      "texture_key": "mine_escape_rooms_empty_junction",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "f763ce81e457fc75c6d385ceb088b5ca28ff4f337c1fdc513d183c7f95497e50",
+      "file_bytes": 1910659,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "rooms.ladder_chamber",
+      "file": "rooms/ladder_chamber.png",
+      "label": "Ladder chamber",
+      "group": "rooms",
+      "description": "Unsafe \u00b7 visible downward passage; never a natural exit clue",
+      "texture_key": "mine_escape_rooms_ladder_chamber",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "has_transparency": false,
+      "alpha_extrema": null,
+      "frame_count": 1,
+      "visible_bounds_alpha128_xyxy": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "1a5aac84b6bdbd711c637cde9d61e04e3ca0a7114ac09f05d419b81328e16f0d",
+      "file_bytes": 1929148,
+      "status": "static prototype artwork; engine integration not yet tested",
+      "suggested_origin": [
+        0,
+        0
+      ]
+    }
+  ]
+}

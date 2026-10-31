@@ -1,0 +1,17 @@
+# Balance analysis v0.2 — retired entry point
+
+Current-rule pointer, October30: [adopted interaction/inventory/ghost/server contracts](design-update-2026-10-30.md). The dated calculations and findings below retain their original assumptions; they are not new runtime evidence for this revision.
+
+Updated October 27, 2026. Use the [current document](balance-analysis-v04.md) and [full document index](../README.md).
+
+The old 140,000-trial results model superseded rules and do not validate v0.4. The old JSON remains versioned historical data.
+
+The original text is preserved unchanged as `work/history-2026-10-27/balance-analysis-v02.md.txt` in the downloadable project package. It is historical evidence, not current rules.
+
+Current design uses private wallets, manual walks back to camp, camp-only planning, finite mines, Explorer replacement elections, rising weapon/trial costs, and unanimous start votes at three to eight players. A natural exit saves all survivors including Smugglers; paid routes retain their separate rules. The user has confirmed 110-second rounds and permanent Explorer conversion, replacing the elected player’s former career. No game implementation or deployment is complete.
+
+Latest update: [October 28 selected defaults and remaining validation](defaults-calculation-v05.md); shared fare eleven, paid extras up to four actions, one-round disconnect forfeits, nickname-only/no-mic join. This file is a historical entry point, not an active rules version.
+
+Latest correction: [natural exit has no free clues; Merchant compass is optional paid guidance](compass-and-natural-exit.md).
+
+Current October29 revision: [scattered openings, costly one-use compass, immediate mining and saved pickaxes](design-update-2026-10-29.md). Earlier versions here remain retired.

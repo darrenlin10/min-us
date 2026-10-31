@@ -1,0 +1,652 @@
+{
+  "rules_version": "mine-escape-playtest-2026-10-30-interactions",
+  "files": [
+    {
+      "file": "README.md",
+      "sha256": "14d396af64d8d36401ad50e141e6d87184181be201b7487d3cc4ba59afeb34b8",
+      "source": "generated package record"
+    },
+    {
+      "file": "concept-art/career-cast-v01.png",
+      "source": "outputs/career-cast-v01.png",
+      "source_sha256": "42bddf0ea6ba7d451f665aeba6bc2f1f95aac8eed81f6059d8c500ea56c9043f",
+      "sha256": "42bddf0ea6ba7d451f665aeba6bc2f1f95aac8eed81f6059d8c500ea56c9043f",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/artifact-validation-2026-10-28.json",
+      "source": "outputs/artifact-validation-2026-10-28.json",
+      "source_sha256": "bcba0f094d840b32bf220d99755c25a7dd553c04335b363f6d9c41b333220c9e",
+      "sha256": "bcba0f094d840b32bf220d99755c25a7dd553c04335b363f6d9c41b333220c9e",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/artifact-validation-2026-10-29.json",
+      "source": "outputs/artifact-validation-2026-10-29.json",
+      "source_sha256": "ab3bea302bb807256b6f437166bddb654f61cf3f7ce48661931de492cffe9d38",
+      "sha256": "ab3bea302bb807256b6f437166bddb654f61cf3f7ce48661931de492cffe9d38",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/asset-pack-v01.md",
+      "source": "outputs/asset-pack-v01.md",
+      "source_sha256": "4efa4b6b756764188c972bc05cb4250d67932d91877cd86defe970ffc474f826",
+      "sha256": "65ccbf7eeb1d708a4619cc08bfbb06f2fe4496ac436884c129fc8d6605ca2ea8",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/balance-analysis-v02.json",
+      "source": "outputs/balance-analysis-v02.json",
+      "source_sha256": "2e31f1daef9ca81c39b7a39430c3f476a1790e5030b1c08aaefcfd43b01986d1",
+      "sha256": "2e31f1daef9ca81c39b7a39430c3f476a1790e5030b1c08aaefcfd43b01986d1",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/balance-analysis-v02.md",
+      "source": "outputs/balance-analysis-v02.md",
+      "source_sha256": "0b78584f970cc5c52e0f5128c3d9b93b63cee30708f97a25944b987c687e04be",
+      "sha256": "f306c1468f1ebf50cd79c4c0867f5338a8fb87a5fc854527e7300b8331ea571f",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/balance-analysis-v04.json",
+      "source": "outputs/balance-analysis-v04.json",
+      "source_sha256": "be891fcce90f9edd283ca797145150ffac621aa13b5e5a3452028b744419880e",
+      "sha256": "be891fcce90f9edd283ca797145150ffac621aa13b5e5a3452028b744419880e",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/balance-analysis-v04.md",
+      "source": "outputs/balance-analysis-v04.md",
+      "source_sha256": "3bdd250d25e1b2cfef25062e2500ab50548ac9fd2ba3535539d995fdf7e366d6",
+      "sha256": "a256ee1cc606da97f678266e09e8276c5c0941e382b258323869a406f100da36",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/career-art-prompt-v01.md",
+      "source": "outputs/career-art-prompt-v01.md",
+      "source_sha256": "f204a648b5ecef7c24452889c068478eaecf5f994cd56c33f4f12d58d9f0526a",
+      "sha256": "c311011b986f6b6837c2a5ac756e6cc06b7c74c19e616dd461c91a6cdff55c84",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/character-design-v01.md",
+      "source": "outputs/character-design-v01.md",
+      "source_sha256": "76644b0ccb7e6ac09c7a9143592f3633b68d9009ffb24d1394829f100f1661ee",
+      "sha256": "bab448f500ca53a25ba1f620ffb4c827422787bc61d508ba35018a89ca1396a5",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/compass-and-natural-exit.md",
+      "source": "outputs/compass-and-natural-exit.md",
+      "source_sha256": "910165fd77ebdfe79e02cfa662c752698f4f519f5cccc9c43419e29389390a60",
+      "sha256": "6d3e787c9b4ae829bb4ca475670e770fe984bfa1651647ecaa5fe07341319103",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/compass-contract.json",
+      "source": "outputs/compass-contract.json",
+      "source_sha256": "4fb35cdc3aea016e71e388ff453ea1b6ded3143eac877ad09624e9db3f5ddba9",
+      "sha256": "4fb35cdc3aea016e71e388ff453ea1b6ded3143eac877ad09624e9db3f5ddba9",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/current-rules.json",
+      "source": "outputs/current-rules.json",
+      "source_sha256": "56d668c509c2cc7fee6a88da1b7d9fed2eada775eb82de6ed1ebd9d228567951",
+      "sha256": "56d668c509c2cc7fee6a88da1b7d9fed2eada775eb82de6ed1ebd9d228567951",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/defaults-calculation-v05.json",
+      "source": "outputs/defaults-calculation-v05.json",
+      "source_sha256": "b3908e4741ed7091e7dc2c6ebd026b391ee6063185ae5c635b296a513653c613",
+      "sha256": "b3908e4741ed7091e7dc2c6ebd026b391ee6063185ae5c635b296a513653c613",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/defaults-calculation-v05.md",
+      "source": "outputs/defaults-calculation-v05.md",
+      "source_sha256": "f1f70bf1b5acb54300ba802f784e051b0c4a6f0c1f705ffda42f349b73dae672",
+      "sha256": "9a1fe75c85848b8324b2cb4e2544b42dbf1bc1ebe38afdb58f3b51ea48f92700",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/defaults-economy-v05.json",
+      "source": "outputs/defaults-economy-v05.json",
+      "source_sha256": "6e44c4f2c43e21483a666c123dd94530f56f35926aaf61c96cdb328a2163505b",
+      "sha256": "6e44c4f2c43e21483a666c123dd94530f56f35926aaf61c96cdb328a2163505b",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/defaults-spatial-v05.json",
+      "source": "outputs/defaults-spatial-v05.json",
+      "source_sha256": "714e70e4449aef75b30859c798b27e07144560c029be82f30b712f7cfe7232fb",
+      "sha256": "714e70e4449aef75b30859c798b27e07144560c029be82f30b712f7cfe7232fb",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/defaults-spatial-v05.md",
+      "source": "outputs/defaults-spatial-v05.md",
+      "source_sha256": "a46ce9a3d82f640614367dc3195a27b3464f7c7756b0b04f98ec737cd0642dd5",
+      "sha256": "f669e89655a92464f0689e63d19bf5fdbbe2074ff76405e76b58f44d324d75e5",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/design-audit-2026-10-27.md",
+      "source": "outputs/design-audit-2026-10-27.md",
+      "source_sha256": "a2b743dc444ccb31aec755babd24ea65119627efe89d5e0c1fd116673e76152b",
+      "sha256": "7f945ac033c0868033fc8d3d8224132369ddfddaa09c5bc0c8f3a4990d610bfe",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/design-audit-2026-10-28.md",
+      "source": "outputs/design-audit-2026-10-28.md",
+      "source_sha256": "42cc01dadd8b719286823cb163280a7189c14c3a7f71b9cbaadc73e3c0b83f4b",
+      "sha256": "3d25723bb7fc2f529a12bf302e49a93308a35a34998d3e1a628b37bd3ddbc918",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/design-update-2026-10-29.md",
+      "source": "outputs/design-update-2026-10-29.md",
+      "source_sha256": "5ffb0be0c810cd152bf0bb0ee2b7c8771838df8dd3f117b38bfa4722f7764db1",
+      "sha256": "374d945b9d8bd75f9faf01abe1fbeb719a9ccd50749504447ebe7b75b3969b02",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/design-update-2026-10-30.md",
+      "source": "outputs/design-update-2026-10-30.md",
+      "source_sha256": "401a0c4952c59645b24dd8386d0444e04a9e5bba3ca3934d2a0c5f67a8e0a3a9",
+      "sha256": "381ecd204b77d8673373bad3d0dcec2721e69208893a7996e217645b74f7d663",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/exploration-model-v04.md",
+      "source": "outputs/exploration-model-v04.md",
+      "source_sha256": "d33db1c1bb478124c1633e5cf8e1c9f1c46fc109390f2d705911f66e90a75231",
+      "sha256": "a91d6b5a350ef1044e76392a71174399c7623b7f5d8c2659dfa1e4da8b549eaf",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/game-design-and-build-plan.md",
+      "source": "outputs/game-design-and-build-plan.md",
+      "source_sha256": "9098e26327b7f252d89a52126b50d0a814836cbecda06c991a2b049746e65779",
+      "sha256": "e1a88a2e77923ad921bc3a1ab1214f7dd804854a1aa8eead92e0a6cfd5676013",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/game-design-v02.md",
+      "source": "outputs/game-design-v02.md",
+      "source_sha256": "f84957a9cdfc9fd6e91c68ea63fc93746d8a00184ff05c0482157dbbb0ebe447",
+      "sha256": "7ffa4e0c784dbcb8e891d8c1b391b131d4cbc0741cce279d1975543d86992904",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/game-design-v03.md",
+      "source": "outputs/game-design-v03.md",
+      "source_sha256": "eebd18da8ffc9b4974f1138c720d954122907da13a6440008bd372def7a63e21",
+      "sha256": "d44bd6979c9e1196fe0de9da433ee5e11d36d5f5e5d0727c3f3d5107650748cd",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/game-design-v04.md",
+      "source": "outputs/game-design-v04.md",
+      "source_sha256": "9a1fdc43c6d1143bd1e23f45d897427e43c756dc9f4b7ada13d0428754905c78",
+      "sha256": "e06c0ca56ac3f8331027957bcc1ccb0284773a138369257d987df87105affdc3",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/implementation-file-spec-v01.md",
+      "source": "outputs/implementation-file-spec-v01.md",
+      "source_sha256": "1b99dd4cf52fe36947581d8970dd615e27957cf0dadcab71216525ace45fd932",
+      "sha256": "17fa3b859b08bebf6ffffad69c5e28f31948d2d0fc5b74a9aaa67e008fcd872c",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/implementation-file-spec-v02.md",
+      "source": "outputs/implementation-file-spec-v02.md",
+      "source_sha256": "304d8507122ce7cc1dee575bc3d7cadb23a07e4082f43628751e6fb8a254cfee",
+      "sha256": "de290e0eb7e5661c6fb5adf1dea33aa7e438cbf7f0ae8fe287a7f8bf917d0e4b",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/implementation-readiness-v04.md",
+      "source": "outputs/implementation-readiness-v04.md",
+      "source_sha256": "3a2e04030eaff92ebbb513c1b41151b2bc6dcce8c013603e62473b6273d27166",
+      "sha256": "b6b1f51ef0ccdb65468a335740659175281d4d787dcdd2dc6a63bc54fd1c3773",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/next-asset-batch-v02.md",
+      "source": "outputs/next-asset-batch-v02.md",
+      "source_sha256": "c8ed2cd7682795fcdb7f0989a3ee8e13858d06d74a53af8da9ad5957d640ffa4",
+      "sha256": "092c5f1d75b5099bd92c6268ca1632e120cd969446a4546f094f7ea1947669fa",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/player-rules-v02.md",
+      "source": "outputs/player-rules-v02.md",
+      "source_sha256": "625def3a2c0afc3b6e8be627e5dd1e93e4075734dc5a7e04b2b156d1b99c2c5b",
+      "sha256": "d1e7a5a71010fc1893ad089a232377794ddf6a4071a540e35001f9919ec44064",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/player-rules-v03.md",
+      "source": "outputs/player-rules-v03.md",
+      "source_sha256": "6422ba197ea82057ea21c2382a07b48a56eab6eb7bc83e0c467cd1db3c2fbd3f",
+      "sha256": "c74e1f2e68616e0d95991a35519ed6ffc9de12792e50a28919b6d2df3b78de64",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/player-rules-v04.md",
+      "source": "outputs/player-rules-v04.md",
+      "source_sha256": "776ee4449f32b53600cedc1d654fbb4e69bc01b29be816dda08b0d4a638eb455",
+      "sha256": "ea5815b23955fe8fbea953d8ea8a2f7528922ee1791fe95e75076d739070f491",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/pre-implementation-gaps.md",
+      "source": "outputs/pre-implementation-gaps.md",
+      "source_sha256": "a4dd17867891036d0330a333d388e7a26e4982abdd5fab5527213a021752ca07",
+      "sha256": "9504d1079c59f3aba8a6d622ba61a4c4cbadd1ca1cf6566d0a77b6adf42e8263",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/preimplementation-review-2026-10-30.md",
+      "source": "outputs/preimplementation-review-2026-10-30.md",
+      "source_sha256": "fa89bcd6ec02bc79313736637cf74b3212361671b7d572da1ae7eeacb2da5d60",
+      "sha256": "a7a1784889478376d1988930201353179fd8bfd2e363096a7c39015a005e962b",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/project-memory.md",
+      "source": "outputs/project-memory.md",
+      "source_sha256": "658eed1cc96c90750f2584740927148ad60685b3ab90e1aa2200b3a6a0312b89",
+      "sha256": "47c5cf650c1713dc0e65159eccba8d12eb89360a7619b43a4f3bf9b4858df2f2",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/revision-math-2026-10-29.json",
+      "source": "outputs/revision-math-2026-10-29.json",
+      "source_sha256": "57214d868977cbc592bcfda706331866f44d986a076c7c9d3badf075d032fbac",
+      "sha256": "57214d868977cbc592bcfda706331866f44d986a076c7c9d3badf075d032fbac",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "docs/revision-math-2026-10-29.md",
+      "source": "outputs/revision-math-2026-10-29.md",
+      "source_sha256": "9517aef14d445948da8d4e2a63a5f6e827c71bf3a96b251ba1d8dede413cb358",
+      "sha256": "246c43d99753dc9f128e3b1ae6ab12676b1edaa43f175ed40e3c6ca7f44c7008",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "docs/workspace-memory.md",
+      "source": "MEMORY.md",
+      "source_sha256": "0345759502d69604712caeff7ea3450f1ce8ccb62dd60547e88cf3b40e4bb324",
+      "sha256": "2a9f4b0cfc85b92a25e6b1fdcd744e8d8284f53c1fc8691a8eee605d086db907",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "game-assets-v01/.DS_Store",
+      "source": "outputs/game-assets-v01/.DS_Store",
+      "source_sha256": "11b21d5dda7f0557532175f691864023d642a6557da18764463e0d53871fc5c1",
+      "sha256": "11b21d5dda7f0557532175f691864023d642a6557da18764463e0d53871fc5c1",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/README.md",
+      "source": "outputs/game-assets-v01/README.md",
+      "source_sha256": "62f8e4b832bfda12b4cc86ffb1e252535011e90ebcac87d354007d1804cfcb46",
+      "sha256": "7de14a25b4cecd38f6e452248c6c8518adaee1e1b81c396289868387ea172f1d",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "game-assets-v01/asset-validation.json",
+      "source": "outputs/game-assets-v01/asset-validation.json",
+      "source_sha256": "63ca1b63f3b1a68909d5782e068460dbddd3a048d7a802cbab9708170fdd355b",
+      "sha256": "63ca1b63f3b1a68909d5782e068460dbddd3a048d7a802cbab9708170fdd355b",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/character-metadata.json",
+      "source": "outputs/game-assets-v01/character-metadata.json",
+      "source_sha256": "0b8a3ff79ccd96ed9b1224cd1d86f81e559349a2c870fba56398412a188e94de",
+      "sha256": "0b8a3ff79ccd96ed9b1224cd1d86f81e559349a2c870fba56398412a188e94de",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/character-prompts.json",
+      "source": "outputs/game-assets-v01/character-prompts.json",
+      "source_sha256": "992ccc7e5751b988f148a5f4f31631511928fc4373facf4e86d1697b298e6c8d",
+      "sha256": "992ccc7e5751b988f148a5f4f31631511928fc4373facf4e86d1697b298e6c8d",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/characters/explorer-02-idle.png",
+      "source": "outputs/game-assets-v01/characters/explorer-02-idle.png",
+      "source_sha256": "dd335d5285c798f7ccc687c7541962e5c15e5e9a027212fe304f7b37a8082f20",
+      "sha256": "dd335d5285c798f7ccc687c7541962e5c15e5e9a027212fe304f7b37a8082f20",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/characters/explorer-idle.png",
+      "source": "outputs/game-assets-v01/characters/explorer-idle.png",
+      "source_sha256": "7c7cb28f0c45a05f5c04a40e6867ffe0ab4d8ec1a1253bea0c89be9f3b84cd92",
+      "sha256": "7c7cb28f0c45a05f5c04a40e6867ffe0ab4d8ec1a1253bea0c89be9f3b84cd92",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/characters/guard-idle.png",
+      "source": "outputs/game-assets-v01/characters/guard-idle.png",
+      "source_sha256": "3276e8da4fb47a711d33c6b4be81ecbc7e90c06fbf663e52781ed7dd3efbe035",
+      "sha256": "3276e8da4fb47a711d33c6b4be81ecbc7e90c06fbf663e52781ed7dd3efbe035",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/characters/merchant-idle.png",
+      "source": "outputs/game-assets-v01/characters/merchant-idle.png",
+      "source_sha256": "9eed35c6c41125d179fb036b421a8f1d63152c165384e8c3c2634e2754990311",
+      "sha256": "9eed35c6c41125d179fb036b421a8f1d63152c165384e8c3c2634e2754990311",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/characters/scavenger-idle.png",
+      "source": "outputs/game-assets-v01/characters/scavenger-idle.png",
+      "source_sha256": "9d8d7c6e058a97fc142f8cae6cffd1218bf392c0805be21f8376928730875206",
+      "sha256": "9d8d7c6e058a97fc142f8cae6cffd1218bf392c0805be21f8376928730875206",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/characters/thief-idle.png",
+      "source": "outputs/game-assets-v01/characters/thief-idle.png",
+      "source_sha256": "ee3d07604054ca371ef964d2af781c965b50c33957bc037daddee71bd70a2a4e",
+      "sha256": "ee3d07604054ca371ef964d2af781c965b50c33957bc037daddee71bd70a2a4e",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/characters/worker-02-idle.png",
+      "source": "outputs/game-assets-v01/characters/worker-02-idle.png",
+      "source_sha256": "1b4944924017fe87b6c27597be4dfdd1450aa46c2e61c23601b114dc9211d91d",
+      "sha256": "1b4944924017fe87b6c27597be4dfdd1450aa46c2e61c23601b114dc9211d91d",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/characters/worker-idle.png",
+      "source": "outputs/game-assets-v01/characters/worker-idle.png",
+      "source_sha256": "d63ce4b4f841a492ff56cd753a59c4f02fef4fd9a5e87596667203c6db16ab81",
+      "sha256": "d63ce4b4f841a492ff56cd753a59c4f02fef4fd9a5e87596667203c6db16ab81",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/combat-service-prompts.json",
+      "source": "outputs/game-assets-v01/combat-service-prompts.json",
+      "source_sha256": "4c5d6108fc2484efd78b984859574a38a3ecd1d895d16b60d4125249c5d5f435",
+      "sha256": "4c5d6108fc2484efd78b984859574a38a3ecd1d895d16b60d4125249c5d5f435",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/gallery.html",
+      "source": "outputs/game-assets-v01/gallery.html",
+      "source_sha256": "05c87b1af18a79df2c919ea1463edd7a2dae9dbd8fe6ca3ed1d76e8536cee69a",
+      "sha256": "05c87b1af18a79df2c919ea1463edd7a2dae9dbd8fe6ca3ed1d76e8536cee69a",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/blade.png",
+      "source": "outputs/game-assets-v01/items/blade.png",
+      "source_sha256": "d3221e88def63000289bc0d13d77a8fcf883a3ae9568f2c12cc9c9a31fd03345",
+      "sha256": "d3221e88def63000289bc0d13d77a8fcf883a3ae9568f2c12cc9c9a31fd03345",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/club.png",
+      "source": "outputs/game-assets-v01/items/club.png",
+      "source_sha256": "0e2c1a1ce3061907e96726bde198535613f6da15bb30e28a892d17e6e6989b4b",
+      "sha256": "0e2c1a1ce3061907e96726bde198535613f6da15bb30e28a892d17e6e6989b4b",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/coin.png",
+      "source": "outputs/game-assets-v01/items/coin.png",
+      "source_sha256": "50dbadb685d84ee283c87ff698731c95cad8e431f7b739824e78e1f327e6db05",
+      "sha256": "50dbadb685d84ee283c87ff698731c95cad8e431f7b739824e78e1f327e6db05",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/compass.png",
+      "source": "outputs/game-assets-v01/items/compass.png",
+      "source_sha256": "74894cad7c22de31f00242814c55569dc1910fa1f3219ae4e919738a0a0e7718",
+      "sha256": "74894cad7c22de31f00242814c55569dc1910fa1f3219ae4e919738a0a0e7718",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/crowbar.png",
+      "source": "outputs/game-assets-v01/items/crowbar.png",
+      "source_sha256": "eb20e4a47ba893b93cc590e927e8d7e00d95f7ba2dcef3de6cc74e1a6d1d273a",
+      "sha256": "eb20e4a47ba893b93cc590e927e8d7e00d95f7ba2dcef3de6cc74e1a6d1d273a",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/deposit.png",
+      "source": "outputs/game-assets-v01/items/deposit.png",
+      "source_sha256": "78babfcccc827fa590699bf3f2ea96b7ce6dc86b4b16d7059271cc9ce3e8c560",
+      "sha256": "78babfcccc827fa590699bf3f2ea96b7ce6dc86b4b16d7059271cc9ce3e8c560",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/drill.png",
+      "source": "outputs/game-assets-v01/items/drill.png",
+      "source_sha256": "966757c6c86d294176a62220f4113eb51a44b793d2b6ef7106ba1ba5e9cf96ed",
+      "sha256": "966757c6c86d294176a62220f4113eb51a44b793d2b6ef7106ba1ba5e9cf96ed",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/extra_action.png",
+      "source": "outputs/game-assets-v01/items/extra_action.png",
+      "source_sha256": "8ff7888822e6966cbca8cae5e6abf2a9e69cbc74d70cba8ba6f4df03b816bd89",
+      "sha256": "8ff7888822e6966cbca8cae5e6abf2a9e69cbc74d70cba8ba6f4df03b816bd89",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/gun.png",
+      "source": "outputs/game-assets-v01/items/gun.png",
+      "source_sha256": "c3b01a839e8d94bca32c3c65d3b0396f42afaab2da4ba24d1662a4cf29fc086b",
+      "sha256": "c3b01a839e8d94bca32c3c65d3b0396f42afaab2da4ba24d1662a4cf29fc086b",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/healing_potion.png",
+      "source": "outputs/game-assets-v01/items/healing_potion.png",
+      "source_sha256": "ce15880b95f0bc28fa249a53ee84f7c6ba6b0730b6e5e51463ea62eb9e96355d",
+      "sha256": "ce15880b95f0bc28fa249a53ee84f7c6ba6b0730b6e5e51463ea62eb9e96355d",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/hook.png",
+      "source": "outputs/game-assets-v01/items/hook.png",
+      "source_sha256": "65752ee036dc3ab4084e80adc98a1df204d51363b2c220b53ab8632b07496bb7",
+      "sha256": "65752ee036dc3ab4084e80adc98a1df204d51363b2c220b53ab8632b07496bb7",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/lantern.png",
+      "source": "outputs/game-assets-v01/items/lantern.png",
+      "source_sha256": "d4925311cdb80f59945fa65a34afe62f0c8f906c3dc9864762acee61728b85d6",
+      "sha256": "d4925311cdb80f59945fa65a34afe62f0c8f906c3dc9864762acee61728b85d6",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/life_shield.png",
+      "source": "outputs/game-assets-v01/items/life_shield.png",
+      "source_sha256": "322e34bd7a7842c1203e3ade1ab10c441d51a876b6631f434046a9b2b6b2244a",
+      "sha256": "322e34bd7a7842c1203e3ade1ab10c441d51a876b6631f434046a9b2b6b2244a",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/pickaxe.png",
+      "source": "outputs/game-assets-v01/items/pickaxe.png",
+      "source_sha256": "58aaf4463043e7feea0bb392c8229fe7ffe63489b734e3dd6e88b32d8a228786",
+      "sha256": "58aaf4463043e7feea0bb392c8229fe7ffe63489b734e3dd6e88b32d8a228786",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/reinforced_lantern.png",
+      "source": "outputs/game-assets-v01/items/reinforced_lantern.png",
+      "source_sha256": "8610c23f99070eaca3b36ec9d61e97661c43a1247b31f530b9eb518b0d884a1c",
+      "sha256": "8610c23f99070eaca3b36ec9d61e97661c43a1247b31f530b9eb518b0d884a1c",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/rescue_kit.png",
+      "source": "outputs/game-assets-v01/items/rescue_kit.png",
+      "source_sha256": "f3bbda3fabfe152362b617f221ba7568c563ec36cfa94c8164d7ee8703e80332",
+      "sha256": "f3bbda3fabfe152362b617f221ba7568c563ec36cfa94c8164d7ee8703e80332",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/trial.png",
+      "source": "outputs/game-assets-v01/items/trial.png",
+      "source_sha256": "6af8a65d2e1e69203c98af637276a32e81ea863a86a12a9eb6d7767c83512e2a",
+      "sha256": "6af8a65d2e1e69203c98af637276a32e81ea863a86a12a9eb6d7767c83512e2a",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/items/wallet_lock.png",
+      "source": "outputs/game-assets-v01/items/wallet_lock.png",
+      "source_sha256": "9115a9b78e1c804b3c7b48ea11c954f805ee72d51990916b6b07f153912c2a20",
+      "sha256": "9115a9b78e1c804b3c7b48ea11c954f805ee72d51990916b6b07f153912c2a20",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/manifest.json",
+      "source": "outputs/game-assets-v01/manifest.json",
+      "source_sha256": "5583fc17daee19286d752e4cfdccecc587f0792beaa9452a149d9081698f76fc",
+      "sha256": "5583fc17daee19286d752e4cfdccecc587f0792beaa9452a149d9081698f76fc",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/room-prompts.json",
+      "source": "outputs/game-assets-v01/room-prompts.json",
+      "source_sha256": "1be4f09bce63a3b21e75cf183804391febe8eaacc4d758bcdac635817c4c89ac",
+      "sha256": "1be4f09bce63a3b21e75cf183804391febe8eaacc4d758bcdac635817c4c89ac",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms-layouts.json",
+      "source": "outputs/game-assets-v01/rooms-layouts.json",
+      "source_sha256": "31b5634d795ca2f36835d89fd890c67b70580d079ed2ae84135948a2e9da9fd2",
+      "sha256": "31b5634d795ca2f36835d89fd890c67b70580d079ed2ae84135948a2e9da9fd2",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/README.md",
+      "source": "outputs/game-assets-v01/rooms/README.md",
+      "source_sha256": "744c8580b9a821ab72b2b23471a81e76b3cd82f46cf44020a8fd48a3b67d4c87",
+      "sha256": "744c8580b9a821ab72b2b23471a81e76b3cd82f46cf44020a8fd48a3b67d4c87",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "game-assets-v01/rooms/central_camp.png",
+      "source": "outputs/game-assets-v01/rooms/central_camp.png",
+      "source_sha256": "daef7dfbd2780236a388e158f38abffdfaa6341e6b5af7ea5aa2e4a0a92aa0c8",
+      "sha256": "daef7dfbd2780236a388e158f38abffdfaa6341e6b5af7ea5aa2e4a0a92aa0c8",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/coin_mine.png",
+      "source": "outputs/game-assets-v01/rooms/coin_mine.png",
+      "source_sha256": "1deb8fc387f8fe8daf8899dc5951ff1b1506643ea6816c43c3cfd99e21341681",
+      "sha256": "1deb8fc387f8fe8daf8899dc5951ff1b1506643ea6816c43c3cfd99e21341681",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/coin_mine_exhausted.png",
+      "source": "outputs/game-assets-v01/rooms/coin_mine_exhausted.png",
+      "source_sha256": "66128ffcfb5e42de2357ea344ee81e7394b6ee49a6b99be0014f66c4577264c1",
+      "sha256": "66128ffcfb5e42de2357ea344ee81e7394b6ee49a6b99be0014f66c4577264c1",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/crystal_safe_zone.png",
+      "source": "outputs/game-assets-v01/rooms/crystal_safe_zone.png",
+      "source_sha256": "5c6aaec583750eb79a9cff3b7a1c6207296c0daf1779aa5b8165b774951ef971",
+      "sha256": "5c6aaec583750eb79a9cff3b7a1c6207296c0daf1779aa5b8165b774951ef971",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/empty_junction.png",
+      "source": "outputs/game-assets-v01/rooms/empty_junction.png",
+      "source_sha256": "f763ce81e457fc75c6d385ceb088b5ca28ff4f337c1fdc513d183c7f95497e50",
+      "sha256": "f763ce81e457fc75c6d385ceb088b5ca28ff4f337c1fdc513d183c7f95497e50",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/ladder_chamber.png",
+      "source": "outputs/game-assets-v01/rooms/ladder_chamber.png",
+      "source_sha256": "1a5aac84b6bdbd711c637cde9d61e04e3ca0a7114ac09f05d419b81328e16f0d",
+      "sha256": "1a5aac84b6bdbd711c637cde9d61e04e3ca0a7114ac09f05d419b81328e16f0d",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/supply_cache.png",
+      "source": "outputs/game-assets-v01/rooms/supply_cache.png",
+      "source_sha256": "c408827eb75c22510613944925f5b55d0d1b29b544fce0ff605b29c7fe066c80",
+      "sha256": "c408827eb75c22510613944925f5b55d0d1b29b544fce0ff605b29c7fe066c80",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/supply_cache_empty.png",
+      "source": "outputs/game-assets-v01/rooms/supply_cache_empty.png",
+      "source_sha256": "53a0e3a119da105f8d7c580cfbfda9a4e7d2f13a7d52a1cadedcf2f4863afccf",
+      "sha256": "53a0e3a119da105f8d7c580cfbfda9a4e7d2f13a7d52a1cadedcf2f4863afccf",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/trap_gallery.png",
+      "source": "outputs/game-assets-v01/rooms/trap_gallery.png",
+      "source_sha256": "f48c03124b282dcd571029d31e112dd02868784f0098c69901affc8186e1ce12",
+      "sha256": "f48c03124b282dcd571029d31e112dd02868784f0098c69901affc8186e1ce12",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/trap_gallery_triggered.png",
+      "source": "outputs/game-assets-v01/rooms/trap_gallery_triggered.png",
+      "source_sha256": "c4329847241667dcabe1022c162169b294ced9084068d025e9924e4de8256f79",
+      "sha256": "c4329847241667dcabe1022c162169b294ced9084068d025e9924e4de8256f79",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/treasure_vault.png",
+      "source": "outputs/game-assets-v01/rooms/treasure_vault.png",
+      "source_sha256": "79c9e43072c0d2c1fe26cd679cfcaed6fbf77135d1b738cc03cc67196b13ade5",
+      "sha256": "79c9e43072c0d2c1fe26cd679cfcaed6fbf77135d1b738cc03cc67196b13ade5",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/rooms/treasure_vault_empty.png",
+      "source": "outputs/game-assets-v01/rooms/treasure_vault_empty.png",
+      "source_sha256": "816c2e45a8d21554cdea17e2d0900ae41de85ffea3bca46e7230c8eb3cdd9a8f",
+      "sha256": "816c2e45a8d21554cdea17e2d0900ae41de85ffea3bca46e7230c8eb3cdd9a8f",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "game-assets-v01/utility-prompts.json",
+      "source": "outputs/game-assets-v01/utility-prompts.json",
+      "source_sha256": "f189eb19791239a620e6b7f46f136df7712c5cf05fe276758f6140df19866149",
+      "sha256": "f189eb19791239a620e6b7f46f136df7712c5cf05fe276758f6140df19866149",
+      "only_link_relocation_permitted": false
+    },
+    {
+      "file": "master-game-design.md",
+      "source": "outputs/master-game-design.md",
+      "source_sha256": "a630cfe9bb16de4dd924fa4637ce147fbccc8bc9efa4f710fcacac1e4a584ab3",
+      "sha256": "939fe6836bc5453e94bceccf945267fb2b429fc054ea57e5ef28bb5f56d6b8e5",
+      "only_link_relocation_permitted": true
+    },
+    {
+      "file": "package-validation.json",
+      "sha256": "0f50646466937e8a40dafcb71eb6ff872e16aac0eedc4cf423f8114cf97b45e6",
+      "source": "generated package record"
+    }
+  ]
+}

@@ -1,0 +1,377 @@
+{
+  "schema": "mine-escape-room-art-layout-v01",
+  "date": "2026-10-30",
+  "status": "PROPOSED authored geometry for static art; NOT implemented, collision-tested or path-length validated",
+  "coordinate_system": "Normalized image coordinates; origin top-left; x right, y down; bounds [x,y,width,height]. Images1254x1254 native RGB opaque.",
+  "source_rules_version": "mine-escape-playtest-2026-10-29-openings",
+  "shared": {
+    "image_pixels": [
+      1254,
+      1254
+    ],
+    "suggested_world_size_tiles": [
+      4,
+      4
+    ],
+    "world_size_note": "Prototype starting suggestion only. Validate actual adjacency/door travel≤6 walking tiles and camp distance≤36; do not infer these from pixels.",
+    "door_ports": [
+      {
+        "id": "north",
+        "center": [
+          0.5,
+          0
+        ],
+        "span": [
+          0.42,
+          0.58
+        ],
+        "facing": [
+          0,
+          -1
+        ]
+      },
+      {
+        "id": "east",
+        "center": [
+          1,
+          0.5
+        ],
+        "span": [
+          0.42,
+          0.58
+        ],
+        "facing": [
+          1,
+          0
+        ]
+      },
+      {
+        "id": "south",
+        "center": [
+          0.5,
+          1
+        ],
+        "span": [
+          0.42,
+          0.58
+        ],
+        "facing": [
+          0,
+          1
+        ]
+      },
+      {
+        "id": "west",
+        "center": [
+          0,
+          0.5
+        ],
+        "span": [
+          0.42,
+          0.58
+        ],
+        "facing": [
+          -1,
+          0
+        ]
+      }
+    ],
+    "walkable_candidate_union": [
+      {
+        "id": "center",
+        "polygon": [
+          [
+            0.3,
+            0.3
+          ],
+          [
+            0.7,
+            0.3
+          ],
+          [
+            0.7,
+            0.7
+          ],
+          [
+            0.3,
+            0.7
+          ]
+        ]
+      },
+      {
+        "id": "north_south_lane",
+        "polygon": [
+          [
+            0.42,
+            0
+          ],
+          [
+            0.58,
+            0
+          ],
+          [
+            0.58,
+            1
+          ],
+          [
+            0.42,
+            1
+          ]
+        ]
+      },
+      {
+        "id": "west_east_lane",
+        "polygon": [
+          [
+            0,
+            0.42
+          ],
+          [
+            1,
+            0.42
+          ],
+          [
+            1,
+            0.58
+          ],
+          [
+            0,
+            0.58
+          ]
+        ]
+      }
+    ],
+    "geometry_note": "Conservative clear central travel union, not full walk mesh. Extend corridors into prop approach alcoves after tracing exact collision. Use server geometry for walls/occlusion and paint overlays; pixels do not decide movement.",
+    "spawn_candidates": [
+      [
+        0.44,
+        0.44
+      ],
+      [
+        0.5,
+        0.44
+      ],
+      [
+        0.56,
+        0.44
+      ],
+      [
+        0.44,
+        0.5
+      ],
+      [
+        0.56,
+        0.5
+      ],
+      [
+        0.44,
+        0.56
+      ],
+      [
+        0.5,
+        0.56
+      ],
+      [
+        0.56,
+        0.56
+      ]
+    ],
+    "closed_boundary_note": "All four illustrated ports are open art. Game must overlay sealed boundaries/doors for undiscovered branches; never reveal unopened room plates. Do not use this art as topology authority.",
+    "occlusion_note": "Flattened walls/props are already in plate. Start with conservative solid props and separate occluder geometry. For characters walking behind wall faces or stateful props, extract/rebuild foreground layers in a later art pass.",
+    "lighting_note": "Static base colors include mild shading. Runtime light/cone/fog and Safe Zone eligibility are server-derived; a lit ordinary room is not a camp.",
+    "privacy_note": "No natural-exit clues are baked into these plates. Actual opening is a separate revealed-only feature. Never infer secret roles, wallets or live distant occupancy from room art.",
+    "state_swap_note": "State variants visually preserve the plate footprint and door positions. They are image-generated edits, not guaranteed pixel-identical background layers; review transitions in-engine. State images communicate condition only; server controls availability. Trap art never adds a physical immobilization location rule."
+  },
+  "rooms": [
+    {
+      "id": "central_camp",
+      "image": "rooms/central_camp.png",
+      "safe": true,
+      "light": "bright",
+      "anchors": [
+        {
+          "id": "terminal",
+          "point": [
+            0.3,
+            0.26
+          ],
+          "prop_bounds": [
+            0.05,
+            0.05,
+            0.28,
+            0.24
+          ]
+        }
+      ],
+      "states": {
+        "default": "rooms/central_camp.png"
+      },
+      "qa": "Visually reviewed; centered ports and central travel lanes clear. Interaction anchors/prop bounds are author estimates, not measured pixel collision."
+    },
+    {
+      "id": "coin_mine",
+      "image": "rooms/coin_mine.png",
+      "safe": false,
+      "light": "dim",
+      "anchors": [
+        {
+          "id": "mine",
+          "point": [
+            0.73,
+            0.29
+          ],
+          "prop_bounds": [
+            0.73,
+            0.04,
+            0.25,
+            0.23
+          ]
+        }
+      ],
+      "states": {
+        "default": "rooms/coin_mine.png",
+        "exhausted": "rooms/coin_mine_exhausted.png"
+      },
+      "qa": "Visually reviewed; centered ports and central travel lanes clear. Interaction anchors/prop bounds are author estimates, not measured pixel collision."
+    },
+    {
+      "id": "treasure_vault",
+      "image": "rooms/treasure_vault.png",
+      "safe": false,
+      "light": "dim",
+      "anchors": [
+        {
+          "id": "chest",
+          "point": [
+            0.73,
+            0.29
+          ],
+          "prop_bounds": [
+            0.73,
+            0.05,
+            0.24,
+            0.23
+          ]
+        }
+      ],
+      "states": {
+        "default": "rooms/treasure_vault.png",
+        "collected": "rooms/treasure_vault_empty.png"
+      },
+      "qa": "Visually reviewed; centered ports and central travel lanes clear. Interaction anchors/prop bounds are author estimates, not measured pixel collision."
+    },
+    {
+      "id": "crystal_safe_zone",
+      "image": "rooms/crystal_safe_zone.png",
+      "safe": true,
+      "light": "bright",
+      "anchors": [
+        {
+          "id": "terminal",
+          "point": [
+            0.3,
+            0.26
+          ],
+          "prop_bounds": [
+            0.05,
+            0.05,
+            0.28,
+            0.24
+          ]
+        }
+      ],
+      "states": {
+        "default": "rooms/crystal_safe_zone.png"
+      },
+      "qa": "Visually reviewed; centered ports and central travel lanes clear. Interaction anchors/prop bounds are author estimates, not measured pixel collision."
+    },
+    {
+      "id": "supply_cache",
+      "image": "rooms/supply_cache.png",
+      "safe": false,
+      "light": "dim",
+      "anchors": [
+        {
+          "id": "cache",
+          "point": [
+            0.73,
+            0.29
+          ],
+          "prop_bounds": [
+            0.73,
+            0.05,
+            0.24,
+            0.23
+          ]
+        }
+      ],
+      "states": {
+        "default": "rooms/supply_cache.png",
+        "collected": "rooms/supply_cache_empty.png"
+      },
+      "qa": "Visually reviewed; centered ports and central travel lanes clear. Interaction anchors/prop bounds are author estimates, not measured pixel collision."
+    },
+    {
+      "id": "trap_gallery",
+      "image": "rooms/trap_gallery.png",
+      "safe": false,
+      "light": "dim",
+      "anchors": [
+        {
+          "id": "trap",
+          "point": [
+            0.73,
+            0.29
+          ],
+          "prop_bounds": [
+            0.73,
+            0.03,
+            0.24,
+            0.24
+          ]
+        }
+      ],
+      "states": {
+        "default": "rooms/trap_gallery.png",
+        "triggered": "rooms/trap_gallery_triggered.png"
+      },
+      "qa": "Visually reviewed; centered ports and central travel lanes clear. Interaction anchors/prop bounds are author estimates, not measured pixel collision."
+    },
+    {
+      "id": "empty_junction",
+      "image": "rooms/empty_junction.png",
+      "safe": false,
+      "light": "dim",
+      "anchors": [],
+      "states": {
+        "default": "rooms/empty_junction.png"
+      },
+      "qa": "Visually reviewed; centered ports and central travel lanes clear. Interaction anchors/prop bounds are author estimates, not measured pixel collision."
+    },
+    {
+      "id": "ladder_chamber",
+      "image": "rooms/ladder_chamber.png",
+      "safe": false,
+      "light": "dim",
+      "anchors": [
+        {
+          "id": "ladder",
+          "point": [
+            0.73,
+            0.29
+          ],
+          "prop_bounds": [
+            0.73,
+            0.05,
+            0.24,
+            0.23
+          ]
+        }
+      ],
+      "states": {
+        "default": "rooms/ladder_chamber.png"
+      },
+      "qa": "Visually reviewed; centered ports and central travel lanes clear. Interaction anchors/prop bounds are author estimates, not measured pixel collision."
+    }
+  ]
+}

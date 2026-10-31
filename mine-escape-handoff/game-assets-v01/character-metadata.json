@@ -1,0 +1,263 @@
+{
+  "date": "2026-10-30",
+  "inspection": "Pixel inspection only. No resampling/cropping/alpha edits. Original generator PNGs preserved byte-for-byte.",
+  "asset_count": 8,
+  "assets": [
+    {
+      "file": "characters/explorer-02-idle.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_pixels": 1099645,
+      "alpha_at_least_128_pixels": 463059,
+      "alpha_at_least_250_pixels": 457294,
+      "alpha_nonzero_bounds_xyxy": [
+        97,
+        52,
+        1160,
+        1198
+      ],
+      "visible_bounds_xyxy": [
+        353,
+        111,
+        938,
+        1192
+      ],
+      "bounds_method": "visible bounds use alpha >=128; faint generator speckles outside these bounds are retained",
+      "visible_silhouette_not_clipped": true,
+      "static_frames": 1,
+      "view": "three-quarter front-right",
+      "suggested_visual_origin_normalized": [
+        0.514753,
+        0.950558
+      ],
+      "origin_note": "Approximate visual anchor only, requires in-engine alignment; not collision geometry."
+    },
+    {
+      "file": "characters/explorer-idle.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_pixels": 1101485,
+      "alpha_at_least_128_pixels": 460080,
+      "alpha_at_least_250_pixels": 453652,
+      "alpha_nonzero_bounds_xyxy": [
+        0,
+        70,
+        1226,
+        1196
+      ],
+      "visible_bounds_xyxy": [
+        355,
+        113,
+        936,
+        1191
+      ],
+      "bounds_method": "visible bounds use alpha >=128; faint generator speckles outside these bounds are retained",
+      "visible_silhouette_not_clipped": true,
+      "static_frames": 1,
+      "view": "three-quarter front-right",
+      "suggested_visual_origin_normalized": [
+        0.514753,
+        0.949761
+      ],
+      "origin_note": "Approximate visual anchor only, requires in-engine alignment; not collision geometry."
+    },
+    {
+      "file": "characters/guard-idle.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_pixels": 1091203,
+      "alpha_at_least_128_pixels": 470684,
+      "alpha_at_least_250_pixels": 464440,
+      "alpha_nonzero_bounds_xyxy": [
+        25,
+        97,
+        1234,
+        1254
+      ],
+      "visible_bounds_xyxy": [
+        335,
+        117,
+        938,
+        1203
+      ],
+      "bounds_method": "visible bounds use alpha >=128; faint generator speckles outside these bounds are retained",
+      "visible_silhouette_not_clipped": true,
+      "static_frames": 1,
+      "view": "three-quarter front-right",
+      "suggested_visual_origin_normalized": [
+        0.507576,
+        0.95933
+      ],
+      "origin_note": "Approximate visual anchor only, requires in-engine alignment; not collision geometry."
+    },
+    {
+      "file": "characters/merchant-idle.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_pixels": 1130830,
+      "alpha_at_least_128_pixels": 431310,
+      "alpha_at_least_250_pixels": 425453,
+      "alpha_nonzero_bounds_xyxy": [
+        0,
+        37,
+        1218,
+        1254
+      ],
+      "visible_bounds_xyxy": [
+        325,
+        115,
+        933,
+        1167
+      ],
+      "bounds_method": "visible bounds use alpha >=128; faint generator speckles outside these bounds are retained",
+      "visible_silhouette_not_clipped": true,
+      "static_frames": 1,
+      "view": "three-quarter front-right",
+      "suggested_visual_origin_normalized": [
+        0.501595,
+        0.930622
+      ],
+      "origin_note": "Approximate visual anchor only, requires in-engine alignment; not collision geometry."
+    },
+    {
+      "file": "characters/scavenger-idle.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_pixels": 1030189,
+      "alpha_at_least_128_pixels": 531476,
+      "alpha_at_least_250_pixels": 525103,
+      "alpha_nonzero_bounds_xyxy": [
+        0,
+        39,
+        1238,
+        1214
+      ],
+      "visible_bounds_xyxy": [
+        259,
+        87,
+        954,
+        1202
+      ],
+      "bounds_method": "visible bounds use alpha >=128; faint generator speckles outside these bounds are retained",
+      "visible_silhouette_not_clipped": true,
+      "static_frames": 1,
+      "view": "three-quarter front-right",
+      "suggested_visual_origin_normalized": [
+        0.483652,
+        0.958533
+      ],
+      "origin_note": "Approximate visual anchor only, requires in-engine alignment; not collision geometry."
+    },
+    {
+      "file": "characters/thief-idle.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_pixels": 1134488,
+      "alpha_at_least_128_pixels": 427473,
+      "alpha_at_least_250_pixels": 421169,
+      "alpha_nonzero_bounds_xyxy": [
+        0,
+        17,
+        1202,
+        1193
+      ],
+      "visible_bounds_xyxy": [
+        356,
+        116,
+        912,
+        1190
+      ],
+      "bounds_method": "visible bounds use alpha >=128; faint generator speckles outside these bounds are retained",
+      "visible_silhouette_not_clipped": true,
+      "static_frames": 1,
+      "view": "three-quarter front-right",
+      "suggested_visual_origin_normalized": [
+        0.505582,
+        0.948963
+      ],
+      "origin_note": "Approximate visual anchor only, requires in-engine alignment; not collision geometry."
+    },
+    {
+      "file": "characters/worker-02-idle.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_pixels": 1129543,
+      "alpha_at_least_128_pixels": 433164,
+      "alpha_at_least_250_pixels": 427496,
+      "alpha_nonzero_bounds_xyxy": [
+        43,
+        111,
+        1226,
+        1174
+      ],
+      "visible_bounds_xyxy": [
+        326,
+        114,
+        935,
+        1168
+      ],
+      "bounds_method": "visible bounds use alpha >=128; faint generator speckles outside these bounds are retained",
+      "visible_silhouette_not_clipped": true,
+      "static_frames": 1,
+      "view": "three-quarter front-right",
+      "suggested_visual_origin_normalized": [
+        0.502791,
+        0.931419
+      ],
+      "origin_note": "Approximate visual anchor only, requires in-engine alignment; not collision geometry."
+    },
+    {
+      "file": "characters/worker-idle.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_pixels": 1133106,
+      "alpha_at_least_128_pixels": 428840,
+      "alpha_at_least_250_pixels": 423258,
+      "alpha_nonzero_bounds_xyxy": [
+        0,
+        22,
+        1220,
+        1254
+      ],
+      "visible_bounds_xyxy": [
+        328,
+        118,
+        933,
+        1167
+      ],
+      "bounds_method": "visible bounds use alpha >=128; faint generator speckles outside these bounds are retained",
+      "visible_silhouette_not_clipped": true,
+      "static_frames": 1,
+      "view": "three-quarter front-right",
+      "suggested_visual_origin_normalized": [
+        0.502791,
+        0.930622
+      ],
+      "origin_note": "Approximate visual anchor only, requires in-engine alignment; not collision geometry."
+    }
+  ]
+}

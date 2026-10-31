@@ -1,0 +1,180 @@
+{
+  "date": "2026-10-28",
+  "rules": "mine-escape-playtest-2026-10-28-compass",
+  "fare_per_living": 11,
+  "smuggler": 25,
+  "free_actions": 2,
+  "max_actions": 4,
+  "reconnect_base_seconds": 110,
+  "merchant_profit_cap": 2,
+  "upgrades": [
+    3,
+    5,
+    7
+  ],
+  "prices": [
+    {
+      "round": 1,
+      "surcharge": 0,
+      "club": 4,
+      "blade": 7,
+      "gun": 10,
+      "trial": 6
+    },
+    {
+      "round": 2,
+      "surcharge": 0,
+      "club": 4,
+      "blade": 7,
+      "gun": 10,
+      "trial": 6
+    },
+    {
+      "round": 3,
+      "surcharge": 1,
+      "club": 5,
+      "blade": 8,
+      "gun": 11,
+      "trial": 7
+    },
+    {
+      "round": 4,
+      "surcharge": 1,
+      "club": 5,
+      "blade": 8,
+      "gun": 11,
+      "trial": 7
+    },
+    {
+      "round": 5,
+      "surcharge": 2,
+      "club": 6,
+      "blade": 9,
+      "gun": 12,
+      "trial": 8
+    },
+    {
+      "round": 6,
+      "surcharge": 2,
+      "club": 6,
+      "blade": 9,
+      "gun": 12,
+      "trial": 8
+    },
+    {
+      "round": 7,
+      "surcharge": 3,
+      "club": 7,
+      "blade": 10,
+      "gun": 13,
+      "trial": 9
+    },
+    {
+      "round": 8,
+      "surcharge": 3,
+      "club": 7,
+      "blade": 10,
+      "gun": 13,
+      "trial": 9
+    },
+    {
+      "round": 9,
+      "surcharge": 4,
+      "club": 8,
+      "blade": 11,
+      "gun": 14,
+      "trial": 10
+    },
+    {
+      "round": 10,
+      "surcharge": 4,
+      "club": 8,
+      "blade": 11,
+      "gun": 14,
+      "trial": 10
+    }
+  ],
+  "majorities": [
+    {
+      "eligible": 1,
+      "majority": 1
+    },
+    {
+      "eligible": 2,
+      "majority": 2
+    },
+    {
+      "eligible": 3,
+      "majority": 2
+    },
+    {
+      "eligible": 4,
+      "majority": 3
+    },
+    {
+      "eligible": 5,
+      "majority": 3
+    },
+    {
+      "eligible": 6,
+      "majority": 4
+    },
+    {
+      "eligible": 7,
+      "majority": 4
+    },
+    {
+      "eligible": 8,
+      "majority": 5
+    }
+  ],
+  "route": {
+    "gate": 0.1,
+    "lengths": [
+      14,
+      15,
+      16
+    ],
+    "free_clues": false,
+    "recognized_wrong_branch_guarantee": false,
+    "compass": {
+      "seller": "Merchant",
+      "tier": 1,
+      "earliest_round": 2,
+      "buyer_career": "Explorer",
+      "wholesale": 2,
+      "retail": 3,
+      "stock_per_round": 2,
+      "ttl_rounds": 3,
+      "single_use": true,
+      "action_cost": 1,
+      "channel_seconds": 3,
+      "depth": 0,
+      "sector_degrees": 90,
+      "noise_max_degrees": 22.5,
+      "same_room_reading": "fixed across players/items/reconnects",
+      "no_exit_behavior": "persistent decoy anchor; same payload format",
+      "free_hints": false,
+      "guaranteed_wrong_branch_recognition": false,
+      "exit_win_rate": null
+    },
+    "current_success_estimate": null
+  },
+  "historical_free_clue_route_scenario": {
+    "cue_accuracy": 0.7,
+    "wrong_branch_drills": 2,
+    "interaction_spacing_tiles": 6.0,
+    "forced_camp_distance_hops": 6,
+    "trials": 5000,
+    "completed": 960,
+    "conditional_completion": 0.192,
+    "approx_95pct_half_width": 0.01091760466036392,
+    "after_10pct_gate": 0.019200000000000002,
+    "travel_stalled_fraction": 0.0,
+    "mean_completion_round_if_success": 9.484375,
+    "mean_actions_taken": 19.7586,
+    "return_seconds_p95": 8.0,
+    "mean_forced_camps_full_generated_route": 1.5634
+  },
+  "scope": "Calculated design contracts, not runtime tests"
+}

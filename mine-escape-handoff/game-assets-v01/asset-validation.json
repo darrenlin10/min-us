@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-30",
+  "scope": "Static image decoding/transparency/bounds/manifest/archive checks only; not runtime tests",
+  "counts": {
+    "characters": 8,
+    "items": 18,
+    "rooms": 12
+  },
+  "total_pngs": 38,
+  "all_images_decode": true,
+  "all_images_square": true,
+  "all_character_and_item_images_have_real_alpha": true,
+  "all_visible_silhouettes_inside_image_edges": true,
+  "all_rooms_opaque": true,
+  "png_files_unmodified": true,
+  "exact_prompt_records": 38,
+  "gallery_local_references_valid": true,
+  "gallery_inline_javascript_syntax_checked": true,
+  "gallery_browser_rendering": "Not verified: sandbox disallowed loopback server binding and browser policy denied file URLs. No workaround attempted.",
+  "low_alpha_speckles_note": "Originals may contain faint generator speckles; alpha>=128 used for visible bounds. No cleanup applied.",
+  "not_validated": [
+    "directional animation",
+    "runtime collision/occlusion",
+    "pixel-stable room transitions",
+    "final mobile-scale recognition",
+    "runtime memory budget"
+  ],
+  "archive_entries_equal_sources": true
+}
