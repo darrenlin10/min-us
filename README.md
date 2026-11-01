@@ -8,7 +8,7 @@ A real-time multiplayer social strategy game for **3–8 players**, each on thei
 
 - **Game code:** [`game/`](game/): Node.js + WebSocket server, canvas + Preact/htm browser client, no build step.
 - **Original design handoff:** [`mine-escape-handoff/`](mine-escape-handoff/): full GPT-assisted spec, art sources and analysis.
-- **For players and judges:** [`game/public/readme.html`](game/public/readme.html), served at `/readme` and linked from the 📜 Read Me button on the main menu and in the in-game ☰ menu (game design, features, how it's built, AI usage).
+- **For players and judges:** [`game/public/readme.html`](game/public/readme.html), served at `/readme` and linked from the 📜 Read Me button on the main menu (game design, features, how it's built, AI usage).
 - **In game:** the main menu has short instruction panels (Objective, Careers, Smugglers, Controls), and 📖 opens the full rules at any time.
 
 ---
