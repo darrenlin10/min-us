@@ -64,6 +64,12 @@ const ROSTERS = {
   7: ['worker', 'worker', 'explorer', 'explorer', 'merchant', 'S', 'S'],
   8: ['worker', 'worker', 'explorer', 'explorer', 'merchant', 'guard', 'thief', 'scavenger'],
 };
+// Secret Smugglers: 3–4 players 75% one / 25% none; 5–6 players 1 or 2 evenly; 7–8 players 75% two / 25% one.
+export function smugglerCount(n, r = Math.random()) {
+  if (n <= 4) return r < 0.75 ? 1 : 0;
+  if (n <= 6) return r < 0.5 ? 1 : 2;
+  return r < 0.75 ? 2 : 1;
+}
 const SEAT_COLORS = ['#e6194b', '#3cb44b', '#4363d8', '#f58231', '#911eb4', '#42d4f4', '#f032e6', '#bfef45'];
 
 class Match {
@@ -133,7 +139,7 @@ class Match {
     let specs = this.settings.specialist === 'random' ? shuffle(['guard', 'thief', 'scavenger']) : [this.settings.specialist, ...shuffle(['guard', 'thief', 'scavenger'].filter((s) => s !== this.settings.specialist))];
     const roster = ROSTERS[n].map((c) => (c === 'S' ? specs.shift() : c));
     shuffle(roster);
-    const smugglers = n <= 4 ? rnd(2) : 1 + rnd(2);
+    const smugglers = smugglerCount(n);
     const smugSeats = new Set(shuffle(this.players.map((p) => p.id)).slice(0, smugglers));
     const seenCareer = {};
     this.state = 'game';
