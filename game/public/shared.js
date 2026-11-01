@@ -22,6 +22,9 @@ export const ROUNDS = 10;
 // Group fare: each additional person adds a smaller share (15, 14, 13, 12, then 8, 6, 5, 4).
 export const FARE_STEPS = [15, 14, 13, 12, 8, 6, 5, 4];
 export const fareFor = (n) => FARE_STEPS.slice(0, Math.max(0, n)).reduce((a, b) => a + b, 0);
+// The fare is set by the starting roster (Smugglers included). Each player no longer in the mine
+// (dead, forfeited or escaped privately) removes the largest remaining share: 8 players 77 -> 62 -> 48 -> 35 ...
+export const groupFare = (start, living) => FARE_STEPS.slice(Math.max(0, start - living), start).reduce((a, b) => a + b, 0);
 export const SMUGGLER_FARE = 25;
 export const INVENTORY = 7;
 

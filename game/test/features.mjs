@@ -1,7 +1,7 @@
 // Feature-by-feature rules checks. Each block sets up a scenario and asserts the documented behaviour.
 import assert from 'node:assert/strict';
 import { Match } from '../server.js';
-import { ROOM, TICK_HZ, CHOICE_CLOSE, FIELD_START, FIELD_END, ROUND_SECONDS, walkable, fareFor } from '../public/shared.js';
+import { ROOM, TICK_HZ, CHOICE_CLOSE, FIELD_START, FIELD_END, ROUND_SECONDS, walkable, fareFor, groupFare } from '../public/shared.js';
 
 const T = (s) => Math.round(s * TICK_HZ);
 let passed = 0, failed = 0;
@@ -480,21 +480,21 @@ test('theft: any time in the same room, silent, once per victim per round, thief
   runTo(m, FIELD_START + 1); // also allowed later, outside camps
 });
 
-test('sliding group fare; Smugglers\' shares waived but the shown fare counts everyone', () => {
+test('fare covers the whole starting roster; each death removes the largest remaining share', () => {
   assert.deepEqual([1, 2, 3, 4, 5, 6, 7, 8].map(fareFor), [15, 29, 42, 54, 62, 68, 73, 77]);
-  // 4 players, 1 hidden Smuggler: shown fare 54, but 3 ordinary shares (42) are enough
+  assert.deepEqual([8, 7, 6, 5].map((alive) => groupFare(8, alive)), [77, 62, 48, 35]);
+  // 4 players incl. a hidden Smuggler: the team must still pay for all 4 (54)
   const m = setup(4, ['worker', 'explorer', 'merchant', 'guard']);
   m.players[3].smuggler = true; m.players[3].coins = 0;
-  assert.equal(m.view(m.players[0], false).fare, 54, 'screen shows the fare for all 4 living');
-  m.fund = 42; nextRound(m);
-  assert.equal(m.state, 'over'); assert.equal(m.result.kind, 'group'); assert.equal(m.fund, 0, 'charged 42');
-  assert.equal(m.players[3].status, 'alive', 'the Smuggler did not escape with the group');
-  // one short of the ordinary fare: no escape
-  const m2 = setup(4, ['worker', 'explorer', 'merchant', 'guard']); m2.players[3].smuggler = true; m2.players[3].coins = 0;
-  m2.fund = 41; nextRound(m2); assert.equal(m2.state, 'game');
-  // no Smugglers: needs the full 54
-  const m3 = setup(4, ['worker', 'explorer', 'merchant', 'guard']); m3.fund = 53; nextRound(m3); assert.equal(m3.state, 'game');
-  m3.fund = 54; nextRound(m3); assert.equal(m3.result.kind, 'group');
+  assert.equal(m.view(m.players[0], false).fare, 54);
+  m.fund = 53; nextRound(m); assert.equal(m.state, 'game', '53 is not enough with a Smuggler alive');
+  // killing the Smuggler removes the first (15) share: 54 -> 39
+  m.kill(m.players[3], m.players[0]);
+  assert.equal(m.view(m.players[0], false).fare, 39);
+  m.fund = 39; nextRound(m); assert.equal(m.result.kind, 'group'); assert.equal(m.fund, 0, 'charged 39');
+  // a forfeit or a private escape lowers it the same way
+  const m2 = setup(4, ['worker', 'explorer', 'merchant', 'guard']);
+  m2.forfeit(m2.players[2]); assert.equal(m2.view(m2.players[0], false).fare, 39);
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);

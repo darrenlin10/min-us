@@ -117,7 +117,7 @@ const by = (m, c) => m.players.find((p) => p.career === c);
 {
   const m = setup(3);
   const s = m.players[0]; s.smuggler = true; m.players.slice(1).forEach((p) => (p.smuggler = false));
-  s.coins = 30; m.fund = 33;
+  s.coins = 30; m.fund = 42; // full 3-player fare (the Smuggler counts)
   runUntilRound(m, 2);
   assert.equal(m.state, 'over'); assert.equal(m.result.kind, 'group');
   assert.equal(s.winType, 'private'); assert.equal(m.players[1].winType, 'group');
