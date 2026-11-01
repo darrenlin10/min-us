@@ -429,6 +429,7 @@ function MainMenu() {
       <button onClick=${() => setRules(true)}>📖 Full rules</button>
     </div></div>
     ${rules && html`<${RulesModal} close=${() => setRules(false)} />`}
+    <a class="readme-corner" href="/readme.html" target="_blank" rel="noopener">📜 Read Me<small>about the game, features & credits</small></a>
   </div>`;
 }
 
@@ -587,6 +588,7 @@ function Game({ v }) {
     ${rules && html`<${RulesModal} close=${() => setRules(false)} />`}
     ${menu && html`<div class="modal" onClick=${() => setMenu(false)}><div class="card" onClick=${(e) => e.stopPropagation()}>
       <div class="row" style="margin-bottom:10px"><b class="grow">🔊 Sound effects</b><button class="small" onClick=${() => { try { localStorage.setItem('me_sound', soundOn() ? 'off' : 'on'); } catch {} if (soundOn()) whoosh(0); setMenu(false); setMenu(true); }}>${soundOn() ? 'On' : 'Off'}</button></div>
+      <a class="readme-link" href="/readme.html" target="_blank" rel="noopener">📜 Read Me — about the game, features & credits ↗</a>
       <h2>Return to main menu?</h2>
       <p class="muted">Your character stays in the mine and can be robbed or attacked. Resume from the main menu within one round of game time (${ROUND_SECONDS}s) or you forfeit: your coins drop as a body and you can't come back.</p>
       <div class="row"><button class="danger" onClick=${goMenu}>Return to main menu</button><button onClick=${() => setMenu(false)}>Keep playing</button></div>

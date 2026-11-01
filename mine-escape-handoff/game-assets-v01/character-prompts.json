@@ -7,7 +7,7 @@
     {
       "career": "worker",
       "file": "characters/worker-idle.png",
-      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-5191cb6a-f263-48f6-bcb2-ed208111364b.png",
+      "original_generated_file": "~/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-5191cb6a-f263-48f6-bcb2-ed208111364b.png",
       "reference_images": [],
       "prompt": "Use case: stylized-concept\nAsset type: one transparent 2D game character idle sprite, square 1024x1024 canvas.\nPrimary request: create the Worker career for an original cartoon underground multiplayer game called Mine Escape.\nSubject: ONE full-body adult expedition worker, compact chunky three-heads-tall proportions, domed yellow hardhat with an unlit round headlamp, orange bib overalls over a charcoal short-sleeved work shirt, broad tan work gloves, chunky charcoal boots. Friendly neutral tiny face with simple eyes. NO tool held, both empty gloved hands relaxed at sides. No weapon, coin, shield or glowing lamp.\nStyle: original accessible social-game art, bold smooth near-charcoal outline, simple geometric shapes, flat cel shading with just one shadow tone, no texture, no painterly rendering. Clear at 64px. Not an astronaut, no visor, no spaceship, no copied existing game character.\nCamera: slightly elevated orthographic three-quarter view facing screen-right and toward viewer, show front and a little of the character's left side. Neutral standing idle pose.\nComposition: isolated centered character, same scale suitable for a six-career set; entire silhouette within x=25–75% and y=14–86%, feet on baseline y=86%; leave transparent margin around everything.\nBackground: genuinely transparent alpha, no ground plane, no cast shadow, no checkerboard painted into image.\nPalette: amber #F0BA3C, orange #D97830, charcoal #343743, warm tan skin/gloves.\nText: none. No labels, border, watermark or extra objects.",
       "transparent_background_requested": true,
@@ -16,7 +16,7 @@
     {
       "career": "explorer",
       "file": "characters/explorer-idle.png",
-      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-7afdf228-01de-47f2-a437-c0fba66c303a.png",
+      "original_generated_file": "~/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-7afdf228-01de-47f2-a437-c0fba66c303a.png",
       "reference_images": [
         "characters/worker-idle.png"
       ],
@@ -27,7 +27,7 @@
     {
       "career": "merchant",
       "file": "characters/merchant-idle.png",
-      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-5de2951f-8826-476e-abe0-af1dea7bfa44.png",
+      "original_generated_file": "~/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-5de2951f-8826-476e-abe0-af1dea7bfa44.png",
       "reference_images": [
         "characters/worker-idle.png"
       ],
@@ -38,7 +38,7 @@
     {
       "career": "guard",
       "file": "characters/guard-idle.png",
-      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-aded1c24-da30-4d53-9f6e-3848ded57cd7.png",
+      "original_generated_file": "~/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-aded1c24-da30-4d53-9f6e-3848ded57cd7.png",
       "reference_images": [
         "characters/worker-idle.png"
       ],
@@ -49,7 +49,7 @@
     {
       "career": "thief",
       "file": "characters/thief-idle.png",
-      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-a5e410ed-185c-4c89-b13d-e7b99e0edec0.png",
+      "original_generated_file": "~/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-a5e410ed-185c-4c89-b13d-e7b99e0edec0.png",
       "reference_images": [
         "characters/worker-idle.png"
       ],
@@ -60,7 +60,7 @@
     {
       "career": "scavenger",
       "file": "characters/scavenger-idle.png",
-      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-c1a78c6b-fa6a-49c4-942b-2048d209325e.png",
+      "original_generated_file": "~/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-c1a78c6b-fa6a-49c4-942b-2048d209325e.png",
       "reference_images": [
         "characters/worker-idle.png"
       ],
@@ -72,7 +72,7 @@
       "career": "worker",
       "variant": 2,
       "file": "characters/worker-02-idle.png",
-      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-eb80cb58-804c-47b0-910a-26648e5eaab8.png",
+      "original_generated_file": "~/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-eb80cb58-804c-47b0-910a-26648e5eaab8.png",
       "reference_images": [
         "characters/worker-idle.png"
       ],
@@ -84,7 +84,7 @@
       "career": "explorer",
       "variant": 2,
       "file": "characters/explorer-02-idle.png",
-      "original_generated_file": "/Users/darrenlin/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-1a336562-5d56-423c-aa16-bc2603303fbd.png",
+      "original_generated_file": "~/.codex/generated_images/01a18b2b-4dca-76e2-b76b-a74b26680308/exec-1a336562-5d56-423c-aa16-bc2603303fbd.png",
       "reference_images": [
         "characters/explorer-idle.png"
       ],
