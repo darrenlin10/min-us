@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
 import {
-  ROOM, SPEED, TICK_HZ, ROUND_SECONDS, SHOP_CLOSE, CHOICE_CLOSE, FIELD_START, FIELD_END, ROUNDS, FARE,
+  ROOM, SPEED, TICK_HZ, ROUND_SECONDS, SHOP_CLOSE, CHOICE_CLOSE, FIELD_START, FIELD_END, ROUNDS, fareFor,
   SMUGGLER_FARE, INVENTORY, phaseAt, surcharge, CAREERS, ITEMS, MERCHANT_GOODS, UPGRADES, weaponPrice, trialFee,
   DIRS, OPP, cellKey, LADDER, LADDER_UP, walkable, roomAt,
 } from './public/shared.js';
@@ -268,13 +268,15 @@ class Match {
     }
     const N = living.length;
     const ordinary = living.filter((p) => !p.smuggler);
-    const groupOk = N > 0 && ordinary.length > 0 && this.fund >= FARE * N;
+    // Smugglers' shares are waived: only ordinary players' shares are charged (the HUD shows the fare for all living)
+    const fare = fareFor(ordinary.length);
+    const groupOk = N > 0 && ordinary.length > 0 && this.fund >= fare;
     const smug = this.priority().find((p) => p.status === 'alive' && p.smuggler && p.coins >= SMUGGLER_FARE);
     if (smug) { smug.coins -= SMUGGLER_FARE; smug.status = 'escaped'; smug.winType = 'private'; this.pub(`${smug.name} paid a smuggler and escaped privately!`); }
     if (groupOk) {
-      this.fund -= FARE * N;
+      this.fund -= fare;
       for (const p of ordinary) { p.status = 'escaped'; p.winType = 'group'; }
-      this.pub(`The escape fund paid the fare (${FARE * N})! The group escapes.`);
+      this.pub(`The escape fund paid the fare (${fare})! The group escapes.`);
       return this.finish('group');
     }
     if (this.living().length === 0) return this.finish('none');
@@ -900,10 +902,16 @@ class Match {
     if (m.round) { this.round = +m.round - 1; this.t = ROUND_T - 1; }
     if (m.sec != null) this.t = T(+m.sec);
     if (m.career) { tgt.career = m.career; tgt.appearance = m.career; }
-    if (m.room) { // { gx, gy, cat, chest, reserve }: add a room east of camp, joined by a door
-      const r = this.makeRoom(m.room.gx, m.room.gy, 0, m.room.cat); r.dist = 1; r.chest = m.room.chest || 0; r.reserve = m.room.reserve || 0;
-      this.rooms['0,0,0'].doors.e = true; r.doors.w = true;
+    if (m.room) { // { dir, cat, chest, reserve }: add a room next to camp (default east), joined by a door
+      const dir = m.room.dir || 'e', gx = DIRS[dir][0], gy = DIRS[dir][1];
+      const r = this.makeRoom(gx, gy, 0, m.room.cat); r.dist = 1; r.chest = m.room.chest || 0; r.reserve = m.room.reserve || 0;
+      this.rooms['0,0,0'].doors[dir] = true; r.doors[OPP[dir]] = true;
     }
+    if (m.give) for (const type of [].concat(m.give)) if (ITEMS[type] && tgt.inv.length < INVENTORY) tgt.inv.push(this.item(type, ITEMS[type].weapon ? { paidS: surcharge(this.round) } : {}));
+    if (m.trap) tgt.trappedRound = this.round;
+    if (m.tier != null) this.merchant.tier = +m.tier;
+    if (m.hp != null) tgt.hp = +m.hp;
+    if (m.ladder) { const c = this.rooms['0,0,0'], r = this.makeRoom(0, 0, 1, 'gallery'); r.dist = 1; c.down = r.key; r.up = c.key; }
     if (m.tp) { tgt.x = m.tp.x; tgt.y = m.tp.y; tgt.d = 0; if (tgt.ws) tgt.ws.send(JSON.stringify({ t: 'pos', x: tgt.x, y: tgt.y, d: 0 })); }
   }
 
@@ -955,7 +963,7 @@ class Match {
     const living = this.living();
     const v = {
       ...base,
-      round: this.round, sec: this.sec, fund: this.fund, fare: FARE * living.length,
+      round: this.round, sec: this.sec, fund: this.fund, fare: fareFor(living.length),
       log: this.log.slice(-8),
       roster: this.players.map((o) => ({ id: o.id, name: o.name, color: o.color, career: o.career, appearance: o.appearance, status: o.status, connected: o.connected, contrib: o.contrib, roundContrib: o.roundContrib })),
       merchant: { tier: this.merchant.tier, invested: this.merchant.invested, open: this.merchant.open, nextPrice: this.merchant.sales + 1, sold: this.merchant.sold, upgradedRound: this.merchant.upgradedRound },

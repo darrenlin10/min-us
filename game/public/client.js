@@ -1,6 +1,6 @@
 import { html, render, useState, useEffect } from './vendor/preact-htm.js';
 import {
-  ROOM, SPEED, PHASES, ROUND_SECONDS, SHOP_CLOSE, CHOICE_CLOSE, ROUNDS, FARE, SMUGGLER_FARE, INVENTORY, phaseAt, surcharge,
+  ROOM, SPEED, PHASES, ROUND_SECONDS, SHOP_CLOSE, CHOICE_CLOSE, ROUNDS, FARE_STEPS, fareFor, SMUGGLER_FARE, INVENTORY, phaseAt, surcharge,
   CAREERS, ITEMS, ICON, MERCHANT_GOODS, UPGRADES, weaponPrice, trialFee, DIRS, cellKey, LADDER, LADDER_UP, walkable, roomAt,
 } from './shared.js';
 
@@ -394,7 +394,7 @@ function MainMenu() {
     goal: html`<p>The mine collapsed behind your crew. You have <b>${ROUNDS} rounds</b> to get out.</p>
       <ul><li>Everyone starts with <b>2 coins</b> and <b>3 HP</b>.</li>
       <li>Mine, explore and trade, then put coins into the shared <b>escape fund</b>.</li>
-      <li>When the fund reaches <b>${FARE} × living players</b> at the end of a round, the whole group escapes.</li>
+      <li>When the fund covers the <b>group fare</b> at the end of a round, the whole group escapes. The first person costs 15 coins, and each extra person costs less (${FARE_STEPS.join(', ')}) — e.g. ${fareFor(3)} for 3 players, ${fareFor(5)} for 5, ${fareFor(8)} for 8.</li>
       <li>Rare <b>natural exits</b> hide 14+ rooms away — finding one saves every survivor for free.</li>
       <li>Every round: walk back to a <b>camp</b> to prepare, go out to use your actions, then walk back again.</li></ul>`,
     careers: html`<p>Your career is public — everyone sees your outfit.</p>
@@ -501,7 +501,7 @@ function RulesModal({ close }) {
   return html`<div class="modal" onClick=${close}><div class="card rules" onClick=${(e) => e.stopPropagation()}>
     <div class="row"><h2 class="grow">📖 How to play</h2><button onClick=${close}>Close</button></div>
     <h3>Goal</h3>
-    <p>Everyone starts with <b>2 coins</b> and <b>3 HP</b>. Put coins into the shared <b>escape fund</b>. At the end of any round, if the fund covers <b>${FARE} coins × every living player</b>, the whole group escapes and wins. You have ${ROUNDS} rounds.</p>
+    <p>Everyone starts with <b>2 coins</b> and <b>3 HP</b>. Put coins into the shared <b>escape fund</b>. At the end of any round, if the fund covers the <b>group fare</b>, the whole group escapes and wins. The fare grows with each living player, but each extra person adds less: ${FARE_STEPS.join(', ')} coins (${fareFor(3)} for 3 players, ${fareFor(4)} for 4, ${fareFor(5)} for 5, ${fareFor(6)} for 6, ${fareFor(8)} for 8). Smugglers' shares are secretly waived, so the group may escape a little before the fund reaches the fare shown. You have ${ROUNDS} rounds.</p>
     <p><b class="smug">Smugglers</b> (0–2 secret players) win differently: they need <b>${SMUGGLER_FARE} coins in their own wallet</b> to escape privately. A Smuggler looks like a normal career — wallets are private, so watch who actually contributes!</p>
     <p>Somewhere far away there are hidden <b>natural exits</b> (14+ rooms from the start). Discovering one saves every survivor for free.</p>
     <h3>Each round (${ROUND_SECONDS}s)</h3>
@@ -604,7 +604,7 @@ function IdCard({ v, close }) {
       <div><div style="font-size:22px;font-weight:800">${careerName(y.career)}</div><div class="muted">${CAREERS[y.career].blurb}</div></div></div>
     <div class="note" style="font-size:15px;color:var(--ink)">${y.smuggler
       ? html`<span class="smug">You are a SMUGGLER.</span> You win by holding <b>${SMUGGLER_FARE} coins</b> at a round's end (you escape privately). Your career is a perfect cover — nobody can see your wallet. If the group escapes first, you only win if you also qualify that same round.`
-      : html`<b class="good">You are an ordinary miner.</b> You win when the shared fund pays the group fare (${FARE} × living players), or if anyone finds a natural exit. Beware: Smugglers may be hoarding coins.`}</div>
+      : html`<b class="good">You are an ordinary miner.</b> You win when the shared fund pays the group fare (shown at the top as 🏦 fund/fare), or if anyone finds a natural exit. Beware: Smugglers may be hoarding coins.`}</div>
     <p class="muted" style="font-size:13px">Keep this secret. Tap 🪪 at the top any time to see it again.</p>
     <button class="primary" onClick=${close}>Got it</button>
   </div></div>`;
@@ -932,7 +932,7 @@ function Bag({ v }) {
 function People({ v }) {
   const st = { alive: '', dead: '☠ dead', escaped: '🎉 escaped', forfeit: 'forfeited' };
   return html`<h3>Escape fund: <span class="gold">${v.fund}</span> / ${v.fare}</h3>
-    <div class="muted" style="font-size:13px">Group fare = ${FARE} × living players. Contributions are public; wallets are private.</div>
+    <div class="muted" style="font-size:13px">Group fare for every living player: ${FARE_STEPS.join(' + ')}… (each extra person adds less). Smugglers' shares are secretly waived, so you may escape slightly before reaching it. Contributions are public; wallets are private.</div>
     <table><tr><th>Player</th><th>Career</th><th>Gave</th><th></th></tr>
     ${v.roster.map((r) => html`<tr><td><span class="dot" style=${{ background: r.color }}></span>${r.name}${r.id === v.me ? ' (you)' : ''}</td><td>${careerName(r.career)}</td><td class="gold">${r.contrib}</td><td>${st[r.status]}${!r.connected && r.status !== 'forfeit' ? ' 📵' : ''}</td></tr>`)}</table>
     <p class="muted" style="font-size:13px">Merchant: tier ${v.merchant.tier}, invested ${v.merchant.invested} coins.</p>

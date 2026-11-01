@@ -19,7 +19,9 @@ export const CHOICE_CLOSE = 50; // loadout & theft close
 export const FIELD_START = 60;
 export const FIELD_END = 110;
 export const ROUNDS = 10;
-export const FARE = 11;
+// Group fare: each additional person adds a smaller share (15, 14, 13, 12, then 8, 6, 5, 4).
+export const FARE_STEPS = [15, 14, 13, 12, 8, 6, 5, 4];
+export const fareFor = (n) => FARE_STEPS.slice(0, Math.max(0, n)).reduce((a, b) => a + b, 0);
 export const SMUGGLER_FARE = 25;
 export const INVENTORY = 7;
 
