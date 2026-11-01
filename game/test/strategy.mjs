@@ -2,7 +2,7 @@
 // speed between rooms, to check that the win conditions are reachable through ordinary play.
 // Usage: node test/strategy.mjs [games per roster size]
 import { Match } from '../server.js';
-import { ROOM, TICK_HZ, SPEED, CHOICE_CLOSE, FIELD_START, FIELD_END, FARE, SMUGGLER_FARE, DIRS, OPP, cellKey } from '../public/shared.js';
+import { ROOM, TICK_HZ, SPEED, CHOICE_CLOSE, FIELD_START, FIELD_END, SMUGGLER_FARE, DIRS, OPP, cellKey } from '../public/shared.js';
 
 const GAMES = Number(process.argv[2] || 40);
 const T = (s) => Math.round(s * TICK_HZ);

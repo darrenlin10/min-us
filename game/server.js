@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { WebSocketServer } from 'ws';
 import {
-  ROOM, SPEED, TICK_HZ, ROUND_SECONDS, SHOP_CLOSE, CHOICE_CLOSE, FIELD_START, FIELD_END, ROUNDS, FARE,
+  ROOM, SPEED, TICK_HZ, ROUND_SECONDS, SHOP_CLOSE, CHOICE_CLOSE, FIELD_START, FIELD_END, ROUNDS, fareFor,
   SMUGGLER_FARE, INVENTORY, phaseAt, surcharge, CAREERS, ITEMS, MERCHANT_GOODS, UPGRADES, weaponPrice, trialFee,
   DIRS, OPP, cellKey, LADDER, LADDER_UP, walkable, roomAt,
 } from './public/shared.js';
@@ -268,13 +268,15 @@ class Match {
     }
     const N = living.length;
     const ordinary = living.filter((p) => !p.smuggler);
-    const groupOk = N > 0 && ordinary.length > 0 && this.fund >= FARE * N;
+    // Smugglers' shares are waived: only ordinary players' shares are charged (the HUD shows the fare for all living)
+    const fare = fareFor(ordinary.length);
+    const groupOk = N > 0 && ordinary.length > 0 && this.fund >= fare;
     const smug = this.priority().find((p) => p.status === 'alive' && p.smuggler && p.coins >= SMUGGLER_FARE);
     if (smug) { smug.coins -= SMUGGLER_FARE; smug.status = 'escaped'; smug.winType = 'private'; this.pub(`${smug.name} paid a smuggler and escaped privately!`); }
     if (groupOk) {
-      this.fund -= FARE * N;
+      this.fund -= fare;
       for (const p of ordinary) { p.status = 'escaped'; p.winType = 'group'; }
-      this.pub(`The escape fund paid the fare (${FARE * N})! The group escapes.`);
+      this.pub(`The escape fund paid the fare (${fare})! The group escapes.`);
       return this.finish('group');
     }
     if (this.living().length === 0) return this.finish('none');
@@ -961,7 +963,7 @@ class Match {
     const living = this.living();
     const v = {
       ...base,
-      round: this.round, sec: this.sec, fund: this.fund, fare: FARE * living.length,
+      round: this.round, sec: this.sec, fund: this.fund, fare: fareFor(living.length),
       log: this.log.slice(-8),
       roster: this.players.map((o) => ({ id: o.id, name: o.name, color: o.color, career: o.career, appearance: o.appearance, status: o.status, connected: o.connected, contrib: o.contrib, roundContrib: o.roundContrib })),
       merchant: { tier: this.merchant.tier, invested: this.merchant.invested, open: this.merchant.open, nextPrice: this.merchant.sales + 1, sold: this.merchant.sold, upgradedRound: this.merchant.upgradedRound },
