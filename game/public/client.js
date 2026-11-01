@@ -400,7 +400,7 @@ function MainMenu() {
       <li>Every round: walk back to a <b>camp</b> to prepare, go out to use your actions, then walk back again.</li></ul>`,
     careers: html`<p>Your career is public — everyone sees your outfit.</p>
       <div class="col">${CAREER_ORDER.map((c) => html`<div class="item"><img src=${charSrc(c)} style="width:40px" /><div class="grow"><b>${CAREERS[c].name}</b><small>${CAREERS[c].blurb}</small></div></div>`)}</div>`,
-    smuggler: html`<p>0–2 players are secretly <b class="smug">Smugglers</b>. A Smuggler looks exactly like a normal career and has its full abilities.</p>
+    smuggler: html`<p>Some players are secretly <b class="smug">Smugglers</b> — usually 1 in a 3–4 player game (sometimes none), 1 or 2 with 5–6 players, and usually 2 with 7–8 players. A Smuggler looks exactly like a normal career and has its full abilities.</p>
       <ul><li>Smugglers win alone by holding <b>${SMUGGLER_FARE} coins</b> in their own wallet at a round's end (a private escape).</li>
       <li>Wallets are private — but contributions to the fund are public. Who promised coins and never paid?</li>
       <li>You can steal, fight, or put a suspect on trial (majority vote) — but you might be wrong.</li>
@@ -503,7 +503,7 @@ function RulesModal({ close }) {
     <div class="row"><h2 class="grow">📖 How to play</h2><button onClick=${close}>Close</button></div>
     <h3>Goal</h3>
     <p>Everyone starts with <b>2 coins</b> and <b>3 HP</b>. Put coins into the shared <b>escape fund</b>. At the end of any round, if the fund covers the <b>group fare</b>, the whole group escapes and wins. The fare covers everyone who started, Smugglers included: ${FARE_STEPS.join(', ')} coins for the 1st, 2nd, 3rd… person (${fareFor(3)} for 3 players, ${fareFor(4)} for 4, ${fareFor(5)} for 5, ${fareFor(6)} for 6, ${fareFor(8)} for 8). Each player who dies, forfeits or escapes privately removes the <b>largest</b> remaining share (15, then 14, then 13…): an 8-player fare goes 77 → 62 → 48 → 35. Catching a Smuggler pays off; mass killing has diminishing returns. You have ${ROUNDS} rounds.</p>
-    <p><b class="smug">Smugglers</b> (0–2 secret players) win differently: they need <b>${SMUGGLER_FARE} coins in their own wallet</b> to escape privately. A Smuggler looks like a normal career — wallets are private, so watch who actually contributes!</p>
+    <p><b class="smug">Smugglers</b> (secret: usually 1 in a 3–4 player game (sometimes none), 1 or 2 with 5–6 players, and usually 2 with 7–8 players) win differently: they need <b>${SMUGGLER_FARE} coins in their own wallet</b> to escape privately. A Smuggler looks like a normal career — wallets are private, so watch who actually contributes!</p>
     <p>Somewhere far away there are hidden <b>natural exits</b> (14+ rooms from the start). Discovering one saves every survivor for free.</p>
     <h3>Each round (${ROUND_SECONDS}s)</h3>
     <ul>${PHASES.map((p) => html`<li><b>${p.start}–${p.end}s</b> ${p.label}</li>`)}</ul>

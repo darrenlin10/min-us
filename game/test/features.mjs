@@ -1,6 +1,6 @@
 // Feature-by-feature rules checks. Each block sets up a scenario and asserts the documented behaviour.
 import assert from 'node:assert/strict';
-import { Match } from '../server.js';
+import { Match, smugglerCount } from '../server.js';
 import { ROOM, TICK_HZ, CHOICE_CLOSE, FIELD_START, FIELD_END, ROUND_SECONDS, walkable, fareFor, groupFare } from '../public/shared.js';
 
 const T = (s) => Math.round(s * TICK_HZ);
@@ -495,6 +495,16 @@ test('fare covers the whole starting roster; each death removes the largest rema
   // a forfeit or a private escape lowers it the same way
   const m2 = setup(4, ['worker', 'explorer', 'merchant', 'guard']);
   m2.forfeit(m2.players[2]); assert.equal(m2.view(m2.players[0], false).fare, 39);
+});
+
+test('Smuggler count odds by team size', () => {
+  const freq = (n) => { const c = {}; for (let i = 0; i < 4000; i++) { const k = smugglerCount(n); c[k] = (c[k] || 0) + 1; } return c; };
+  const near = (x, p) => Math.abs(x / 4000 - p) < 0.04;
+  for (const n of [3, 4]) { const c = freq(n); assert(near(c[1], 0.75) && near(c[0] || 0, 0.25) && !c[2], `${n}p ${JSON.stringify(c)}`); }
+  for (const n of [5, 6]) { const c = freq(n); assert(near(c[1], 0.5) && near(c[2], 0.5) && !c[0], `${n}p ${JSON.stringify(c)}`); }
+  for (const n of [7, 8]) { const c = freq(n); assert(near(c[2], 0.75) && near(c[1], 0.25) && !c[0], `${n}p ${JSON.stringify(c)}`); }
+  const m = new Match('S'); for (let i = 0; i < 8; i++) m.addPlayer('P' + i, 'k' + i); m.players.forEach((p) => (p.ready = true)); m.tryStart();
+  const k = m.players.filter((p) => p.smuggler).length; assert(k === 1 || k === 2, 'game assigns 1-2 at 8 players');
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);

@@ -27,7 +27,7 @@ During a match, **☰ → Return to main menu** steps away without leaving. Your
 | Who | How they win |
 |---|---|
 | Ordinary players | At the end of a round, the shared fund covers the **group fare**. It covers everyone who started, Smugglers included: 15, 14, 13, 12, 8, 6, 5, 4 coins for the 1st…8th player (42 for 3 players, 54 for 4, 62 for 5, 68 for 6, 77 for 8). Each player who dies, forfeits or escapes privately removes the **largest** remaining share (8 players: 77 → 62 → 48 → 35). |
-| Smugglers (secret, 0–2) | At the end of a round, they hold **25 coins in their own wallet** and escape privately (one per round-end check). |
+| Smugglers (secret: 3–4 players usually 1, 5–6 players 1–2, 7–8 players usually 2) | At the end of a round, they hold **25 coins in their own wallet** and escape privately (one per round-end check). |
 | Everyone alive | Someone discovers one of the **3 hidden natural exits** (14–16 rooms from the start). Every survivor escapes free. |
 
 Anyone still underground after round 10 loses. Wallets are private; contributions to the fund are public.
@@ -98,6 +98,7 @@ The detailed rules come from the design handoff in `mine-escape-handoff/`. These
 - **Saved actions.** An unused tool that was placed in an action slot keeps its slot into next round, so using a saved tool doesn't cost a new action. Up to 2 carry over (locked to their tool), keeping the 4-actions-per-round maximum; the original design discarded unused actions.
 - **7-item bag limit** for everything a player carries.
 - **Among the living, only the killer can see a ghost**; ghosts still see each other. The **haunt lasts 1.5 s with a whoosh** (originally a silent 0.45 s pop).
+- **Smuggler odds:** 3–4 players have a 75% chance of 1 Smuggler (25% none), 5–6 players 1 or 2 evenly, 7–8 players a 75% chance of 2 (25% one). The original design used 50/50 at every size.
 - **Sliding group fare.** The fare covers the starting roster, Smugglers included, with each additional player adding a smaller share (15, 14, 13, 12, 8, 6, 5, 4); small groups face a higher bar and large groups a lower one (the original design charged 11 per living player). Each death removes the largest remaining share, so eliminating a Smuggler is economically worthwhile while mass killing has diminishing returns.
 - **Thieves take up to 3 coins** per robbery (the original design said 2).
 - **Theft any time.** A hook can rob anyone in the same room at any moment (silently), instead of only resolving when camp choices close. Guard locks and shields therefore activate the moment they're bought.
