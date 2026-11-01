@@ -394,7 +394,8 @@ function MainMenu() {
     goal: html`<p>The mine collapsed behind your crew. You have <b>${ROUNDS} rounds</b> to get out.</p>
       <ul><li>Everyone starts with <b>2 coins</b> and <b>3 HP</b>.</li>
       <li>Mine, explore and trade, then put coins into the shared <b>escape fund</b>.</li>
-      <li>When the fund covers the <b>group fare</b> at the end of a round, the whole group escapes. The first person costs 15 coins, and each extra person costs less (${FARE_STEPS.join(', ')}) — e.g. ${fareFor(3)} for 3 players, ${fareFor(5)} for 5, ${fareFor(8)} for 8.</li>
+      <li>When the fund covers the <b>group fare</b> at the end of a round, the whole group escapes. The fare covers everyone who started (Smugglers too): 15 coins for the first person, then ${FARE_STEPS.slice(1).join(', ')} — ${fareFor(3)} for 3 players, ${fareFor(5)} for 5, ${fareFor(8)} for 8.</li>
+      <li>Each player who dies (or leaves) knocks the <b>biggest</b> share off the fare — 15, then 14, then 13… — so removing a Smuggler really helps, but mass killing has diminishing returns.</li>
       <li>Rare <b>natural exits</b> hide 14+ rooms away — finding one saves every survivor for free.</li>
       <li>Every round: walk back to a <b>camp</b> to prepare, go out to use your actions, then walk back again.</li></ul>`,
     careers: html`<p>Your career is public — everyone sees your outfit.</p>
@@ -501,7 +502,7 @@ function RulesModal({ close }) {
   return html`<div class="modal" onClick=${close}><div class="card rules" onClick=${(e) => e.stopPropagation()}>
     <div class="row"><h2 class="grow">📖 How to play</h2><button onClick=${close}>Close</button></div>
     <h3>Goal</h3>
-    <p>Everyone starts with <b>2 coins</b> and <b>3 HP</b>. Put coins into the shared <b>escape fund</b>. At the end of any round, if the fund covers the <b>group fare</b>, the whole group escapes and wins. The fare grows with each living player, but each extra person adds less: ${FARE_STEPS.join(', ')} coins (${fareFor(3)} for 3 players, ${fareFor(4)} for 4, ${fareFor(5)} for 5, ${fareFor(6)} for 6, ${fareFor(8)} for 8). Smugglers' shares are secretly waived, so the group may escape a little before the fund reaches the fare shown. You have ${ROUNDS} rounds.</p>
+    <p>Everyone starts with <b>2 coins</b> and <b>3 HP</b>. Put coins into the shared <b>escape fund</b>. At the end of any round, if the fund covers the <b>group fare</b>, the whole group escapes and wins. The fare covers everyone who started, Smugglers included: ${FARE_STEPS.join(', ')} coins for the 1st, 2nd, 3rd… person (${fareFor(3)} for 3 players, ${fareFor(4)} for 4, ${fareFor(5)} for 5, ${fareFor(6)} for 6, ${fareFor(8)} for 8). Each player who dies, forfeits or escapes privately removes the <b>largest</b> remaining share (15, then 14, then 13…): an 8-player fare goes 77 → 62 → 48 → 35. Catching a Smuggler pays off; mass killing has diminishing returns. You have ${ROUNDS} rounds.</p>
     <p><b class="smug">Smugglers</b> (0–2 secret players) win differently: they need <b>${SMUGGLER_FARE} coins in their own wallet</b> to escape privately. A Smuggler looks like a normal career — wallets are private, so watch who actually contributes!</p>
     <p>Somewhere far away there are hidden <b>natural exits</b> (14+ rooms from the start). Discovering one saves every survivor for free.</p>
     <h3>Each round (${ROUND_SECONDS}s)</h3>
@@ -932,7 +933,7 @@ function Bag({ v }) {
 function People({ v }) {
   const st = { alive: '', dead: '☠ dead', escaped: '🎉 escaped', forfeit: 'forfeited' };
   return html`<h3>Escape fund: <span class="gold">${v.fund}</span> / ${v.fare}</h3>
-    <div class="muted" style="font-size:13px">Group fare for every living player: ${FARE_STEPS.join(' + ')}… (each extra person adds less). Smugglers' shares are secretly waived, so you may escape slightly before reaching it. Contributions are public; wallets are private.</div>
+    <div class="muted" style="font-size:13px">The fare covers everyone who started (${FARE_STEPS.join(' + ')}…). Each player who dies or leaves removes the largest remaining share. Contributions are public; wallets are private.</div>
     <table><tr><th>Player</th><th>Career</th><th>Gave</th><th></th></tr>
     ${v.roster.map((r) => html`<tr><td><span class="dot" style=${{ background: r.color }}></span>${r.name}${r.id === v.me ? ' (you)' : ''}</td><td>${careerName(r.career)}</td><td class="gold">${r.contrib}</td><td>${st[r.status]}${!r.connected && r.status !== 'forfeit' ? ' 📵' : ''}</td></tr>`)}</table>
     <p class="muted" style="font-size:13px">Merchant: tier ${v.merchant.tier}, invested ${v.merchant.invested} coins.</p>
