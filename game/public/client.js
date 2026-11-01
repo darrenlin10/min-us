@@ -429,6 +429,7 @@ function MainMenu() {
       <button onClick=${() => setRules(true)}>📖 Full rules</button>
     </div></div>
     ${rules && html`<${RulesModal} close=${() => setRules(false)} />`}
+    <a class="readme-corner" href="/readme.html" target="_blank" rel="noopener">📜 Read Me<small>about the game, features & credits</small></a>
   </div>`;
 }
 

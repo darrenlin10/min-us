@@ -318,7 +318,7 @@
       "file": "game-assets-v01/character-prompts.json",
       "source": "outputs/game-assets-v01/character-prompts.json",
       "source_sha256": "992ccc7e5751b988f148a5f4f31631511928fc4373facf4e86d1697b298e6c8d",
-      "sha256": "992ccc7e5751b988f148a5f4f31631511928fc4373facf4e86d1697b298e6c8d",
+      "sha256": "ef3e93c3ceaf3c3912aa1df9674b08126eb922a4102d6369fec754b8d01b6160",
       "only_link_relocation_permitted": false
     },
     {
@@ -381,7 +381,7 @@
       "file": "game-assets-v01/combat-service-prompts.json",
       "source": "outputs/game-assets-v01/combat-service-prompts.json",
       "source_sha256": "4c5d6108fc2484efd78b984859574a38a3ecd1d895d16b60d4125249c5d5f435",
-      "sha256": "4c5d6108fc2484efd78b984859574a38a3ecd1d895d16b60d4125249c5d5f435",
+      "sha256": "83a53238f916aa0a435545d73bf3bd60491585bfe65b7b8b2585ecac1775ea0a",
       "only_link_relocation_permitted": false
     },
     {
@@ -528,7 +528,7 @@
       "file": "game-assets-v01/room-prompts.json",
       "source": "outputs/game-assets-v01/room-prompts.json",
       "source_sha256": "1be4f09bce63a3b21e75cf183804391febe8eaacc4d758bcdac635817c4c89ac",
-      "sha256": "1be4f09bce63a3b21e75cf183804391febe8eaacc4d758bcdac635817c4c89ac",
+      "sha256": "086e0dd402e4e281bed1e87ac3e6a05beac894c89ab293016045e5a658604817",
       "only_link_relocation_permitted": false
     },
     {
@@ -633,7 +633,7 @@
       "file": "game-assets-v01/utility-prompts.json",
       "source": "outputs/game-assets-v01/utility-prompts.json",
       "source_sha256": "f189eb19791239a620e6b7f46f136df7712c5cf05fe276758f6140df19866149",
-      "sha256": "f189eb19791239a620e6b7f46f136df7712c5cf05fe276758f6140df19866149",
+      "sha256": "9bac367b07ba6b32c5cfbe83838efda8118fd9d0e302ee07c227b131d0fbcacb",
       "only_link_relocation_permitted": false
     },
     {

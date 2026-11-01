@@ -35,6 +35,7 @@ const PUBLIC = path.join(__dirname, 'public');
 const server = http.createServer((req, res) => {
   let p = decodeURIComponent((req.url || '/').split('?')[0]);
   if (p === '/' || p.startsWith('/room/')) p = '/index.html';
+  if (p === '/readme' || p === '/README') p = '/readme.html';
   if (p === '/healthz') { res.writeHead(200); res.end('ok'); return; }
   const file = path.normalize(path.join(PUBLIC, p));
   if (!file.startsWith(PUBLIC)) { res.writeHead(403); res.end(); return; }

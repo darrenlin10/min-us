@@ -7,7 +7,7 @@
       "prompt": "Use case: stylized-concept. Asset type: individual transparent PNG inventory sprite for an original 2D underground multiplayer game. Style: friendly chunky cartoon, smooth bold charcoal #292B38 outlines, flat two-tone cel shading, simple readable silhouette at 48px; slight three-quarter view, not realistic or painterly, no 3D render. Composition: square 1024x1024, one isolated object centered in the middle 70% of the canvas, generous clear margins. Actual transparent alpha background, no ground shadow, no backdrop, no text, letters, prices, border, HUD, watermark or extra props. Subject: One mining pickaxe with an amber wooden handle, steel double-ended curved pick head, short charcoal grip and a single brass collar. Full object diagonally from lower left to upper right. It is the basic Worker mining tool; not held by a hand.",
       "mode": "built-in image_gen",
       "transparent_background": true,
-      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-78074853-60c4-4134-b179-ca423a6f1b36.png",
+      "source_path": "~/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-78074853-60c4-4134-b179-ca423a6f1b36.png",
       "file": "items/pickaxe.png",
       "status": "completed"
     },
@@ -17,9 +17,9 @@
       "mode": "built-in image_gen",
       "transparent_background": true,
       "referenced_image_paths": [
-        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+        "~/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
       ],
-      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-ff2a3ac1-f6d4-4f39-8c93-f5ce9afe2f69.png",
+      "source_path": "~/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-ff2a3ac1-f6d4-4f39-8c93-f5ce9afe2f69.png",
       "file": "items/drill.png",
       "status": "completed"
     },
@@ -29,9 +29,9 @@
       "mode": "built-in image_gen",
       "transparent_background": true,
       "referenced_image_paths": [
-        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+        "~/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
       ],
-      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-b07153c6-ad91-4e57-ae10-b8761e2122ae.png",
+      "source_path": "~/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-b07153c6-ad91-4e57-ae10-b8761e2122ae.png",
       "file": "items/hook.png",
       "status": "completed"
     },
@@ -41,9 +41,9 @@
       "mode": "built-in image_gen",
       "transparent_background": true,
       "referenced_image_paths": [
-        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+        "~/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
       ],
-      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-ac5105ef-5ea9-4a32-b690-2bbeb31f03e3.png",
+      "source_path": "~/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-ac5105ef-5ea9-4a32-b690-2bbeb31f03e3.png",
       "file": "items/crowbar.png",
       "status": "completed"
     },
@@ -53,9 +53,9 @@
       "mode": "built-in image_gen",
       "transparent_background": true,
       "referenced_image_paths": [
-        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+        "~/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
       ],
-      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-8025eebd-d54e-4c55-827f-ea50fa2c1c60.png",
+      "source_path": "~/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-8025eebd-d54e-4c55-827f-ea50fa2c1c60.png",
       "file": "items/lantern.png",
       "status": "completed"
     },
@@ -65,9 +65,9 @@
       "mode": "built-in image_gen",
       "transparent_background": true,
       "referenced_image_paths": [
-        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+        "~/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
       ],
-      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-ac8383f5-45a8-44bf-9adc-d149d310e922.png",
+      "source_path": "~/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-ac8383f5-45a8-44bf-9adc-d149d310e922.png",
       "file": "items/reinforced_lantern.png",
       "status": "completed"
     },
@@ -77,9 +77,9 @@
       "mode": "built-in image_gen",
       "transparent_background": true,
       "referenced_image_paths": [
-        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+        "~/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
       ],
-      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-8a951a69-2cc4-4f82-8290-56eeb5c33c30.png",
+      "source_path": "~/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-8a951a69-2cc4-4f82-8290-56eeb5c33c30.png",
       "file": "items/healing_potion.png",
       "status": "completed"
     },
@@ -89,9 +89,9 @@
       "mode": "built-in image_gen",
       "transparent_background": true,
       "referenced_image_paths": [
-        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+        "~/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
       ],
-      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-6f07949f-8795-468d-80fd-559929fa91b6.png",
+      "source_path": "~/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-6f07949f-8795-468d-80fd-559929fa91b6.png",
       "file": "items/rescue_kit.png",
       "status": "completed"
     },
@@ -101,9 +101,9 @@
       "mode": "built-in image_gen",
       "transparent_background": true,
       "referenced_image_paths": [
-        "/Users/darrenlin/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
+        "~/Documents/Codex/2026-10-19/create-a-multiplayer-game-build-a/outputs/game-assets-v01/items/club.png"
       ],
-      "source_path": "/Users/darrenlin/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-b7cd0912-872f-4c5d-a279-d510052f0bc1.png",
+      "source_path": "~/.codex/generated_images/01a1555f-7f73-7ea0-b8ac-b424ff8922f5/exec-b7cd0912-872f-4c5d-a279-d510052f0bc1.png",
       "file": "items/compass.png",
       "status": "completed",
       "retry_note": "First attempt failed with connection error; identical prompt retry succeeded."
