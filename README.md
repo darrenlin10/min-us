@@ -136,10 +136,3 @@ Run the rules tests: 22 feature scenarios plus 30 randomized full games (browser
 cd game && npm test
 ```
 
-## Deploy (Render, free)
-
-1. Sign in at https://render.com with GitHub.
-2. **New → Blueprint**, pick this repository and branch, click **Apply**. `render.yaml` configures everything.
-3. Share the `https://<name>.onrender.com` URL. Free instances sleep after ~15 min idle and take ~30–60 s to wake on the first visit. During a match the page pings the server so it stays awake.
-
-Any Node 20+ host with WebSocket support works (Railway, Fly.io, a VPS): run `npm install && npm start` in `game/`; it listens on `$PORT`. Don't redeploy while people are playing: in-memory games end on restart.
